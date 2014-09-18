@@ -14,6 +14,9 @@ int median(int[], int);
 float mean(const int[], int);
 int* mode(int[], int);
 
+int* fndFreq(int[], int);
+int fndMax(int [], int);
+
 /*
  *   These functions are for testing
  */
@@ -79,6 +82,16 @@ int* mode(int a[], int size) {
         mArray[i] = modes[i];
     }
     print(mArray, size+2);
+}
+
+int* fndFreq(int in[], int size) {
+    const int MAX  = fndMax(in, size);
+    int *out = new int[MAX+1];
+    
+    for (int i = 0; i != size; ++i) {
+        out[in[i++]++;
+    }
+    
 }
 
 int* fillArray(int size) {
