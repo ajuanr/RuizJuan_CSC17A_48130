@@ -15,6 +15,8 @@ int nMines(int =1);
 void clearArea(int[][NCOLS], int);
 void setMines(int[][NCOLS], int, int =1);
 void printClean(int[][NCOLS], int);
+// numbers of mines adjacent to a particular spot
+int nAdjacent(int [][NCOLS], int);
 
 using namespace std;
 
