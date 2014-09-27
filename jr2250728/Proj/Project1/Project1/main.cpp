@@ -16,7 +16,7 @@ void clearArea(int[][NCOLS], int);
 void setMines(int[][NCOLS], int, int =1);
 void printClean(int[][NCOLS], int);
 // numbers of mines adjacent to a particular spot
-int nAdjacent(int [][NCOLS], int);
+int nAdjacent(int [][NCOLS], int, int, int);
 
 using namespace std;
 
@@ -27,7 +27,16 @@ int main(int argc, const char * argv[]) {
     int field[nrows][NCOLS];
     clearArea(field, nrows);
     setMines(field, nrows);
+    
     printClean(field, nrows);
+    for (int i = 0; i != nrows; ++i)
+        for(int j = 0; j != NCOLS; ++j)
+            if (field[i][j] !=9)
+            field[i][j] = nAdjacent(field, i, j, nrows);
+    
+    printClean(field, nrows);
+    
+
     
     return 0;
 }
@@ -84,4 +93,28 @@ void printClean(int f[][NCOLS], int size) {
         }
         cout << endl;
     }
+    cout << endl;
+}
+
+// return the numbers of adjacent landmines to
+// a given cell;
+int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
+    // the number of adjacel
+    int nAd=0;
+    // not on first or last row
+    // not on first or last column
+    if ( row > 0 && col > 0 && row < rows-1 && col < NCOLS-1) {
+        // search the 3x3 grid surrounding a cell
+        for (int i = row-1; i < row+1; ++i) {
+            for (int j = col-1; j < col+1; ++j)
+                // 9 is reserved for landmines
+                if (a[i][j] == 9) {
+                    ++nAd;
+                }
+            
+        }
+        return nAd;
+    }
+    return 0;
+    
 }
