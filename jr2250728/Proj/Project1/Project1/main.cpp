@@ -7,9 +7,12 @@
 //
 
 #include <iostream>
+#include <cstdlib>
 
 // numbers of column for board
 const int NCOLS = 9;
+//
+const int MINE = 9;
 
 int nMines(int =1);
 void clearArea(int[][NCOLS], int);
@@ -23,6 +26,7 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 
     const int nrows = 9;
+    srand(time(0));
     // area that will will swpt for mines
     int field[nrows][NCOLS];
     clearArea(field, nrows);
@@ -31,7 +35,7 @@ int main(int argc, const char * argv[]) {
     printClean(field, nrows);
     for (int i = 0; i != nrows; ++i)
         for(int j = 0; j != NCOLS; ++j)
-            if (field[i][j] !=9)
+            if (field[i][j] !=MINE)
             field[i][j] = nAdjacent(field, i, j, nrows);
     
     printClean(field, nrows);
@@ -43,7 +47,7 @@ int main(int argc, const char * argv[]) {
 
 // returns the number of mines based on the difficulty
 int nMines(int n) {
-    if (n==1) return 10;
+    if (n==1) return 9;
     else if (n==2) return 20;
     else if (n==3) return 35;
     else return 10;
@@ -60,7 +64,7 @@ void setMines(int f[][NCOLS], int size, int diff) {
         for (int i = 0; i != size; ++i) {
             for (int j = 0; j != NCOLS; ++j) {
                 // place mines if result of rand() == 0
-                if (rand() % 10 == 0){
+                if (rand() % 15 == 0){
                     //only place mines if mines are still available
                     // and current position does not have a mines
                     if (mines && !set && f[i][j] == 0) {
@@ -101,38 +105,32 @@ void printClean(int f[][NCOLS], int size) {
 int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
     // the number of adjacel
     int nAd=0;
-    
-    // not on first or last row
-    // not on first or last column
+    // not on first or last row or first or last column
     // most cell are here
     if ( row > 0 && col > 0 && row < rows-1 && col < NCOLS-1) {
         // search the 3x3 grid surrounding a cell
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                // 9 is reserved for landmines
-                if (a[i][j] == 9) {
+                if (a[i][j] == MINE)
                     ++nAd;
-                }
         }
+    }
     // on the first row, not on first or last column
-    } else if ( row == 0 && col > 0 && col < NCOLS - 1) {
+    else if ( row == 0 && col > 0 && col < NCOLS - 1) {
         for (int i = row; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
                 // 9 is reserved for landmines
-                if (a[i][j] == 9) {
+                if (a[i][j] == MINE)
                     ++nAd;
-                }
-        } 
-
+        }
     }
     // on the last row, not on first or last column
     else if ( row == rows-1 && col > 0 && col < NCOLS - 1) {
         for (int i = row-1; i <= row; ++i) {
             for (int j = col-1; j <= col+1; ++j)
                 // 9 is reserved for landmines
-                if (a[i][j] == 9) {
+                if (a[i][j] == MINE)
                     ++nAd;
-                }
         }
     }
     // on the first column, not on first or last row
@@ -141,11 +139,9 @@ int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col; j <= col+1; ++j)
                 // 9 is reserved for landmines
-                if (a[i][j] == 9) {
+                if (a[i][j] == MINE)
                     ++nAd;
-                }
         }
-        
     }
     // on the last column, not on first or last row
     // search to the left
@@ -153,11 +149,34 @@ int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col; ++j)
                 // 9 is reserved for landmines
-                if (a[i][j] == 9) {
+                if (a[i][j] == 9)
                     ++nAd;
-                }
         }
     }
+    // top left corner
+    else if (row == 0 && col == 0) {
+        if (a[row][col+1] == 9) ++nAd;
+        if (a[row+1][col] == 9) ++nAd;
+        if (a[row+1][col+1] == 9) ++nAd;
+    }
+    // top right corner
+    else if (row == 0 && col == NCOLS-1) {
+        if (a[row][col-1] == 9) ++nAd;
+        if (a[row+1][col] == 9) ++nAd;
+        if (a[row+1][col-1] == 9) ++nAd;
+    }
+    // bottom left corner
+    else if (row == rows-1 && col == 0) {
+        if (a[row-1][col] == 9) ++nAd;
+        if (a[row-1][col+1] == 9) ++nAd;
+        if (a[row][col+1] == 9) ++nAd;
+    }
+    // bottom right corner
+    else if (row == rows-1 && col == NCOLS-1) {
+        if (a[row-1][col-1] == 9) ++nAd;
+        if (a[row-1][col] == 9) ++nAd;
+        if (a[row][col-1] == 9) ++nAd;
+    }
+    // return number of landmines from appropriate if statement
     return nAd;
-    
 }
