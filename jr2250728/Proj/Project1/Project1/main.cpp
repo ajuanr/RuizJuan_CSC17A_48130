@@ -101,20 +101,63 @@ void printClean(int f[][NCOLS], int size) {
 int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
     // the number of adjacel
     int nAd=0;
+    
     // not on first or last row
     // not on first or last column
+    // most cell are here
     if ( row > 0 && col > 0 && row < rows-1 && col < NCOLS-1) {
         // search the 3x3 grid surrounding a cell
-        for (int i = row-1; i < row+1; ++i) {
-            for (int j = col-1; j < col+1; ++j)
+        for (int i = row-1; i <= row+1; ++i) {
+            for (int j = col-1; j <= col+1; ++j)
                 // 9 is reserved for landmines
                 if (a[i][j] == 9) {
                     ++nAd;
                 }
-            
         }
-        return nAd;
+    // on the first row, not on first or last column
+    } else if ( row == 0 && col > 0 && col < NCOLS - 1) {
+        for (int i = row; i <= row+1; ++i) {
+            for (int j = col-1; j <= col+1; ++j)
+                // 9 is reserved for landmines
+                if (a[i][j] == 9) {
+                    ++nAd;
+                }
+        } 
+
     }
-    return 0;
+    // on the last row, not on first or last column
+    else if ( row == rows-1 && col > 0 && col < NCOLS - 1) {
+        for (int i = row-1; i <= row; ++i) {
+            for (int j = col-1; j <= col+1; ++j)
+                // 9 is reserved for landmines
+                if (a[i][j] == 9) {
+                    ++nAd;
+                }
+        }
+    }
+    // on the first column, not on first or last row
+    // search to the right
+    else if ( col == 0 && row > 0 && row < rows - 1) {
+        for (int i = row-1; i <= row+1; ++i) {
+            for (int j = col; j <= col+1; ++j)
+                // 9 is reserved for landmines
+                if (a[i][j] == 9) {
+                    ++nAd;
+                }
+        }
+        
+    }
+    // on the last column, not on first or last row
+    // search to the left
+    else if ( col == NCOLS-1 && row > 0 && row < rows - 1) {
+        for (int i = row-1; i <= row+1; ++i) {
+            for (int j = col-1; j <= col; ++j)
+                // 9 is reserved for landmines
+                if (a[i][j] == 9) {
+                    ++nAd;
+                }
+        }
+    }
+    return nAd;
     
 }
