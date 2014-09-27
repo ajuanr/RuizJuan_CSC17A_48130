@@ -20,6 +20,7 @@ void setMines(int[][NCOLS], int, int =1);
 void printClean(int[][NCOLS], int);
 // numbers of mines adjacent to a particular spot
 int nAdjacent(int [][NCOLS], int, int, int);
+void walkPeri(int (*)[NCOLS], int, int, int);
 
 using namespace std;
 
@@ -38,6 +39,7 @@ int main(int argc, const char * argv[]) {
             if (field[i][j] !=MINE)
             field[i][j] = nAdjacent(field, i, j, nrows);
     
+    walkPeri(field, 3, 4, nrows);
     printClean(field, nrows);
     
 
@@ -106,7 +108,7 @@ int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
     // the number of adjacel
     int nAd=0;
     // not on first or last row or first or last column
-    // most cell are here
+    // most of the searhes take place in this area
     if ( row > 0 && col > 0 && row < rows-1 && col < NCOLS-1) {
         // search the 3x3 grid surrounding a cell
         for (int i = row-1; i <= row+1; ++i) {
@@ -179,4 +181,33 @@ int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
     }
     // return number of landmines from appropriate if statement
     return nAd;
+}
+
+// if users selects an area that is completely clear of mines
+// clear that entire area
+void walkPeri(int (*a)[NCOLS], int row, int col, int rows) {
+    int i = row;
+    int j = col;
+    // need to attemp to move at least once
+    // outer loop moves left and right
+    do {
+        // try to move left
+        if (row > 0 && !a[i][j-1]) {
+            --i;
+            a[i][j] = 7;
+        }
+            // inner loop moves up and down
+            do {
+                if (col > 0 && !a[i-1][j]) {
+                    --i;
+                    a[i][j] = 7;
+                }
+                if (col < NCOLS-1 && !a[i+1][j]) {
+                    ++i;
+                    a[i][j] = 7;
+                }
+            } while ( j!= col);
+    } while (i != row);
+        
+        
 }
