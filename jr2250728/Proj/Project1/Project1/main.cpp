@@ -33,16 +33,14 @@ int main(int argc, const char * argv[]) {
     clearArea(field, nrows);
     setMines(field, nrows);
     
-    printClean(field, nrows);
+    //printClean(field, nrows);
     for (int i = 0; i != nrows; ++i)
         for(int j = 0; j != NCOLS; ++j)
             if (field[i][j] !=MINE)
             field[i][j] = nAdjacent(field, i, j, nrows);
-    
+    printClean(field, nrows);
     walkPeri(field, 3, 4, nrows);
     printClean(field, nrows);
-    
-
     
     return 0;
 }
@@ -188,26 +186,32 @@ int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
 void walkPeri(int (*a)[NCOLS], int row, int col, int rows) {
     int i = row;
     int j = col;
-    // need to attemp to move at least once
-    // outer loop moves left and right
-    do {
         // try to move left
-        if (row > 0 && !a[i][j-1]) {
-            --i;
-            a[i][j] = 7;
+    do {
+        if (row > 0) {
+            while (a[i][j-1]==0 && i>0) {
+                --j;
+                a[i][j] = 7;}
         }
-            // inner loop moves up and down
-            do {
-                if (col > 0 && !a[i-1][j]) {
+        // try to move right
+        else if (row < rows) {
+            while (a[i][j+1]==0 && j<rows) {
+                ++j;
+                a[i][j] = 7;}
+            }
+            // moving up
+        else if (col > 0) {
+                while (a[i-1][j]==0 && i>0) {
                     --i;
-                    a[i][j] = 7;
+                    a[i][j] = 7;}
                 }
-                if (col < NCOLS-1 && !a[i+1][j]) {
-                    ++i;
-                    a[i][j] = 7;
-                }
-            } while ( j!= col);
-    } while (i != row);
+        // moving to down
+        else {
+            while (a[i+1][j]==0 && i<rows) {
+                ++j;
+                a[i][j] = 7;
+            }
         
-        
+        }
+    } while (i != row && j != col);
 }
