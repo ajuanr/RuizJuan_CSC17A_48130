@@ -1,5 +1,6 @@
 /* 
  * Ruiz, Juan - Assignment 3 - 48130
+ * Using 6th edition of the textbook
  * 5 problems from chapter 10
  * 5 problems from chapter 12
  * 
@@ -11,7 +12,8 @@
 
 using namespace std;
 
-void problem10_12();
+void prob10_12();
+void prob10_19();
 bool isValid(string);
 
 /*
@@ -28,7 +30,7 @@ int main(int argc, char** argv) {
 * at least one lowercase letter.
 * The password should have at least one digit.
  */
-void problem10_12() {
+void prob10_12() {
     string pswd;
     do {
     cout << "Enter password\n"
@@ -41,6 +43,17 @@ void problem10_12() {
     cout << "\nSuccess!\n";
 }
 
+/*
+ * Creates a simulated check
+ * users enter the payee and the amount
+ */
+void prob10_19() {
+    string name;
+    cout << "Enter name of the payee"
+}
+
+// used for problem 10.12
+// check whether the entered password is valid
 bool isValid(string pswd) {
     bool length = false;    // password must be six digits
     bool upper = false;    // contain at least one uppercase character
