@@ -24,7 +24,8 @@ string numToStr(float);
  */
 int main(int argc, char** argv) {
     //prob10_12();
-    prob10_19();
+    //prob10_19();
+    numToStr(1.11);
     return 0;
 }
 
@@ -103,6 +104,11 @@ void formatCheck(string date, string name, float amnt) {
 }
 
 string numToStr(float amnt) {
-    return "The numToStr function was called\n";
+    int cents = 0;
+    cents = (amnt/.1 + amnt/.01);
+    // remove decimal part of amnt
+    int n = amnt;
+
     
+    return "The numToStr function was called\n";
 }
