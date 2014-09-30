@@ -13,11 +13,14 @@
 
 using namespace std;
 
+void prob10_10();
 void prob10_12();
 void prob10_19();
 bool isValid(string);
 void formatCheck(string, string, float);
 string numToStr(float);
+
+string edit(string, string, string);
 
 /*
  * 
@@ -25,8 +28,31 @@ string numToStr(float);
 int main(int argc, char** argv) {
     //prob10_12();
     //prob10_19();
-    numToStr(1.11);
+    prob10_10();
     return 0;
+}
+
+/*
+ * User enters a string
+ * Function replaces occurrences of a string
+ * with another string
+ */
+
+void prob10_10() {
+    string str1;
+    cout << "Enter a sentence:";
+    getline(cin, str1);
+    
+    string str2;
+    cout << "Enter the word you want replaced: ";
+    cin >> str2;
+    
+    string str3;
+    cout << "Replacement word: ";
+    cin >> str3;
+    
+    string newStr = edit(str1, str2, str3);
+    cout << newStr << endl;
 }
 
 /*
@@ -111,4 +137,23 @@ string numToStr(float amnt) {
 
     
     return "The numToStr function was called\n";
+}
+
+// edit the string from problem 10.10
+string edit(string s1, string s2, string s3) {
+    string s1Cpy = s1;
+    
+    size_t iter = 0;
+    size_t end = s1.length();
+    while (iter != end) {
+        if (s1.find(s2)) {
+            iter = s1.find(s2);
+            s1.erase(iter, iter + s2.length());
+            s1.insert(iter, s3);
+        }
+        else
+            ++iter;
+    }
+    
+    return s1Cpy;
 }
