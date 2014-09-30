@@ -140,19 +140,16 @@ string numToStr(float amnt) {
 }
 
 // edit the string from problem 10.10
+// replaces string s2 in string s1 with  string s3
 string edit(string s1, string s2, string s3) {
     string s1Cpy = s1;
     
     size_t iter = 0;
     size_t end = s1.length();
     while (iter != end) {
-        if (s1.find(s2)) {
             iter = s1.find(s2);
             s1.erase(iter, iter + s2.length());
             s1.insert(iter, s3);
-        }
-        else
-            ++iter;
     }
     
     return s1Cpy;
