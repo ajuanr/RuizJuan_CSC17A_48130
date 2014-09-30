@@ -1,8 +1,8 @@
 /* 
- * File:   main.cpp
- * Author: rcc
- *
- * Created on September 30, 2014, 9:17 AM
+ * Ruiz, Juan - Assignment 3 - 48130
+ * 5 problems from chapter 10
+ * 5 problems from chapter 12
+ * 
  */
 
 #include <cstdlib>
