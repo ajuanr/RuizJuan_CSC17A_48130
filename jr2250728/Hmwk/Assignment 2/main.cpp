@@ -104,7 +104,6 @@ void prob10_19() {
 // used for problem 10.12
 // check whether the entered password is valid
 bool isValid(string pswd) {
-    bool length = false;    // password must be six digits
     bool upper = false;    // contain at least one uppercase character
     bool lower = false;    // contain at least one lowercase character
     bool digit = false;    // contain at least one digit
@@ -133,6 +132,8 @@ void formatCheck(string date, string name, float amnt) {
          << left << "Pay to the order of: " << name << '\t' << amnt << endl
          << amntTxt;
     
+    cout << endl;
+    
     delete amntArray;
 }
 
@@ -148,8 +149,6 @@ int* numToArray(float amnt) {
         array[i] = 0;
     }
     
-    // int copy of float amnt
-    int amntCpy = static_cast<int>(amnt);
     // pick off the individual digits in the amount
     // go to -1 to make sure to include most significant digit in amnt in array
     for (int i = MAX-1; i!= -1; --i) {
@@ -162,17 +161,17 @@ int* numToArray(float amnt) {
 
 string numToStr(int *array, int size) {
     // e.g 90 -> "ninety"
-    char * tens[8] = {"twenty", "thirty", "forty", "fifty", "sixty",
+    const char * tens[8] = {"twenty", "thirty", "forty", "fifty", "sixty",
                   "seventy", "eighty", "ninety"};
     
     // e.g 4 -> "four"
-    char *ones[9] = {"one", "two", "three", 
+    const char *ones[9] = {"one", "two", "three",
                       "four", "five", "six",
                       "seven", "eight", "nine"};
     
     // tens + ones
     // e.g 11 -> eleven, not ten and one
-    char *last[] = {"ten", "eleven", "twelve", "thirteen",
+    const char *last[] = {"ten", "eleven", "twelve", "thirteen",
                     "fourteen", "fifteen", "sixteen",
                     "seventeen", "eighteen", "nineteen"};
     
@@ -210,7 +209,7 @@ string numToStr(int *array, int size) {
         }
         // ones place
         if (array[i] && i == 4 && array[i-1] != 1){
-            // check if previous was used e.g 99 not just 9
+            // check if previous was used e.g ninety-nine not ninety nine
             if (array[i-1] )
                 text += "-";
             else
@@ -222,21 +221,26 @@ string numToStr(int *array, int size) {
     if (array[size-2] || array[size-1]) {
     text += " and ";
     if (array[size-2]) {
-        text += tens[array[size-2]-2];
-        text += " ";
+        if (array[size-2] == 1) {
+            text +=last[array[size-1]];
+        }
+        else if (array[size-2] >1)
+            text += tens[array[size-2]-2];
+        else;    // do nothing
     }
-    if (array[size-1]) {
-        text += ones[array[size-1]];
-        text += " ";
+    if (array[size-1] && array[size-2] != 1) {
+        text+= " ";
+        text += ones[array[size-1]-1];
     }
-    text+= "cents";
+    text+= " cents";
     }
     
     return text;
 }
 
 
-
+// edit the string from problem 10.10
+// replaces string s2 in string s1 with  string s3
 string edit(string s1, string s2, string s3) {
     string s1Cpy = s1;
     
@@ -250,90 +254,3 @@ string edit(string s1, string s2, string s3) {
     
     return s1Cpy;
 }
-
-/*
-string numToStr(float amnt) {
-    
-    // get how many cents are in the amount
-    int cents = static_cast<int>(amnt * 100) % 100 + 1;
-
-    // max value is $10000 not including decimal
-    // max size is 5
-    const int MAX = 5;
-    // create array to hold the individual digits. set all indexes to zero
-    int array[MAX]= {0};
-    
-    // int copy of float amnt
-    int amntCpy = static_cast<int>(amnt);
-    // pick off the individual digits in the amount
-    // go to -1 to make sure to include most significant digit in amnt in array
-    for (int i = MAX-1; i!= -1; --i) {
-        array[i] = amntCpy %10;
-        amntCpy/= 10;
-    }
-    
-    // e.g 90 -> "ninety"
-    char * tens[8] = {"twenty", "thirty", "forty", "fifty", "sixty",
-                  "seventy", "eighty", "ninety"};
-    
-    // e.g 4 -> "four"
-    char *ones[9] = {"one", "two", "three", 
-                      "four", "five", "six",
-                      "seven", "eight", "nine"};
-    
-    string text;
-    for (int i = 0; i != MAX; ++i) {
-        // ten thousands place
-        if (array[i] && i == 0) {
-            text += "Ten Thousand";
-        }
-        // thousands place
-        if (array[i] && i==1){
-            text += ones[array[i]-1];
-            text += " thousand";
-        }
-        // hundreds place
-        
-        if (array[i] && i==2) {
-            // check if previous was used e.g 99 not just 9
-            if (array[i-1] )
-                text += " ";
-            text += ones[array[i]-1];
-            text += " hundred";
-        }
-        // tens place
-        if (array[i] && i==3) {
-            // check if previous was used e.g 99 not just 9
-            if (array[i-1] )
-                text += " ";
-            text += tens[array[i] - 2];
-        }
-        // ones place
-        if (array[i] && i == 4){
-            // check if previous was used e.g 99 not just 9
-            if (array[i-1] )
-                text += "-";
-            else
-                text += " ";
-            text += ones[array[i]-1];
-        }
-    
-    }
-    if (cents) {
-    text += "and  ";
-    if (cents /10) {
-        text += tens[cents/10-2];
-        text += " ";
-    }
-    if (cents % 10) {
-        text += ones[cents%10-1];
-        text += " ";
-    }
-    text+= "cents";
-    }
-    
-    return text;
-}
-*/
-// edit the string from problem 10.10
-// replaces string s2 in string s1 with  string s3
