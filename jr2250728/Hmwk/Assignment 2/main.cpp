@@ -18,7 +18,10 @@ void prob10_12();
 void prob10_19();
 bool isValid(string);
 void formatCheck(string, string, float);
+int* numToArray(float);
 string numToStr(float);
+
+string numToStrCPY(int*, int);
 
 string edit(string, string, string);
 
@@ -123,12 +126,106 @@ bool isValid(string pswd) {
 }
 
 void formatCheck(string date, string name, float amnt) {
-    string amntTxt = numToStr(amnt);
+    int * amntArray = numToArray(amnt);
+    string amntTxt = numToStrCPY(amntArray, 7);
     cout << setw(60) << right << date << endl << endl
          << left << "Pay to the order of: " << name << '\t' << amnt << endl
          << amntTxt;
+    
+    delete amntArray;
 }
 
+int* numToArray(float amnt) {
+    // move the decimal
+    int total = amnt * 100;
+    const int MAX = 7;
+    // create array to hold the individual digits. set all indexes to zero
+    int *array = new int[MAX];
+    
+    // clear the array
+    for (int i = 0; i != MAX; ++i) {
+        array[i] = 0;
+    }
+    
+    // int copy of float amnt
+    int amntCpy = static_cast<int>(amnt);
+    // pick off the individual digits in the amount
+    // go to -1 to make sure to include most significant digit in amnt in array
+    for (int i = MAX-1; i!= -1; --i) {
+        array[i] = total %10;
+        total/= 10;
+    }
+    
+    return array;
+}
+
+string numToStrCPY(int *array, int size) {
+    // e.g 90 -> "ninety"
+    char * tens[8] = {"twenty", "thirty", "forty", "fifty", "sixty",
+                  "seventy", "eighty", "ninety"};
+    
+    // e.g 4 -> "four"
+    char *ones[9] = {"one", "two", "three", 
+                      "four", "five", "six",
+                      "seven", "eight", "nine"};
+    
+    string text;
+    // last two indexes represent the cents
+    for (int i = 0; i != size-2; ++i) {
+        // ten thousands place
+        if (array[i] && i == 0) {
+            text += "Ten Thousand";
+        }
+        // thousands place
+        if (array[i] && i==1){
+            text += ones[array[i]-1];
+            text += " thousand";
+        }
+        // hundreds place
+        
+        if (array[i] && i==2) {
+            // check if previous was used e.g 99 not just 9
+            if (array[i-1] )
+                text += " ";
+            text += ones[array[i]-1];
+            text += " hundred";
+        }
+        // tens place
+        if (array[i] && i==3) {
+            // check if previous was used e.g 99 not just 9
+            if (array[i-1] )
+                text += " ";
+            text += tens[array[i] - 2];
+        }
+        // ones place
+        if (array[i] && i == 4){
+            // check if previous was used e.g 99 not just 9
+            if (array[i-1] )
+                text += "-";
+            else
+                text += " ";
+            text += ones[array[i]-1];
+        }
+    
+    }
+    if (array[size-2] || array[size-1]) {
+    text += " and ";
+    if (array[size-2]) {
+        text += tens[array[size-2]-2];
+        text += " ";
+    }
+    if (array[size-1]) {
+        text += ones[array[size-1]-1];
+        text += " ";
+    }
+    text+= "cents";
+    }
+    
+    return text;
+}
+
+
+/*
 string numToStr(float amnt) {
     
     // get how many cents are in the amount
@@ -148,10 +245,6 @@ string numToStr(float amnt) {
         array[i] = amntCpy %10;
         amntCpy/= 10;
     }
-
-    for (int i = 0; i != MAX; ++i)
-        cout << array[i];
-    cout << endl;
     
     // e.g 90 -> "ninety"
     char * tens[8] = {"twenty", "thirty", "forty", "fifty", "sixty",
@@ -174,16 +267,48 @@ string numToStr(float amnt) {
             text += " thousand";
         }
         // hundreds place
+        
         if (array[i] && i==2) {
+            // check if previous was used e.g 99 not just 9
+            if (array[i-1] )
+                text += " ";
             text += ones[array[i]-1];
             text += " hundred";
         }
+        // tens place
+        if (array[i] && i==3) {
+            // check if previous was used e.g 99 not just 9
+            if (array[i-1] )
+                text += " ";
+            text += tens[array[i] - 2];
+        }
+        // ones place
+        if (array[i] && i == 4){
+            // check if previous was used e.g 99 not just 9
+            if (array[i-1] )
+                text += "-";
+            else
+                text += " ";
+            text += ones[array[i]-1];
+        }
     
+    }
+    if (cents) {
+    text += "and  ";
+    if (cents /10) {
+        text += tens[cents/10-2];
+        text += " ";
+    }
+    if (cents % 10) {
+        text += ones[cents%10-1];
+        text += " ";
+    }
+    text+= "cents";
     }
     
     return text;
 }
-
+*/
 // edit the string from problem 10.10
 // replaces string s2 in string s1 with  string s3
 string edit(string s1, string s2, string s3) {
