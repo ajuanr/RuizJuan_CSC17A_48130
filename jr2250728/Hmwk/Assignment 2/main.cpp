@@ -127,6 +127,7 @@ bool isValid(string pswd) {
 
 void formatCheck(string date, string name, float amnt) {
     int * amntArray = numToArray(amnt);
+    // max amnt of $10000.00 only has seven digits
     string amntTxt = numToStr(amntArray, 7);
     cout << setw(60) << right << date << endl << endl
          << left << "Pay to the order of: " << name << '\t' << amnt << endl
@@ -201,10 +202,14 @@ string numToStr(int *array, int size) {
             // check if previous was used e.g 99 not just 9
             if (array[i-1] )
                 text += " ";
-            text += tens[array[i] - 2];
+            if (array[i] == 1){
+                text+= last[array[++i]];
+            }
+            else
+                text += tens[array[i] - 2];
         }
         // ones place
-        if (array[i] && i == 4){
+        if (array[i] && i == 4 && array[i-1] != 1){
             // check if previous was used e.g 99 not just 9
             if (array[i-1] )
                 text += "-";
@@ -230,6 +235,21 @@ string numToStr(int *array, int size) {
     return text;
 }
 
+
+
+string edit(string s1, string s2, string s3) {
+    string s1Cpy = s1;
+    
+    size_t iter = 0;
+    size_t end = s1.length();
+    while (iter != end) {
+            iter = s1.find(s2);
+            s1.erase(iter, iter + s2.length());
+            s1.insert(iter, s3);
+    }
+    
+    return s1Cpy;
+}
 
 /*
 string numToStr(float amnt) {
@@ -317,16 +337,3 @@ string numToStr(float amnt) {
 */
 // edit the string from problem 10.10
 // replaces string s2 in string s1 with  string s3
-string edit(string s1, string s2, string s3) {
-    string s1Cpy = s1;
-    
-    size_t iter = 0;
-    size_t end = s1.length();
-    while (iter != end) {
-            iter = s1.find(s2);
-            s1.erase(iter, iter + s2.length());
-            s1.insert(iter, s3);
-    }
-    
-    return s1Cpy;
-}
