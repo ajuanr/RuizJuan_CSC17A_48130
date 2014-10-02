@@ -153,11 +153,35 @@ string numToStr(float amnt) {
         cout << array[i];
     cout << endl;
     
-    char * tens[10] = {"twenty", "thirty", "forty", "fifty", "sixty",
+    // e.g 90 -> "ninety"
+    char * tens[8] = {"twenty", "thirty", "forty", "fifty", "sixty",
                   "seventy", "eighty", "ninety"};
     
+    // e.g 4 -> "four"
+    char *ones[9] = {"one", "two", "three", 
+                      "four", "five", "six",
+                      "seven", "eight", "nine"};
     
-    return "The numToStr function was called\n";
+    string text;
+    for (int i = 0; i != MAX; ++i) {
+        // ten thousands place
+        if (array[i] && i == 0) {
+            text += "Ten Thousand";
+        }
+        // thousands place
+        if (array[i] && i==1){
+            text += ones[array[i]-1];
+            text += " thousand";
+        }
+        // hundreds place
+        if (array[i] && i==2) {
+            text += ones[array[i]-1];
+            text += " hundred";
+        }
+    
+    }
+    
+    return text;
 }
 
 // edit the string from problem 10.10
