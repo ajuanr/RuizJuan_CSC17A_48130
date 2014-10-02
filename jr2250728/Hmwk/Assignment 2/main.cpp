@@ -27,8 +27,8 @@ string edit(string, string, string);
  */
 int main(int argc, char** argv) {
     //prob10_12();
-    //prob10_19();
-    prob10_10();
+    prob10_19();
+    //prob10_10();
     return 0;
 }
 
@@ -130,11 +130,32 @@ void formatCheck(string date, string name, float amnt) {
 }
 
 string numToStr(float amnt) {
-    int cents = 0;
-    cents = (amnt/.1 + amnt/.01);
-    // remove decimal part of amnt
-    int n = amnt;
+    
+    // get how many cents are in the amount
+    int cents = static_cast<int>(amnt * 100) % 100 + 1;
 
+    // max value is $10000 not including decimal
+    // max size is 5
+    const int MAX = 5;
+    // create array to hold the individual digits. set all indexes to zero
+    int array[MAX]= {0};
+    
+    // int copy of float amnt
+    int amntCpy = static_cast<int>(amnt);
+    // pick off the individual digits in the amount
+    // go to -1 to make sure to include most significant digit in amnt in array
+    for (int i = MAX-1; i!= -1; --i) {
+        array[i] = amntCpy %10;
+        amntCpy/= 10;
+    }
+
+    for (int i = 0; i != MAX; ++i)
+        cout << array[i];
+    cout << endl;
+    
+    char * tens[10] = {"twenty", "thirty", "forty", "fifty", "sixty",
+                  "seventy", "eighty", "ninety"};
+    
     
     return "The numToStr function was called\n";
 }
