@@ -19,9 +19,9 @@ void prob10_19();
 bool isValid(string);
 void formatCheck(string, string, float);
 int* numToArray(float);
-string numToStr(float);
+//string numToStr(float);
 
-string numToStrCPY(int*, int);
+string numToStr(int*, int);
 
 string edit(string, string, string);
 
@@ -127,7 +127,7 @@ bool isValid(string pswd) {
 
 void formatCheck(string date, string name, float amnt) {
     int * amntArray = numToArray(amnt);
-    string amntTxt = numToStrCPY(amntArray, 7);
+    string amntTxt = numToStr(amntArray, 7);
     cout << setw(60) << right << date << endl << endl
          << left << "Pay to the order of: " << name << '\t' << amnt << endl
          << amntTxt;
@@ -159,7 +159,7 @@ int* numToArray(float amnt) {
     return array;
 }
 
-string numToStrCPY(int *array, int size) {
+string numToStr(int *array, int size) {
     // e.g 90 -> "ninety"
     char * tens[8] = {"twenty", "thirty", "forty", "fifty", "sixty",
                   "seventy", "eighty", "ninety"};
@@ -168,6 +168,12 @@ string numToStrCPY(int *array, int size) {
     char *ones[9] = {"one", "two", "three", 
                       "four", "five", "six",
                       "seven", "eight", "nine"};
+    
+    // tens + ones
+    // e.g 11 -> eleven, not ten and one
+    char *last[] = {"ten", "eleven", "twelve", "thirteen",
+                    "fourteen", "fifteen", "sixteen",
+                    "seventeen", "eighteen", "nineteen"};
     
     string text;
     // last two indexes represent the cents
@@ -215,7 +221,7 @@ string numToStrCPY(int *array, int size) {
         text += " ";
     }
     if (array[size-1]) {
-        text += ones[array[size-1]-1];
+        text += ones[array[size-1]];
         text += " ";
     }
     text+= "cents";
