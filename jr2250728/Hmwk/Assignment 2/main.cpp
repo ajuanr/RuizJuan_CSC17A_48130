@@ -2,7 +2,6 @@
  * Ruiz, Juan - Assignment 3 - 48130
  * Using 6th edition of the textbook
  * 5 problems from chapter 10
- * 5 problems from chapter 12
  * 
  */
 
@@ -13,6 +12,9 @@
 
 using namespace std;
 
+void Menu();
+int getN();
+void def(int);
 void prob10_2();
 void prob10_3();
 void prob10_10();
@@ -21,21 +23,49 @@ void prob10_19();
 bool isValid(string);
 void formatCheck(string, string, float);
 int* numToArray(float);
-//string numToStr(float);
-
 string numToStr(int*, int);
-
 string edit(string &, string &, string &);
 
 /*
  * 
  */
 int main(int argc, char** argv) {
-    //prob10_12();
-    prob10_19();
-    //prob10_10();
-    //prob10_3();
+    int inN;
+    do{
+        Menu();
+        inN=getN();
+        switch(inN){
+            case 1:    prob10_2();cout << endl;break;
+            case 2:    prob10_3();cout << endl;break;
+            case 3:    prob10_10();cout << endl;break;
+            case 4:    prob10_12();cout << endl;break;
+            case 5:    prob10_19();cout << endl;break;
+            default:   def(inN);
+        }
+    } while(inN<8);
+    
     return 0;
+}
+
+void Menu()
+{
+    cout<<"Type 1 for problem 1"<<endl;
+    cout<<"Type 2 for problem 2"<<endl;
+    cout<<"Type 3 for problem 3"<<endl;
+    cout<<"Type 4 for problem 4"<<endl;
+    cout<<"Type 5 for problem 5"<<endl;
+    cout<<"Type 8 to exit \n"<<endl;
+}
+int getN()
+{
+    int inN;
+    cin>>inN;
+    return inN;
+}
+
+void def(int inN)
+{
+    cout<<"You typed "<<inN<<" to exit the program"<<endl;
 }
 
 void prob10_2() {
@@ -53,7 +83,7 @@ void prob10_2() {
 void prob10_3() {
     string s;
     cout << "Enter a sentence: ";
-    cin.clear();
+    cin.ignore();
     getline(cin, s);
 
     int wrdCnt=0;
@@ -79,6 +109,7 @@ void prob10_3() {
 void prob10_10() {
     string str1;
     cout << "Enter a sentence: ";
+    cin.ignore();
     getline(cin, str1);
     
     string str2;
@@ -102,12 +133,13 @@ void prob10_10() {
 void prob10_12() {
     string pswd;
     do {
-    cout << "Enter password\n"
+        cout << "Enter password\n"
             "Password should be at least six characters long.\n"
             "The password should contain at least one uppercase and"
             " at least one lowercase letter.\n"
             "The password should have at least one digit.\n";
-    cin >> pswd;
+        cin.ignore();
+        cin >> pswd;
     } while (!isValid(pswd));
     cout << "\nSuccess!\n";
 }
@@ -254,6 +286,7 @@ string numToStr(int *array, int size) {
         }
     
     }
+    text += " dollars";
     if (array[size-2] || array[size-1]) {
     text += " and ";
     if (array[size-2]) {
