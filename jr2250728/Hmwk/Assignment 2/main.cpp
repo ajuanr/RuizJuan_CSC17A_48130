@@ -23,7 +23,7 @@ int* numToArray(float);
 
 string numToStr(int*, int);
 
-string edit(string, string, string);
+string edit(string &, string &, string &);
 
 /*
  * 
@@ -31,12 +31,12 @@ string edit(string, string, string);
 int main(int argc, char** argv) {
     //prob10_12();
     //prob10_19();
-    prob10_10();
+    //prob10_10();
     return 0;
 }
 
 /*
- * User enters a string
+ * User enters a sentence
  * Function replaces occurrences of a string
  * with another string
  */
@@ -241,20 +241,22 @@ string numToStr(int *array, int size) {
 
 // edit the string from problem 10.10
 // replaces string s2 in string s1 with  string s3
-string edit(string s1, string s2, string s3) {
+string edit(string &s1, string &s2, string &s3) {
     string s1Cpy = s1;
     
     string::size_type i = 0;
-    while (i != s1Cpy.size()){
+    do {
         // find the position of the word to be replaced
+        // if not found i = s1Cpy.size()
         i = s1Cpy.find(s2, i);
         // if you have not reached the end
-        if ( i != s1Cpy.size()){
-            s1Cpy.erase(i, i + s2.length());  // erase word to be replaced
-            s1Cpy.insert(i, s3);            // insert the new word
-            i+=s3.length();                 // increment i
+        if ( i != std::string::npos){
+
+            s1Cpy.replace(i, s2.length(), s3);
+            i+= s3.length();
         }
-    }
+
+            } while (i != std::string::npos);
     
     return s1Cpy;
 }
