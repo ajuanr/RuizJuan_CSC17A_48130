@@ -84,10 +84,50 @@ void prob12_1() {
         cout << "File failed to open.\n";
 }
 void prob12_5() {
-    cout << "This is problem 2" << endl;
+    char fName[20];
+    cout << "Enter the file name: ";
+    cin >> fName;
+    fstream file(fName, ios::in);
+    if(file) {
+        int line =1;
+        cout << line << ": ";
+        char c;
+        file.get(c);
+        while (!file.eof()) {
+            if (c == '\n'){
+                ++line;
+                cout << c << line << ": ";
+            }
+            else
+                cout << c;
+            file.get(c);
+        }
+    }
+    else
+        cout << "File failed to open.\n";
 }
 void prob12_6() {
-    cout << "This is problem 3" << endl;
+    char fName[20];
+    cout << "Enter the file name: ";
+    cin >> fName;
+    fstream file(fName, ios::in);
+    if(file) {
+        cout << "Enter a word to search for: ";
+        string search;
+        cin >> search;
+        string current;
+        int line = 1;
+        while(file >> current) {
+            if (current == "\n")
+                ++line;
+            //cout << search << " " << current;
+            if (search.compare(current)==0) {
+                cout << search << "appeared on line: " << line;
+            }
+        }
+    }
+    else
+        cout << "File failed to open.\n";
 }
 void prob12_9() {
     cout << "This is problem 4" << endl;
