@@ -13,6 +13,8 @@
 
 using namespace std;
 
+void prob10_2();
+void prob10_3();
 void prob10_10();
 void prob10_12();
 void prob10_19();
@@ -32,7 +34,35 @@ int main(int argc, char** argv) {
     //prob10_12();
     //prob10_19();
     //prob10_10();
+    prob10_3();
     return 0;
+}
+
+void prob10_2() {
+    string s;
+    cout << "Enter a word: ";
+    cin >> s;
+    for (string::size_type i =0, j=s.size()-1; i < j; ++i,--j) {
+        char temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+    cout << "Your word backwards is: " << s << endl;
+}
+
+void prob10_3() {
+    char s[100];
+    cout << "Enter a sentence: ";
+    cin >> s;
+    
+    int wrdCnt = 0;
+    // find the number of words
+    for (int i = 0; s[i] != '\0'; ++i) {
+        if ( !isspace(s[i]) ) {
+            wrdCnt++;
+        }
+    }
+    cout << "The number of words in your sentence is: " << wrdCnt << endl;
 }
 
 /*
