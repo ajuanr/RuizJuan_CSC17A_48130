@@ -32,9 +32,9 @@ string edit(string &, string &, string &);
  */
 int main(int argc, char** argv) {
     //prob10_12();
-    //prob10_19();
+    prob10_19();
     //prob10_10();
-    prob10_3();
+    //prob10_3();
     return 0;
 }
 
@@ -51,17 +51,22 @@ void prob10_2() {
 }
 
 void prob10_3() {
-    char s[100];
+    string s;
     cout << "Enter a sentence: ";
-    cin >> s;
-    
-    int wrdCnt = 0;
+    cin.clear();
+    getline(cin, s);
+
+    int wrdCnt=0;
     // find the number of words
-    for (int i = 0; s[i] != '\0'; ++i) {
-        if ( !isspace(s[i]) ) {
+    for (int i = 0; i != s.size(); ++i) {
+        if ( isspace(s[i]) ) {
             wrdCnt++;
         }
     }
+    if(s.empty())
+        wrdCnt=0;
+    else
+        wrdCnt++; // acount for last word
     cout << "The number of words in your sentence is: " << wrdCnt << endl;
 }
 
@@ -159,7 +164,8 @@ void formatCheck(string date, string name, float amnt) {
     // max amnt of $10000.00 only has seven digits
     string amntTxt = numToStr(amntArray, 7);
     cout << setw(60) << right << date << endl << endl
-         << left << "Pay to the order of: " << name << '\t' << amnt << endl
+         << left << "Pay to the order of: " << name << setw(30 - name.size())
+         << right << fixed << showpoint << setprecision(2) <<  amnt << endl
          << amntTxt;
     
     cout << endl;
@@ -264,6 +270,8 @@ string numToStr(int *array, int size) {
     }
     text+= " cents";
     }
+    
+    else text+= " and zero cents";
     
     return text;
 }
