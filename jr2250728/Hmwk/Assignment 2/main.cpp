@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
 void prob10_10() {
     string str1;
-    cout << "Enter a sentence:";
+    cout << "Enter a sentence: ";
     getline(cin, str1);
     
     string str2;
@@ -244,18 +244,16 @@ string numToStr(int *array, int size) {
 string edit(string s1, string s2, string s3) {
     string s1Cpy = s1;
     
-    string::iterator i = s1Cpy.begin();
-    while (i != s1Cpy.end()){
-        *i = s1Cpy.find(s2, *i);
-        if ( i != s1Cpy.end()){
-            s1Cpy.erase(i, i+ s2.length());
-            cout << *i << endl;
-            cout << s1Cpy << endl;
-            s1Cpy.insert(*i, s3);
-            i+=s3.length();
-            
+    string::size_type i = 0;
+    while (i != s1Cpy.size()){
+        // find the position of the word to be replaced
+        i = s1Cpy.find(s2, i);
+        // if you have not reached the end
+        if ( i != s1Cpy.size()){
+            s1Cpy.erase(i, i + s2.length());  // erase word to be replaced
+            s1Cpy.insert(i, s3);            // insert the new word
+            i+=s3.length();                 // increment i
         }
-        else ++i;
     }
     
     return s1Cpy;
