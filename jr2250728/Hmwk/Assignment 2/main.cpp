@@ -30,8 +30,8 @@ string edit(string, string, string);
  */
 int main(int argc, char** argv) {
     //prob10_12();
-    prob10_19();
-    //prob10_10();
+    //prob10_19();
+    prob10_10();
     return 0;
 }
 
@@ -244,12 +244,18 @@ string numToStr(int *array, int size) {
 string edit(string s1, string s2, string s3) {
     string s1Cpy = s1;
     
-    size_t iter = 0;
-    size_t end = s1.length();
-    while (iter != end) {
-            iter = s1.find(s2);
-            s1.erase(iter, iter + s2.length());
-            s1.insert(iter, s3);
+    string::iterator i = s1Cpy.begin();
+    while (i != s1Cpy.end()){
+        *i = s1Cpy.find(s2, *i);
+        if ( i != s1Cpy.end()){
+            s1Cpy.erase(i, i+ s2.length());
+            cout << *i << endl;
+            cout << s1Cpy << endl;
+            s1Cpy.insert(*i, s3);
+            i+=s3.length();
+            
+        }
+        else ++i;
     }
     
     return s1Cpy;
