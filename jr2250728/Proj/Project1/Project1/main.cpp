@@ -9,18 +9,24 @@
 #include <iostream>
 #include <cstdlib>
 
-// numbers of column for board
-const int NCOLS = 9;
 // flag representing a mine
 const int MINE = 9;
 
-struct mineField {
-    int **field;
+struct mineFld {
+    enum DIFFICULTY {EASY, NORMAL, HARD};
+    int **data;
     int rows;
-    int columns;
+    int cols;
+    DIFFICULTY d;   // determenines how many mines
     int nMines;     // number of mines
+
 };
 
+mineFld* create(int, int);
+void printFld(mineFld*);
+int nMines(mineFld::DIFFICULTY);
+void setMines(mineFld *,  mineFld::DIFFICULTY);
+/*
 int nMines(int =1);
 void clearArea(int[][NCOLS], int);
 void setMines(int[][NCOLS], int, int =1);
@@ -28,14 +34,19 @@ void printClean(int[][NCOLS], int);
 // numbers of mines adjacent to a particular spot
 int nAdjacent(int [][NCOLS], int, int, int);
 void walkPeri(int (*)[NCOLS], int, int, int);
-
+*/
 using namespace std;
 
 int main(int argc, const char * argv[]) {
 
     const int nrows = 9;
+    const int ncols = 9;
     srand(time(0));
+    mineFld *m = create(nrows, ncols);
+    setMines(m, mineFld::DIFFICULTY::EASY);
+    printFld(m);
     // area that will will swpt for mines
+    /*
     int field[nrows][NCOLS];
     clearArea(field, nrows);
     setMines(field, nrows);
@@ -48,10 +59,74 @@ int main(int argc, const char * argv[]) {
     printClean(field, nrows);
     walkPeri(field, 3, 4, nrows);
     printClean(field, nrows);
-    
+    */
     return 0;
 }
 
+// set up the rows*cols minefield
+mineFld* create(int rows, int cols) {
+    // create a new minefield
+    mineFld *out = new mineFld;
+    out->rows=rows;
+    out->cols = cols;
+    out->data = new int*[rows];
+    
+    for (int row = 0; row != rows; ++row)
+        out->data[row] = new int [cols];
+        
+    
+    for (int i = 0; i != rows; ++i)
+        for (int j = 0; j != rows; ++j)
+            out->data[i][j] = 0;
+    
+    
+    return out;
+}
+// print the minefield
+void printFld(mineFld* m) {
+    for (int row = 0; row != m->rows; ++row){
+        for (int col = 0; col != m->cols; ++col)
+            cout << m->data[row][col] << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+// returns the number of mines based on the difficulty
+int nMines(mineFld::DIFFICULTY d) {
+    if (d==mineFld::DIFFICULTY::EASY) return 10;
+    else if (d==mineFld::DIFFICULTY::NORMAL) return 20;
+    else if (d==mineFld::DIFFICULTY::HARD) return 35;
+    else return 10;
+}
+
+// place mines in game area
+// higher difficulty = more mines
+void setMines(mineFld *mf,  mineFld::DIFFICULTY diff) {
+    // holds how many mines will be used
+    int mines = nMines(diff);
+    // only set mines one per row
+    bool set = false;
+    while (mines) {
+        for (int i = 0; i != mf->rows; ++i) {
+            for (int j = 0; j != mf->cols; ++j) {
+                // place mines if result of rand() == 0
+                if (rand() % 15 == 0){
+                    //only place mines if mines are still available
+                    // and current position does not have a mines
+                    if (mines && !set && mf->data[i][j] == 0) {
+                        mf->data[i][j] = 9;
+                        --mines;
+                        set = true;
+                    }
+                }
+            }
+            set = false;
+        }
+    }
+}
+
+/*
 // returns the number of mines based on the difficulty
 int nMines(int n) {
     if (n==1) return 9;
@@ -222,3 +297,4 @@ void walkPeri(int (*a)[NCOLS], int row, int col, int rows) {
         }
     } while (i != row && j != col);
 }
+*/
