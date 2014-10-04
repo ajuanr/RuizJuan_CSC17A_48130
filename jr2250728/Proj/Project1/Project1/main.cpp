@@ -30,6 +30,11 @@ void setMines(mineFld *,  mineFld::DIFFICULTY);
 void setFlags(mineFld *);
 int nAdjacent(mineFld *, int, int);
 
+// functions to walk the perimeter
+void mvLeft(mineFld*, int, int &);
+void mvRight(mineFld*, int, int &);
+void mvUp(mineFld*, int &, int);
+void mvDown(mineFld*, int &, int);
 /*
 int nMines(int =1);
 void clearArea(int[][NCOLS], int);
@@ -49,8 +54,12 @@ int main(int argc, const char * argv[]) {
     mineFld *mf = create(nrows, ncols);
     setMines(mf, mineFld::DIFFICULTY::EASY);
     setFlags(mf);
+    int col = 7;
+    int row = 0;
+    mvDown(mf, row, col);
     printFld(mf);
     destroy(mf);
+    cout << col << endl;
     // area that will will swpt for mines
     /*
     int field[nrows][NCOLS];
@@ -230,6 +239,35 @@ void setFlags(mineFld *mf) {
                 mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
+
+void mvLeft(mineFld *mf, int row, int &col) {
+    while ( col > 0 &&  mf->data[row][col] == 0 && mf->data[row-1][col] ){
+        mf->data[row][col--] = 8;
+    }
+}
+
+void mvRight(mineFld *mf, int row, int &col) {
+    while ( col < mf->cols && mf->data[row][col] == 0 &&
+           mf->data[row-1][col] ){
+        mf->data[row][col++] = 8;
+    }
+}
+
+void mvUp(mineFld *mf, int &row, int col) {
+    while ( row > 0 &&  mf->data[row][col] == 0 && mf->data[row][col+1] ){
+        mf->data[row--][col] = 8;
+    }
+}
+
+void mvDown(mineFld *mf, int &row, int col) {
+    while ( row < mf->rows &&  mf->data[row][col] == 0 &&
+           mf->data[row][col-1] ){
+        mf->data[row++][col] = 8;
+    }
+    if (mf->data[row+1][col] == 0)
+        mf->data[row++][col] = 8;
+}
+
 /*
 // returns the number of mines based on the difficulty
 int nMines(int n) {
@@ -274,17 +312,6 @@ void clearArea(int f[][NCOLS], int size) {
     }
 }
 
-// used to ensure area is set up properly
-// not as part of the game
-void printClean(int f[][NCOLS], int size) {
-    for (int i = 0; i != size; ++i) {
-        for (int j = 0; j != NCOLS; ++j) {
-            cout << f[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
 
 // return the numbers of adjacent landmines to
 // a given cell;
