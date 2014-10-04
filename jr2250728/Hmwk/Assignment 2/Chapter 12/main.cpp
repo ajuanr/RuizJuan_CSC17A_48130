@@ -117,7 +117,29 @@ void prob12_5() {
         cout << "File failed to open.\n";
 }
 
+
+// find a word in a file
 void prob12_6() {
+    char fName[20];
+    cout << "Enter the file name: ";
+    cin >> fName;
+    fstream file(fName, ios::in);
+    int line = 1;
+    if(file) {
+        string current;
+        string search;
+        cout << "Enter a string to search for: ";
+        cin >> search;
+        while (file >> current) {
+            if (file.get() == '\n') ++line;  // increment every new line
+
+            if (current == search)
+                cout << search << " appeared on: " << line << endl;
+        }
+    }
+    
+}
+    /*
     char fName[20];
     cout << "Enter the file name: ";
     cin >> fName;
@@ -154,7 +176,7 @@ void prob12_6() {
     else
         cout << "File failed to open\n";
         
-}
+}*/
 
 // simple encryption
 // adds 10 to every character in a file
