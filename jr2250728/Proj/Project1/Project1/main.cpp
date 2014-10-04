@@ -11,8 +11,15 @@
 
 // numbers of column for board
 const int NCOLS = 9;
-//
+// flag representing a mine
 const int MINE = 9;
+
+struct mineField {
+    int **field;
+    int rows;
+    int columns;
+    int nMines;     // number of mines
+};
 
 int nMines(int =1);
 void clearArea(int[][NCOLS], int);
