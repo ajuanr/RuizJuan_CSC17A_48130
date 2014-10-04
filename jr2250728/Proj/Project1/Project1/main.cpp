@@ -26,6 +26,9 @@ mineFld* create(int, int);
 void printFld(mineFld*);
 int nMines(mineFld::DIFFICULTY);
 void setMines(mineFld *,  mineFld::DIFFICULTY);
+void setFlags(mineFld *);
+int nAdjacent(mineFld *, int, int);
+
 /*
 int nMines(int =1);
 void clearArea(int[][NCOLS], int);
@@ -41,10 +44,11 @@ int main(int argc, const char * argv[]) {
 
     const int nrows = 9;
     const int ncols = 9;
-    srand(time(0));
-    mineFld *m = create(nrows, ncols);
-    setMines(m, mineFld::DIFFICULTY::EASY);
-    printFld(m);
+    //srand(time(0));
+    mineFld *mf = create(nrows, ncols);
+    setMines(mf, mineFld::DIFFICULTY::EASY);
+    setFlags(mf);
+    printFld(mf);
     // area that will will swpt for mines
     /*
     int field[nrows][NCOLS];
@@ -124,6 +128,96 @@ void setMines(mineFld *mf,  mineFld::DIFFICULTY diff) {
             set = false;
         }
     }
+}
+
+int nAdjacent(mineFld *mf, int row, int col) {
+    // the number of adjacel
+    int nAd=0;
+    // not on first or last row or first or last column
+    // most of the searhes take place in this area
+    if ( row > 0 && col > 0 && row < mf->rows-1 && col < mf->cols-1) {
+        // search the 3x3 grid surrounding a cell
+        for (int i = row-1; i <= row+1; ++i) {
+            for (int j = col-1; j <= col+1; ++j)
+                if (mf->data[i][j] == MINE)
+                    ++nAd;
+        }
+    }
+    // on the first row, not on first or last column
+    else if ( row == 0 && col > 0 && col < mf->cols - 1) {
+        for (int i = row; i <= row+1; ++i) {
+            for (int j = col-1; j <= col+1; ++j)
+                // 9 is reserved for landmines
+                if (mf->data[i][j] == MINE)
+                    ++nAd;
+        }
+    }
+    // on the last row, not on first or last column
+    else if ( row == mf->rows-1 && col > 0 && col < mf->cols - 1) {
+        for (int i = row-1; i <= row; ++i) {
+            for (int j = col-1; j <= col+1; ++j)
+                // 9 is reserved for landmines
+                if (mf->data[i][j] == MINE)
+                    ++nAd;
+        }
+    }
+    // on the first column, not on first or last row
+    // search to the right
+    else if ( col == 0 && row > 0 && row < mf->rows - 1) {
+        for (int i = row-1; i <= row+1; ++i) {
+            for (int j = col; j <= col+1; ++j)
+                // 9 is reserved for landmines
+                if (mf->data[i][j] == MINE)
+                    ++nAd;
+        }
+    }
+    // on the last column, not on first or last row
+    // search to the left
+    else if ( col == mf->cols-1 && row > 0 && row < mf->rows - 1) {
+        for (int i = row-1; i <= row+1; ++i) {
+            for (int j = col-1; j <= col; ++j)
+                // 9 is reserved for landmines
+                if (mf->data[i][j] == 9)
+                    ++nAd;
+        }
+    }
+    // top left corner
+    else if (row == 0 && col == 0) {
+        if (mf->data[row][col+1] == 9) ++nAd;
+        if (mf->data[row+1][col] == 9) ++nAd;
+        if (mf->data[row+1][col+1] == 9) ++nAd;
+    }
+    // top right corner
+    else if (row == 0 && col == mf->cols-1) {
+        if (mf->data[row][col-1] == 9) ++nAd;
+        if (mf->data[row+1][col] == 9) ++nAd;
+        if (mf->data[row+1][col-1] == 9) ++nAd;
+    }
+    // bottom left corner
+    else if (row == mf->rows-1 && col == 0) {
+        if (mf->data[row-1][col] == 9) ++nAd;
+        if (mf->data[row-1][col+1] == 9) ++nAd;
+        if (mf->data[row][col+1] == 9) ++nAd;
+    }
+    // bottom right corner
+    else if (row == mf->rows-1 && col == mf->cols-1) {
+        if (mf->data[row-1][col-1] == 9) ++nAd;
+        if (mf->data[row-1][col] == 9) ++nAd;
+        if (mf->data[row][col-1] == 9) ++nAd;
+    }
+    // return number of landmines from appropriate if statement
+    return nAd;
+}
+
+// set the flags for each space siginifying the number of surrounding
+// land mines
+void setFlags(mineFld *mf) {
+    for (int i = 0; i != mf->rows; ++i)
+        for (int j = 0; j != mf->cols; ++j)
+            // don't look for adjacent landmines in areas where
+            // landmine is already located
+            if (mf->data[i][j] != 9)
+                mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
 /*
