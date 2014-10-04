@@ -23,6 +23,7 @@ struct mineFld {
 };
 
 mineFld* create(int, int);
+void destroy(mineFld *);
 void printFld(mineFld*);
 int nMines(mineFld::DIFFICULTY);
 void setMines(mineFld *,  mineFld::DIFFICULTY);
@@ -49,6 +50,7 @@ int main(int argc, const char * argv[]) {
     setMines(mf, mineFld::DIFFICULTY::EASY);
     setFlags(mf);
     printFld(mf);
+    destroy(mf);
     // area that will will swpt for mines
     /*
     int field[nrows][NCOLS];
@@ -77,15 +79,23 @@ mineFld* create(int rows, int cols) {
     
     for (int row = 0; row != rows; ++row)
         out->data[row] = new int [cols];
-        
     
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != rows; ++j)
             out->data[i][j] = 0;
-    
-    
     return out;
 }
+
+// deallocate memory
+void destroy(mineFld *mf) {
+    // delete each dynamically allocated row
+    for (int i = 0; i != mf->rows; ++i)
+        delete[] mf->data[i];
+    // delete the dynamically allocated structure
+    delete mf;
+}
+
+
 // print the minefield
 void printFld(mineFld* m) {
     for (int row = 0; row != m->rows; ++row){
