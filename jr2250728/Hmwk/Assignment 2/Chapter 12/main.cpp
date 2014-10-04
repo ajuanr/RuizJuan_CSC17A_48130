@@ -22,6 +22,12 @@ void prob12_6();
 void prob12_9();
 void prob12_11();
 
+struct Company {
+    string division;  // East, North, West or South
+    int quarter;      // 1,2,3, or 4
+    float sales;      // Quarterly sales
+};
+
 /*
  * 
  */
@@ -64,6 +70,7 @@ void def(int inN)
     cout<<"You typed "<<inN<<" to exit the program"<<endl;
 }
 
+// Outputs the first 10 lines of a file
 void prob12_1() {
     char fName[20];
     cout << "Enter the file name: ";
@@ -83,6 +90,9 @@ void prob12_1() {
     else
         cout << "File failed to open.\n";
 }
+
+// adds line numbers to the beginning of every line
+// in a file
 void prob12_5() {
     char fName[20];
     cout << "Enter the file name: ";
@@ -106,32 +116,96 @@ void prob12_5() {
     else
         cout << "File failed to open.\n";
 }
+
 void prob12_6() {
     char fName[20];
     cout << "Enter the file name: ";
     cin >> fName;
     fstream file(fName, ios::in);
     if(file) {
-        cout << "Enter a word to search for: ";
-        string search;
-        cin >> search;
-        string current;
-        int line = 1;
-        while(file >> current) {
-            if (current == "\n")
-                ++line;
-            //cout << search << " " << current;
-            if (search.compare(current)==0) {
-                cout << search << "appeared on line: " << line;
+        cout << "The last 10 lines are:\n";
+        int nLines =0; // total lines
+        char c;
+        file.get(c);
+        // find total number of lines
+        while (!file.eof() && nLines != 10) {
+            if (c == '\n') ++nLines;
+            file.get(c);
+
+        }
+        cout << "Num lines " << nLines;
+        // clear eof flag
+        file.clear();
+        file.seekg(ios::beg);
+        
+        int current=0;
+        file.get(c);
+        while (!file.eof()) {
+            if (c == '\n') ++current;
+            cout << current << endl;
+            if (current > nLines-10) {
+                cout << c;
             }
+            file.get(c);
+                
+                
         }
     }
     else
-        cout << "File failed to open.\n";
+        cout << "File failed to open\n";
+        
 }
+
+// simple encryption
+// adds 10 to every character in a file
+// writes to a second file
 void prob12_9() {
-    cout << "This is problem 4" << endl;
+    char ifName[20];
+    cout << "Enter the name of the file you want encrypted: ";
+    cin >>ifName;
+    fstream in(ifName, ios::in);
+    if (in) {
+        cout << "Enter the name of the new encrypted file: ";
+        char ofName[20];
+        cin >> ofName;
+        fstream out(ofName, ios::out);
+        
+        char c;
+        in.get(c);
+        while (!in.eof()) {
+            c+=10;
+            out << c;
+            in.get(c);
+        }
+    }
+    else
+        cout << ifName <<  " failed to open\n";
 }
+
+
 void prob12_11() {
-    cout << "This is problem 5" << endl;
+    Company *c = new Company;
+    cout << "Enter your division(North, South, East, or West): ";
+    cin >> c->division;
+    
+    cout << "Enter the quarter(1, 2, 3, or 4): ";
+    cin >> c->quarter;
+    
+    // sales can't be negative
+    do {
+        cout << "Enter the quarterly sales: ";
+        cin >> c->sales;
+    } while (c->sales < 0);
+    
+    cout << "Report will be written to: " << c->division << ".txt";
+    
+    string fName = c->division + ".txt";
+    
+    fstream out(fName.c_str(), ios::out);
+    out << "Division: " << c->division << endl
+        << "Quarter: " << c->quarter << endl
+        << "Quarterly Sales: " << c->sales << endl;
+    
+    cout << endl;
+    delete c;
 }
