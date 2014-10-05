@@ -11,6 +11,7 @@
 
 // flag representing a mine
 const int MINE = 9;
+// flag representing a spot that has been cleared
 const int CLEAR = 8;
 
 struct mineFld {
@@ -231,7 +232,7 @@ int nAdjacent(mineFld *mf, int row, int col) {
     return nAd;
 }
 
-// set the flags for each space siginifying the number of surrounding
+// set the flag for each space siginifying the number of adjacent
 // land mines
 void setFlags(mineFld *mf) {
     for (int i = 0; i != mf->rows; ++i)
@@ -242,6 +243,17 @@ void setFlags(mineFld *mf) {
                 mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
+
+void clrArea(mineFld *mf, int row, int col) {
+    // use to create a (down-up)*(right-left) grid
+    // in which to clear an area
+    int up, down, left, right;
+    
+    
+    
+}
+
+/*
 void walkPerim(mineFld* mf, int row, int col) {
     int rowCpy = row;
     int colCpy = col;
@@ -302,6 +314,8 @@ void mvDown(mineFld *mf, int &row, int col) {
         mf->data[row][col] = CLEAR;
 
 }
+*/
+
 
 /*
 // returns the number of mines based on the difficulty
