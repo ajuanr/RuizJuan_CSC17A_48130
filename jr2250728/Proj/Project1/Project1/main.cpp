@@ -58,6 +58,7 @@ int main(int argc, const char * argv[]) {
     setFlags(mf);
     int col = 7;
     int row = 0;
+        printFld(mf);
     walkPerim(mf, row, col);
     printFld(mf);
     destroy(mf);
@@ -259,8 +260,9 @@ void walkPerim(mineFld* mf, int row, int col) {
 }
 
 void mvLeft(mineFld *mf, int row, int &col) {
+    cout << "Entering left:\n";
     while ( col > 0 &&  mf->data[row][col-1] == 0
-           && mf->data[row-1][col]) {
+           && (mf->data[row-1][col] || row==0)) {
         mf->data[row][col--] = CLEAR;
     }
     if (mf->data[row][col] == 0)
@@ -268,8 +270,10 @@ void mvLeft(mineFld *mf, int row, int &col) {
 }
 
 void mvRight(mineFld *mf, int row, int &col) {
-    while ( col < mf->cols && mf->data[row][col+1] == 0 &&
-           mf->data[row+1][col] ){
+    cout << "Entering right:\n";
+    while ( col < mf->cols-1&& mf->data[row][col+1] == 0 &&
+           (mf->data[row+1][col] || row == mf->rows-1) ){
+        cout << col << endl;
         mf->data[row][col++] = CLEAR;
     }
     if (mf->data[row][col] == 0)
@@ -277,7 +281,9 @@ void mvRight(mineFld *mf, int row, int &col) {
 }
 
 void mvUp(mineFld *mf, int &row, int col) {
-    while ( row > 0 &&  mf->data[row-1][col] == 0 && mf->data[row][col+1] ) {
+    cout << "Entering up: " << endl;
+    while ( row > 0 &&  mf->data[row-1][col] == 0 &&
+           (mf->data[row][col+1] || row == mf->cols-1)) {
         mf->data[row--][col] = CLEAR;
     }
     if (mf->data[row][col] == 0)
@@ -285,9 +291,12 @@ void mvUp(mineFld *mf, int &row, int col) {
 }
 
 void mvDown(mineFld *mf, int &row, int col) {
+    cout << "Entering down\n";
+    cout << col << endl;
     while ( row < mf->rows && mf->data[row+1][col] == 0 &&
-            mf->data[row][col-1] ) {
+           (mf->data[row][col-1] || col == 0 )) {
         mf->data[row++][col] = CLEAR;
+        
     }
     if (mf->data[row][col] == 0)
         mf->data[row][col] = CLEAR;
