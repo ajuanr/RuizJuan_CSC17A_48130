@@ -32,6 +32,8 @@ void setMines(mineFld *,  mineFld::DIFFICULTY);
 void setFlags(mineFld *);
 int nAdjacent(mineFld *, int, int);
 
+void clrArea(mineFld *, int, int);
+
 // functions to walk the perimeter
 void mvLeft(mineFld*, int, int &);
 void mvRight(mineFld*, int, int &);
@@ -51,19 +53,17 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
 
-    const int nrows = 9;
-    const int ncols = 9;
+    const int nrows = 10;
+    const int ncols = 10;
     //srand(time(0));
     mineFld *mf = create(nrows, ncols);
     setMines(mf, mineFld::DIFFICULTY::EASY);
     setFlags(mf);
     int col = 7;
     int row = 0;
-        printFld(mf);
-    walkPerim(mf, row, col);
+    clrArea(mf, row, col);
     printFld(mf);
     destroy(mf);
-    cout << col << endl;
     // area that will will swpt for mines
     /*
     int field[nrows][NCOLS];
@@ -247,10 +247,34 @@ void setFlags(mineFld *mf) {
 void clrArea(mineFld *mf, int row, int col) {
     // use to create a (down-up)*(right-left) grid
     // in which to clear an area
-    int up, down, left, right;
+    int up=row, down=row, left=col, right=col;
+    /*
+    cout << "Up: " << up << "\nDown: " << down
+    << "\nLeft: " << left << "\nRight: " << right
+    << endl << endl;
+    */
+    // check up
+    while (up > 0 && mf->data[up-1][col] == 0) {
+        --up;
+    }
     
+    // check down
+    while (down < mf->rows-1 && mf->data[down+1][col] == 0) {
+        ++down;
+    }
     
+    // check to the left
+    while ( left > 0 && mf->data[row][left-1] == 0) {
+        --left;
+    }
+    // check to the right
+    while ( right < mf->cols-1 && mf->data[row][right+1] == 0) {
+        ++right;
+    }
     
+    cout << "Up: " << up << "\nDown: " << down
+    << "\nLeft: " << left << "\nRight: " << right
+    << endl;
 }
 
 /*
