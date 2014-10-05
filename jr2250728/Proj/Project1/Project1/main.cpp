@@ -11,6 +11,7 @@
 
 // flag representing a mine
 const int MINE = 9;
+const int CLEAR = 8;
 
 struct mineFld {
     enum DIFFICULTY {EASY, NORMAL, HARD};
@@ -35,6 +36,7 @@ void mvLeft(mineFld*, int, int &);
 void mvRight(mineFld*, int, int &);
 void mvUp(mineFld*, int &, int);
 void mvDown(mineFld*, int &, int);
+void walkPerim(mineFld*, int, int);
 /*
 int nMines(int =1);
 void clearArea(int[][NCOLS], int);
@@ -56,7 +58,7 @@ int main(int argc, const char * argv[]) {
     setFlags(mf);
     int col = 7;
     int row = 0;
-    mvDown(mf, row, col);
+    walkPerim(mf, row, col);
     printFld(mf);
     destroy(mf);
     cout << col << endl;
@@ -239,33 +241,57 @@ void setFlags(mineFld *mf) {
                 mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
+void walkPerim(mineFld* mf, int row, int col) {
+    int rowCpy = row;
+    int colCpy = col;
+    cout << rowCpy << ", " << colCpy << endl;
+    do {
+        mvLeft(mf, rowCpy, colCpy);
+        cout << rowCpy << ", " << colCpy << endl;
+        mvDown(mf, rowCpy, colCpy);
+        cout << rowCpy << ", " << colCpy << endl;
+        mvUp(mf, rowCpy, colCpy);
+        cout << rowCpy << ", " << colCpy << endl;
+        mvRight(mf, rowCpy, colCpy);
+        cout << rowCpy << ", " << colCpy << endl;
+    } while (rowCpy != row && colCpy != col);
+    cout << rowCpy << ", " << colCpy << endl;
+}
 
 void mvLeft(mineFld *mf, int row, int &col) {
-    while ( col > 0 &&  mf->data[row][col] == 0 && mf->data[row-1][col] ){
-        mf->data[row][col--] = 8;
+    while ( col > 0 &&  mf->data[row][col-1] == 0
+           && mf->data[row-1][col]) {
+        mf->data[row][col--] = CLEAR;
     }
+    if (mf->data[row][col] == 0)
+        mf->data[row][col] = CLEAR;
 }
 
 void mvRight(mineFld *mf, int row, int &col) {
-    while ( col < mf->cols && mf->data[row][col] == 0 &&
-           mf->data[row-1][col] ){
-        mf->data[row][col++] = 8;
+    while ( col < mf->cols && mf->data[row][col+1] == 0 &&
+           mf->data[row+1][col] ){
+        mf->data[row][col++] = CLEAR;
     }
+    if (mf->data[row][col] == 0)
+        mf->data[row][col] = CLEAR;
 }
 
 void mvUp(mineFld *mf, int &row, int col) {
-    while ( row > 0 &&  mf->data[row][col] == 0 && mf->data[row][col+1] ){
-        mf->data[row--][col] = 8;
+    while ( row > 0 &&  mf->data[row-1][col] == 0 && mf->data[row][col+1] ) {
+        mf->data[row--][col] = CLEAR;
     }
+    if (mf->data[row][col] == 0)
+        mf->data[row][col] = CLEAR;
 }
 
 void mvDown(mineFld *mf, int &row, int col) {
-    while ( row < mf->rows &&  mf->data[row][col] == 0 &&
-           mf->data[row][col-1] ){
-        mf->data[row++][col] = 8;
+    while ( row < mf->rows && mf->data[row+1][col] == 0 &&
+            mf->data[row][col-1] ) {
+        mf->data[row++][col] = CLEAR;
     }
-    if (mf->data[row+1][col] == 0)
-        mf->data[row++][col] = 8;
+    if (mf->data[row][col] == 0)
+        mf->data[row][col] = CLEAR;
+
 }
 
 /*
