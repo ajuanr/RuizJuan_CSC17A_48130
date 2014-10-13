@@ -253,9 +253,11 @@ bool isClear(MineField * mf, int row, int col) {
 
 void showZeros(MineField *mf, int row, int col) {
     const int CLEAR = 8;
-    if ( row > mf->rows || row <0 ||
-            col > mf->cols || col < 0) return;
+    // check bounds
+    if ( row > mf->rows || row <0 || col > mf->cols || col < 0)
+        return;
         if (isClear(mf, row, col) && mf->data[row][col] != CLEAR){
+            cout << isClear(mf, row, col) << endl;
             mf->data[row][col] = CLEAR;
             showZeros(mf, row+1, col); // go up one row
             showZeros(mf, row-1, col); // go down one row
@@ -272,8 +274,8 @@ void showZeros(MineField *mf, int row, int col) {
 void setFlags(MineField *mf) {
     for (int i = 0; i != mf->rows; ++i)
         for (int j = 0; j != mf->cols; ++j)
-            // don't look for adjacent landmines in areas where
-            // landmine is already located
+            // don't look for adjacent mines in areas where
+            // mine is already located
             if (mf->data[i][j] != 9)
                 mf->data[i][j] = mAdjacent(mf, i, j);
 }
