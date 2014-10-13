@@ -116,10 +116,10 @@ void destroy(MineField *mf) {
 
 
 // print the minefield
-void printFld(MineField* m) {
-    for (int row = 0; row != m->rows; ++row){
-        for (int col = 0; col != m->cols; ++col)
-            cout << m->data[row][col] << " ";
+void printFld(MineField* mf) {
+    for (int row = 0; row != mf->rows; ++row){
+        for (int col = 0; col != mf->cols; ++col)
+            cout << mf->data[row][col] << " ";
         cout << endl;
     }
     cout << endl;
