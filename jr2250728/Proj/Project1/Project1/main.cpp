@@ -33,7 +33,7 @@ int nMines(MineField::DIFFICULTY);
 void setMines(MineField *,  MineField::DIFFICULTY);
 void setFlags(MineField *);
 int mAdjacent(MineField *, int, int);
-
+bool isClear(MineField *, int, int);
 void clrArea(MineField *, int, int);
 
 void setUpGame();
@@ -83,10 +83,11 @@ void setUpGame() {
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
     setFlags(mf);
-    int col = 7;
+    int col = 6;
     int row = 0;
     clrArea(mf, row, col);
     printFld(mf);
+
     destroy(mf);
 }
 
@@ -127,7 +128,7 @@ void printFld(MineField* m) {
     cout << endl;
 }
 
-// returns the number of mines based on the difficulty
+// returns the number of mines to set based on the difficulty
 int nMines(MineField::DIFFICULTY d) {
     if (d==MineField::EASY) return 10;
     else if (d==MineField::NORMAL) return 20;
@@ -239,6 +240,13 @@ int mAdjacent(MineField *mf, int row, int col) {
     }
     // return number of landmines from appropriate if statement
     return nAd;
+}
+
+// if there are no mines surrounding a square it is clear
+bool isClear(MineField * mf, int row, int col) {
+    if (mAdjacent(mf, row, col)) 
+        return false;            // there was at least one mine adjacent
+    return true;                 // area was clear
 }
 
 // set the flag for each space siginifying the number of adjacent
