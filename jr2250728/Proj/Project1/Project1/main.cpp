@@ -14,6 +14,8 @@ const int MINE = 9;
 // flag representing a spot that has been cleared
 const int CLEAR = 8;
 
+enum DIFFICULTY {EASY, NORMAL, HARD};
+
 struct MineField {
     enum DIFFICULTY {EASY, NORMAL, HARD};
     int **data;
@@ -34,6 +36,8 @@ int nAdjacent(MineField *, int, int);
 
 void clrArea(MineField *, int, int);
 
+void setUpGame();
+
 // functions to walk the perimeter
 void mvLeft(MineField*, int, int &);
 void mvRight(MineField*, int, int &);
@@ -52,19 +56,9 @@ void walkPeri(int (*)[NCOLS], int, int, int);
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-
-    const int nrows = 10;
-    const int ncols = 10;
-    //srand(time(0));
-    MineField *mf = create(nrows, ncols);
-    setMines(mf, MineField::DIFFICULTY::EASY);
-    setFlags(mf);
-    int col = 7;
-    int row = 0;
-    clrArea(mf, row, col);
-    printFld(mf);
-    destroy(mf);
-    // area that will will swpt for mines
+    setUpGame();
+    
+    // area that will will swept for mines
     /*
     int field[nrows][NCOLS];
     clearArea(field, nrows);
@@ -80,6 +74,20 @@ int main(int argc, const char * argv[]) {
     printClean(field, nrows);
     */
     return 0;
+}
+
+void setUpGame() {
+    const int nrows = 10;
+    const int ncols = 10;
+    //srand(time(0));
+    MineField *mf = create(nrows, ncols);
+    setMines(mf, MineField::EASY);
+    setFlags(mf);
+    int col = 7;
+    int row = 0;
+    clrArea(mf, row, col);
+    printFld(mf);
+    destroy(mf);
 }
 
 // set up the rows*cols minefield
@@ -121,9 +129,9 @@ void printFld(MineField* m) {
 
 // returns the number of mines based on the difficulty
 int nMines(MineField::DIFFICULTY d) {
-    if (d==MineField::DIFFICULTY::EASY) return 10;
-    else if (d==MineField::DIFFICULTY::NORMAL) return 20;
-    else if (d==MineField::DIFFICULTY::HARD) return 35;
+    if (d==MineField::EASY) return 10;
+    else if (d==MineField::NORMAL) return 20;
+    else if (d==MineField::HARD) return 35;
     else return 10;
 }
 
