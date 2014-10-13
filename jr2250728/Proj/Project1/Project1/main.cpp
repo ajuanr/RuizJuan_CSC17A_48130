@@ -85,8 +85,8 @@ void setUpGame() {
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
     setFlags(mf);
-    int row = 0;
-    int col = 9;
+    int row = 6;
+    int col = 3;
     showZeros(mf, row, col);
     printFld(mf);
 
@@ -253,11 +253,11 @@ bool isClear(MineField * mf, int row, int col) {
 
 void showZeros(MineField *mf, int row, int col) {
     const int CLEAR = 8;
+    //mf->data[row][col] = CLEAR;
     // check bounds
-    if ( row > mf->rows || row <0 || col > mf->cols || col < 0)
+    if ( row >= mf->rows || row < 0 || col >= mf->cols || col < 0)
         return;
-        if (isClear(mf, row, col) && mf->data[row][col] != CLEAR){
-            cout << isClear(mf, row, col) << endl;
+        if (mf->data[row][col] ==0 && mf->data[row][col] != CLEAR){
             mf->data[row][col] = CLEAR;
             showZeros(mf, row+1, col); // go up one row
             showZeros(mf, row-1, col); // go down one row
