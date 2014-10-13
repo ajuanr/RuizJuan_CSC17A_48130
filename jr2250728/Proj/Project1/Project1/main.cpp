@@ -39,6 +39,7 @@ void clrArea(MineField *, int, int);
 void showZeros(MineField *, int, int);
 
 void setUpGame();
+void prompt(int&, int&);
 
 // functions to walk the perimeter
 void mvLeft(MineField*, int, int &);
@@ -85,12 +86,20 @@ void setUpGame() {
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
     setFlags(mf);
-    int row = 6;
-    int col = 3;
+    int row = 0;
+    int col = 4;
+    if( !isClear(mf, row,col)) {
+        if (mf->data[row][col] == MINE)
+            cout << "You Lose\n";
+        else
+            cout << mf->data[row][col] ;
+    }
+    else
+        showZeros(mf, row, col);
     showZeros(mf, row, col);
     printFld(mf);
 
-    destroy(mf);
+    destroy(mf);                // deallocate
 }
 
 // set up the rows*cols minefield
@@ -182,7 +191,7 @@ int mAdjacent(MineField *mf, int row, int col) {
     else if ( row == 0 && col > 0 && col < mf->cols - 1) {
         for (int i = row; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (mf->data[i][j] == MINE)
                     ++nAd;
         }
@@ -191,7 +200,7 @@ int mAdjacent(MineField *mf, int row, int col) {
     else if ( row == mf->rows-1 && col > 0 && col < mf->cols - 1) {
         for (int i = row-1; i <= row; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (mf->data[i][j] == MINE)
                     ++nAd;
         }
@@ -201,7 +210,7 @@ int mAdjacent(MineField *mf, int row, int col) {
     else if ( col == 0 && row > 0 && row < mf->rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col; j <= col+1; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (mf->data[i][j] == MINE)
                     ++nAd;
         }
@@ -211,7 +220,7 @@ int mAdjacent(MineField *mf, int row, int col) {
     else if ( col == mf->cols-1 && row > 0 && row < mf->rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (mf->data[i][j] == 9)
                     ++nAd;
         }
@@ -240,7 +249,7 @@ int mAdjacent(MineField *mf, int row, int col) {
         if (mf->data[row-1][col] == 9) ++nAd;
         if (mf->data[row][col-1] == 9) ++nAd;
     }
-    // return number of landmines from appropriate if statement
+    // return number of mines from appropriate if statement
     return nAd;
 }
 
@@ -253,11 +262,10 @@ bool isClear(MineField * mf, int row, int col) {
 
 void showZeros(MineField *mf, int row, int col) {
     const int CLEAR = 8;
-    //mf->data[row][col] = CLEAR;
     // check bounds
     if ( row >= mf->rows || row < 0 || col >= mf->cols || col < 0)
         return;
-        if (mf->data[row][col] ==0 && mf->data[row][col] != CLEAR){
+        if (isClear(mf, row, col) && mf->data[row][col] != CLEAR){
             mf->data[row][col] = CLEAR;
             showZeros(mf, row+1, col); // go up one row
             showZeros(mf, row-1, col); // go down one row
@@ -269,7 +277,7 @@ void showZeros(MineField *mf, int row, int col) {
             return;
 }
 
-// set the flag for each space siginifying the number of adjacent
+// set the flag for each space signifying the number of adjacent
 // land mines
 void setFlags(MineField *mf) {
     for (int i = 0; i != mf->rows; ++i)
@@ -423,7 +431,7 @@ void clearArea(int f[][NCOLS], int size) {
 }
 
 
-// return the numbers of adjacent landmines to
+// return the numbers of adjacent mines to
 // a given cell;
 int mAdjacent(int a[][NCOLS], int row, int col, int rows) {
     // the number of adjacel
@@ -442,7 +450,7 @@ int mAdjacent(int a[][NCOLS], int row, int col, int rows) {
     else if ( row == 0 && col > 0 && col < NCOLS - 1) {
         for (int i = row; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (a[i][j] == MINE)
                     ++nAd;
         }
@@ -451,7 +459,7 @@ int mAdjacent(int a[][NCOLS], int row, int col, int rows) {
     else if ( row == rows-1 && col > 0 && col < NCOLS - 1) {
         for (int i = row-1; i <= row; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (a[i][j] == MINE)
                     ++nAd;
         }
@@ -461,7 +469,7 @@ int mAdjacent(int a[][NCOLS], int row, int col, int rows) {
     else if ( col == 0 && row > 0 && row < rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col; j <= col+1; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (a[i][j] == MINE)
                     ++nAd;
         }
@@ -471,7 +479,7 @@ int mAdjacent(int a[][NCOLS], int row, int col, int rows) {
     else if ( col == NCOLS-1 && row > 0 && row < rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col; ++j)
-                // 9 is reserved for landmines
+                // 9 is reserved for mines
                 if (a[i][j] == 9)
                     ++nAd;
         }
@@ -500,7 +508,7 @@ int mAdjacent(int a[][NCOLS], int row, int col, int rows) {
         if (a[row-1][col] == 9) ++nAd;
         if (a[row][col-1] == 9) ++nAd;
     }
-    // return number of landmines from appropriate if statement
+    // return number of mines from appropriate if statement
     return nAd;
 }
 
