@@ -14,7 +14,7 @@ const int MINE = 9;
 // flag representing a spot that has been cleared
 const int CLEAR = 8;
 
-struct mineFld {
+struct MineField {
     enum DIFFICULTY {EASY, NORMAL, HARD};
     int **data;
     int rows;
@@ -24,22 +24,22 @@ struct mineFld {
 
 };
 
-mineFld* create(int, int);
-void destroy(mineFld *);
-void printFld(mineFld*);
-int nMines(mineFld::DIFFICULTY);
-void setMines(mineFld *,  mineFld::DIFFICULTY);
-void setFlags(mineFld *);
-int nAdjacent(mineFld *, int, int);
+MineField* create(int, int);
+void destroy(MineField *);
+void printFld(MineField*);
+int nMines(MineField::DIFFICULTY);
+void setMines(MineField *,  MineField::DIFFICULTY);
+void setFlags(MineField *);
+int nAdjacent(MineField *, int, int);
 
-void clrArea(mineFld *, int, int);
+void clrArea(MineField *, int, int);
 
 // functions to walk the perimeter
-void mvLeft(mineFld*, int, int &);
-void mvRight(mineFld*, int, int &);
-void mvUp(mineFld*, int &, int);
-void mvDown(mineFld*, int &, int);
-void walkPerim(mineFld*, int, int);
+void mvLeft(MineField*, int, int &);
+void mvRight(MineField*, int, int &);
+void mvUp(MineField*, int &, int);
+void mvDown(MineField*, int &, int);
+void walkPerim(MineField*, int, int);
 /*
 int nMines(int =1);
 void clearArea(int[][NCOLS], int);
@@ -56,8 +56,8 @@ int main(int argc, const char * argv[]) {
     const int nrows = 10;
     const int ncols = 10;
     //srand(time(0));
-    mineFld *mf = create(nrows, ncols);
-    setMines(mf, mineFld::DIFFICULTY::EASY);
+    MineField *mf = create(nrows, ncols);
+    setMines(mf, MineField::DIFFICULTY::EASY);
     setFlags(mf);
     int col = 7;
     int row = 0;
@@ -83,9 +83,9 @@ int main(int argc, const char * argv[]) {
 }
 
 // set up the rows*cols minefield
-mineFld* create(int rows, int cols) {
+MineField* create(int rows, int cols) {
     // create a new minefield
-    mineFld *out = new mineFld;
+    MineField *out = new MineField;
     out->rows=rows;
     out->cols = cols;
     out->data = new int*[rows];
@@ -100,7 +100,7 @@ mineFld* create(int rows, int cols) {
 }
 
 // deallocate memory
-void destroy(mineFld *mf) {
+void destroy(MineField *mf) {
     // delete each dynamically allocated row
     for (int i = 0; i != mf->rows; ++i)
         delete[] mf->data[i];
@@ -110,7 +110,7 @@ void destroy(mineFld *mf) {
 
 
 // print the minefield
-void printFld(mineFld* m) {
+void printFld(MineField* m) {
     for (int row = 0; row != m->rows; ++row){
         for (int col = 0; col != m->cols; ++col)
             cout << m->data[row][col] << " ";
@@ -120,16 +120,16 @@ void printFld(mineFld* m) {
 }
 
 // returns the number of mines based on the difficulty
-int nMines(mineFld::DIFFICULTY d) {
-    if (d==mineFld::DIFFICULTY::EASY) return 10;
-    else if (d==mineFld::DIFFICULTY::NORMAL) return 20;
-    else if (d==mineFld::DIFFICULTY::HARD) return 35;
+int nMines(MineField::DIFFICULTY d) {
+    if (d==MineField::DIFFICULTY::EASY) return 10;
+    else if (d==MineField::DIFFICULTY::NORMAL) return 20;
+    else if (d==MineField::DIFFICULTY::HARD) return 35;
     else return 10;
 }
 
 // place mines in game area
 // higher difficulty = more mines
-void setMines(mineFld *mf,  mineFld::DIFFICULTY diff) {
+void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
     // holds how many mines will be used
     int mines = nMines(diff);
     // only set mines one per row
@@ -153,7 +153,7 @@ void setMines(mineFld *mf,  mineFld::DIFFICULTY diff) {
     }
 }
 
-int nAdjacent(mineFld *mf, int row, int col) {
+int nAdjacent(MineField *mf, int row, int col) {
     // the number of adjacel
     int nAd=0;
     // not on first or last row or first or last column
@@ -234,7 +234,7 @@ int nAdjacent(mineFld *mf, int row, int col) {
 
 // set the flag for each space siginifying the number of adjacent
 // land mines
-void setFlags(mineFld *mf) {
+void setFlags(MineField *mf) {
     for (int i = 0; i != mf->rows; ++i)
         for (int j = 0; j != mf->cols; ++j)
             // don't look for adjacent landmines in areas where
@@ -244,7 +244,7 @@ void setFlags(mineFld *mf) {
 }
 
 
-void clrArea(mineFld *mf, int row, int col) {
+void clrArea(MineField *mf, int row, int col) {
     // use to create a (down-up)*(right-left) grid
     // in which to clear an area
     int up=row, down=row, left=col, right=col;
@@ -278,7 +278,7 @@ void clrArea(mineFld *mf, int row, int col) {
 }
 
 /*
-void walkPerim(mineFld* mf, int row, int col) {
+void walkPerim(MineField* mf, int row, int col) {
     int rowCpy = row;
     int colCpy = col;
     cout << rowCpy << ", " << colCpy << endl;
@@ -295,7 +295,7 @@ void walkPerim(mineFld* mf, int row, int col) {
     cout << rowCpy << ", " << colCpy << endl;
 }
 
-void mvLeft(mineFld *mf, int row, int &col) {
+void mvLeft(MineField *mf, int row, int &col) {
     cout << "Entering left:\n";
     while ( col > 0 &&  mf->data[row][col-1] == 0
            && (mf->data[row-1][col] || row==0)) {
@@ -305,7 +305,7 @@ void mvLeft(mineFld *mf, int row, int &col) {
         mf->data[row][col] = CLEAR;
 }
 
-void mvRight(mineFld *mf, int row, int &col) {
+void mvRight(MineField *mf, int row, int &col) {
     cout << "Entering right:\n";
     while ( col < mf->cols-1&& mf->data[row][col+1] == 0 &&
            (mf->data[row+1][col] || row == mf->rows-1) ){
@@ -316,7 +316,7 @@ void mvRight(mineFld *mf, int row, int &col) {
         mf->data[row][col] = CLEAR;
 }
 
-void mvUp(mineFld *mf, int &row, int col) {
+void mvUp(MineField *mf, int &row, int col) {
     cout << "Entering up: " << endl;
     while ( row > 0 &&  mf->data[row-1][col] == 0 &&
            (mf->data[row][col+1] || row == mf->cols-1)) {
@@ -326,7 +326,7 @@ void mvUp(mineFld *mf, int &row, int col) {
         mf->data[row][col] = CLEAR;
 }
 
-void mvDown(mineFld *mf, int &row, int col) {
+void mvDown(MineField *mf, int &row, int col) {
     cout << "Entering down\n";
     cout << col << endl;
     while ( row < mf->rows && mf->data[row+1][col] == 0 &&
