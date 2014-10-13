@@ -85,9 +85,9 @@ void setUpGame() {
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
     setFlags(mf);
-    int col = 6;
     int row = 0;
-    //clrArea(mf, row, col);
+    int col = 9;
+    showZeros(mf, row, col);
     printFld(mf);
 
     destroy(mf);
@@ -253,8 +253,8 @@ bool isClear(MineField * mf, int row, int col) {
 
 void showZeros(MineField *mf, int row, int col) {
     const int CLEAR = 8;
-    if ( row < mf->rows && row >0 &&
-            col < mf->cols && col > 0) {
+    if ( row > mf->rows || row <0 ||
+            col > mf->cols || col < 0) return;
         if (isClear(mf, row, col) && mf->data[row][col] != CLEAR){
             mf->data[row][col] = CLEAR;
             showZeros(mf, row+1, col); // go up one row
@@ -265,7 +265,6 @@ void showZeros(MineField *mf, int row, int col) {
         // space was not clear or already shown
         else
             return;
-    }
 }
 
 // set the flag for each space siginifying the number of adjacent
