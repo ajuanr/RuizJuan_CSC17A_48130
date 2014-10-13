@@ -27,7 +27,8 @@ struct MineField {
 
 MineField* create(int, int);
 void destroy(MineField *);
-void printFld(MineField*);
+void printFld(MineField *);
+void prntObscr(MineField *);
 int nMines(MineField::DIFFICULTY);
 void setMines(MineField *,  MineField::DIFFICULTY);
 void setFlags(MineField *);
@@ -70,6 +71,7 @@ void setUpGame() {
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
     setFlags(mf);
+    prntObscr(mf);
     int row = 0;
     int col = 9;
     if( !isClear(mf, row,col)) {
@@ -118,6 +120,16 @@ void printFld(MineField* m) {
     for (int row = 0; row != m->rows; ++row){
         for (int col = 0; col != m->cols; ++col)
             cout << m->data[row][col] << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+// print the minefield obscured
+void prntObscr(MineField* m) {
+    for (int row = 0; row != m->rows; ++row){
+        for (int col = 0; col != m->cols; ++col)
+            cout << "* ";
         cout << endl;
     }
     cout << endl;
