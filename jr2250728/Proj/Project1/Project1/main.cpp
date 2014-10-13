@@ -1,10 +1,9 @@
-//
-//  main.cpp
-//  Project1
-//
-//  Created by Juan Ruiz on 9/26/14.
-//  Copyright (c) 2014 Juan Ruiz. All rights reserved.
-//
+/*
+ * Ruiz, Juan - Project 1 - 48130
+ * 
+ * Project runs a game of minesweeper
+ * 
+ */
 
 #include <iostream>
 #include <cstdlib>
