@@ -36,6 +36,8 @@ int mAdjacent(MineField *, int, int);
 bool isClear(MineField *, int, int);
 void clrArea(MineField *, int, int);
 
+void showZeros(MineField *, int, int);
+
 void setUpGame();
 
 // functions to walk the perimeter
@@ -85,7 +87,7 @@ void setUpGame() {
     setFlags(mf);
     int col = 6;
     int row = 0;
-    clrArea(mf, row, col);
+    //clrArea(mf, row, col);
     printFld(mf);
 
     destroy(mf);
@@ -247,6 +249,23 @@ bool isClear(MineField * mf, int row, int col) {
     if (mAdjacent(mf, row, col)) 
         return false;            // there was at least one mine adjacent
     return true;                 // area was clear
+}
+
+void showZeros(MineField *mf, int row, int col) {
+    const int CLEAR = 8;
+    if ( row < mf->rows && row >0 &&
+            col < mf->cols && col > 0) {
+        if (isClear(mf, row, col) && mf->data[row][col] != CLEAR){
+            mf->data[row][col] = CLEAR;
+            showZeros(mf, row+1, col); // go up one row
+            showZeros(mf, row-1, col); // go down one row
+            showZeros(mf, row, col+1); // go right one col
+            showZeros(mf, row, col-1); // go left one col
+        }
+        // space was not clear or already shown
+        else
+            return;
+    }
 }
 
 // set the flag for each space siginifying the number of adjacent
