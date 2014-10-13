@@ -32,7 +32,7 @@ void printFld(MineField*);
 int nMines(MineField::DIFFICULTY);
 void setMines(MineField *,  MineField::DIFFICULTY);
 void setFlags(MineField *);
-int nAdjacent(MineField *, int, int);
+int mAdjacent(MineField *, int, int);
 
 void clrArea(MineField *, int, int);
 
@@ -50,7 +50,7 @@ void clearArea(int[][NCOLS], int);
 void setMines(int[][NCOLS], int, int =1);
 void printClean(int[][NCOLS], int);
 // numbers of mines adjacent to a particular spot
-int nAdjacent(int [][NCOLS], int, int, int);
+int mAdjacent(int [][NCOLS], int, int, int);
 void walkPeri(int (*)[NCOLS], int, int, int);
 */
 using namespace std;
@@ -68,7 +68,7 @@ int main(int argc, const char * argv[]) {
     for (int i = 0; i != nrows; ++i)
         for(int j = 0; j != NCOLS; ++j)
             if (field[i][j] !=MINE)
-            field[i][j] = nAdjacent(field, i, j, nrows);
+            field[i][j] = mAdjacent(field, i, j, nrows);
     printClean(field, nrows);
     walkPeri(field, 3, 4, nrows);
     printClean(field, nrows);
@@ -161,7 +161,8 @@ void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
     }
 }
 
-int nAdjacent(MineField *mf, int row, int col) {
+// returns how many mines surrounding a given square
+int mAdjacent(MineField *mf, int row, int col) {
     // the number of adjacel
     int nAd=0;
     // not on first or last row or first or last column
@@ -248,7 +249,7 @@ void setFlags(MineField *mf) {
             // don't look for adjacent landmines in areas where
             // landmine is already located
             if (mf->data[i][j] != 9)
-                mf->data[i][j] = nAdjacent(mf, i, j);
+                mf->data[i][j] = mAdjacent(mf, i, j);
 }
 
 
@@ -396,7 +397,7 @@ void clearArea(int f[][NCOLS], int size) {
 
 // return the numbers of adjacent landmines to
 // a given cell;
-int nAdjacent(int a[][NCOLS], int row, int col, int rows) {
+int mAdjacent(int a[][NCOLS], int row, int col, int rows) {
     // the number of adjacel
     int nAd=0;
     // not on first or last row or first or last column
