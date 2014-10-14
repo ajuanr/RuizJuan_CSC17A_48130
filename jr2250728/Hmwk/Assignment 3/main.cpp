@@ -4,23 +4,38 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include "Structures.h"
+
 using namespace std;
 
-/* Sructures are here */
+struct Movie {
+    string title;
+    string director;
+    string released;
+    string length; // the running time
+};
 
-// structure for problem 11.1
-
-
+struct Weather {
+    float total;          // total rainfall
+    float high;         // high temp
+    float low;          // low temp
+    float avg;          // average temp
+};
 /*
  * Prototypes begin here
  */
 
 void prob11_1();
+void prob11_4();
+
+/*
+ * Utility functions for assigned problems
+ */
 void prntMov(const Movie&);
+void rdWthr(Weather *, int =12); // 12 months in a year
+void calcWthr(Weather *, int = 12);
 
 int main() {
-    prob11_1();
+    prob11_4();
 
     return 0;
 } 
@@ -51,4 +66,58 @@ int main() {
           << "Release Date: " << m.length << endl
           << "Running Time: " << m.length << endl;
      
+ }
+ 
+ void prob11_4() {
+     Weather data[12];          // array containing weather data for the year
+     rdWthr(data);
+     calcWthr(data);
+     return;
+ }
+ 
+ void rdWthr(Weather* w, int size) {
+     const char *months[12] = {"January", "February", "March", "April",
+                           "May", "June", "July", "August",
+                           "September", "October", "November", "December"};
+     for (int i = 0; i != size; ++i) {
+         cout << "Data for " << months[i] << ":\n";
+         cout << "Enter total rainfall: ";
+         cin >> w[i].total;
+         cout << "Enter the high temperature: ";
+         cin >> w[i].high;
+         cout << "Enter the low temperature: ";
+         cin >> w[i].low;
+         cout << "Enter the average temperature: ";
+         cin >> w[i].avg;
+         cout << endl;
+     }
+     cout << endl;
+     
+ }
+ 
+ void calcWthr(Weather *w, int size) {
+     const char *months[12] = {"January", "February", "March", "April",
+                           "May", "June", "July", "August",
+                           "September", "October", "November", "December"};
+     float avg_rain, ttl_rain=0;        // rainfall
+     float high=-100, low = 140, avg;        // temperatures
+     int index_h, index_l;              // where high and low temps occured;
+     
+     for (int i = 0; i != size; ++i) {
+         ttl_rain+=w[i].total; // add monthly rainfall to total rainfall
+         if (w[i].high > high) { 
+             high=w[i].high;
+             index_h = i;
+         }
+         if (w[i].low < low) {
+             low = w[i].low;
+             index_l = i;
+         }
+     }
+     cout << "Total rainfall is: " << ttl_rain << endl;
+     cout << "Average rainfall is: " << ttl_rain / size << endl;
+     cout << "High temp was " << high << ". Occured in " << months[index_h];
+     cout << endl;
+     cout << "Low temp was " << high << ". Occured in " << months[index_l];
+     cout << endl;
  }

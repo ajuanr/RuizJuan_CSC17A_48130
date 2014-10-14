@@ -12,12 +12,7 @@
 
 using namespace std;
 
-struct Movie {
-    string title;
-    string director;
-    string released;
-    string length; // the running time
-};
+
 
 #endif	/* STRUCTURES_H */
 
