@@ -79,6 +79,7 @@ int main() {
      const char *months[12] = {"January", "February", "March", "April",
                            "May", "June", "July", "August",
                            "September", "October", "November", "December"};
+     
      for (int i = 0; i != size; ++i) {
          cout << "Data for " << months[i] << ":\n";
          cout << "Enter total rainfall: ";
