@@ -4,17 +4,13 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include "Structures.h"
 using namespace std;
 
 /* Sructures are here */
 
 // structure for problem 11.1
-struct Movie {
-    string title;
-    string director;
-    string released;
-    string length; // the running time
-};
+
 
 /*
  * Prototypes begin here
