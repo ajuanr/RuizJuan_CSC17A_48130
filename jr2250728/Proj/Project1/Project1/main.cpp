@@ -11,7 +11,7 @@
 // flag representing a mine
 const int MINE = 9;
 // flag representing a spot that has been cleared
-const int CLEAR = 8;
+const int CLEAR = -1;
 
 enum DIFFICULTY {EASY, NORMAL, HARD};
 
@@ -27,17 +27,16 @@ struct MineField {
 
 MineField* create(int, int);
 void destroy(MineField *);
-void printFld(MineField *);
+void prntFld(MineField *);
 void prntObscr(MineField *);
 int nMines(MineField::DIFFICULTY);
 void setMines(MineField *,  MineField::DIFFICULTY);
 void setFlags(MineField *);
-int mAdjacent(MineField *, int, int);
+int nAdjacent(MineField *, int, int, int = MINE);
 bool isClear(MineField *, int, int);
 void clrArea(MineField *, int, int);
 
 void showZeros(MineField *, int, int);
-
 void select(MineField *, int, int);
 void setUpGame();
 void prompt(int&, int&);
@@ -46,22 +45,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     setUpGame();
-    
-    // area that will will swept for mines
-    /*
-    int field[nrows][NCOLS];
-    clearArea(field, nrows);
-    setMines(field, nrows);
-    
-    //printClean(field, nrows);
-    for (int i = 0; i != nrows; ++i)
-        for(int j = 0; j != NCOLS; ++j)
-            if (field[i][j] !=MINE)
-            field[i][j] = mAdjacent(field, i, j, nrows);
-    printClean(field, nrows);
-    walkPeri(field, 3, 4, nrows);
-    printClean(field, nrows);
-    */
+
     return 0;
 }
 
@@ -71,10 +55,10 @@ void setUpGame() {
     //srand(time(0));
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
-    select(mf, 8, 8);
+    select(mf, 8,3);
     //setFlags(mf);
     //prntObscr(mf);
-
+    //prntFld(mf);
     destroy(mf);                // deallocate
 }
 
@@ -106,7 +90,7 @@ void destroy(MineField *mf) {
 
 
 // print the minefield
-void printFld(MineField* mf) {   
+void prntFld(MineField* mf) {   
     for (int row = 0; row != mf->rows; ++row){
         for (int col = 0; col != mf->cols; ++col)
             cout << mf->data[row][col] << " ";
@@ -128,7 +112,7 @@ void prntObscr(MineField* mf) {
             if(col == 0) cout << row << " "; // output row number
             if (mf->data[row][col] == 0 || mf->data[row][col] == 9)
                 cout << "* ";
-            else if (mf->data[row][col] == -1 )
+            else if (mf->data[row][col] == CLEAR )
                 cout << 0 << " ";
             else
                 cout << mf->data[row][col] << " ";
@@ -141,7 +125,7 @@ void prntObscr(MineField* mf) {
 // returns the number of mines to set based on the difficulty
 int nMines(MineField::DIFFICULTY d) {
     if (d==MineField::EASY) return 10;
-    else if (d==MineField::NORMAL) return 20;
+    else if (d==MineField::NORMAL) return 30;
     else if (d==MineField::HARD) return 35;
     else return 10;
 }
@@ -172,8 +156,8 @@ void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
     }
 }
 
-// returns how many mines surrounding a given square
-int mAdjacent(MineField *mf, int row, int col) {
+// returns how 'flag' elements surround a given square
+int nAdjacent(MineField *mf, int row, int col, int flag) {
     // the number of adjacent
     int nAd=0;
     // not on first or last row or first or last column
@@ -182,7 +166,7 @@ int mAdjacent(MineField *mf, int row, int col) {
         // search the 3x3 grid surrounding a cell
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                if (mf->data[i][j] == MINE)
+                if (mf->data[i][j] == flag)
                     ++nAd;
         }
     }
@@ -254,13 +238,12 @@ int mAdjacent(MineField *mf, int row, int col) {
 
 // if there are no mines surrounding a square it is clear
 bool isClear(MineField * mf, int row, int col) {
-    if (mAdjacent(mf, row, col)) 
+    if (nAdjacent(mf, row, col)) 
         return false;            // there was at least one mine adjacent
     return true;                 // area was clear
 }
 
 void showZeros(MineField *mf, int row, int col) {
-    const int CLEAR = -1;
     // check bounds
     if ( row >= mf->rows || row < 0 || col >= mf->cols || col < 0)
         return;
@@ -284,21 +267,22 @@ void setFlags(MineField *mf) {
             // don't look for adjacent mines in areas where
             // mine is already located
             if (mf->data[i][j] != 9)
-                mf->data[i][j] = mAdjacent(mf, i, j);
+                mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
 void select(MineField * mf, int row, int col) {
     if (mf->data[row][col] == 9) {
         cout << "You lose\n";
         setFlags(mf);
-        printFld(mf);
+        prntFld(mf);
     }
     else if (isClear(mf, row, col) ){
         showZeros(mf, row, col); // show cleared area
         prntObscr(mf);
     }
     else {
-        mf->data[row][col] = mAdjacent(mf, row, col);
+        mf->data[row][col] = nAdjacent(mf, row, col);
         prntObscr(mf);
     }
 }
+
