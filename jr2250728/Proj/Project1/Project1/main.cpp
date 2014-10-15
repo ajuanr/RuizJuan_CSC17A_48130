@@ -71,7 +71,7 @@ void setUpGame() {
     //srand(time(0));
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
-    select(mf, 3, 5);
+    select(mf, 8, 8);
     //setFlags(mf);
     //prntObscr(mf);
 
@@ -289,18 +289,15 @@ void setFlags(MineField *mf) {
 
 void select(MineField * mf, int row, int col) {
     if (mf->data[row][col] == 9) {
-        cout << "IF\n";
         cout << "You lose\n";
         setFlags(mf);
         printFld(mf);
     }
     else if (isClear(mf, row, col) ){
-        cout << "Else if\n";
         showZeros(mf, row, col); // show cleared area
         prntObscr(mf);
     }
     else {
-        cout << "Else\n";
         mf->data[row][col] = mAdjacent(mf, row, col);
         prntObscr(mf);
     }
