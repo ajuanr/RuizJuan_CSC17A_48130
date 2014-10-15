@@ -38,6 +38,7 @@ void clrArea(MineField *, int, int);
 
 void showZeros(MineField *, int, int);
 
+void select(MineField *, int, int);
 void setUpGame();
 void prompt(int&, int&);
 
@@ -81,9 +82,6 @@ void setUpGame() {
             cout << mf->data[row][col] ;
     }
     else
-        showZeros(mf, row, col);
-    showZeros(mf, row, col);
-    printFld(mf);
 
     destroy(mf);                // deallocate
 }
@@ -136,8 +134,11 @@ void prntObscr(MineField* mf) {
     cout << endl;
     for (int row = 0; row != mf->rows; ++row){
         for (int col = 0; col != mf->cols; ++col){
-            if(col == 0) cout << row << " ";
-            cout << "* ";
+            if(col == 0) cout << row << " "; // output row number
+            if (mf->data[row][col] == 0 || mf->data[row][col] == 9)
+                cout << "* ";
+            else
+                cout << mf->data[row][col] << " ";
         }
         cout << endl;
     }
@@ -266,7 +267,7 @@ bool isClear(MineField * mf, int row, int col) {
 }
 
 void showZeros(MineField *mf, int row, int col) {
-    const int CLEAR = 8;
+    const int CLEAR = -1;
     // check bounds
     if ( row >= mf->rows || row < 0 || col >= mf->cols || col < 0)
         return;
@@ -291,4 +292,19 @@ void setFlags(MineField *mf) {
             // mine is already located
             if (mf->data[i][j] != 9)
                 mf->data[i][j] = mAdjacent(mf, i, j);
+}
+
+void select(MineField * mf, int row, int col) {
+    if (mf->data[row][col] == 9) {
+        cout << "You lose\n";
+        setFlags(mf);
+        printFld(mf);
+    }
+        
+    else if (isClear(mf, row, col) )
+        ; // show cleared area
+    else {
+        mf->data[row][col] == mAdjacent(mf, row, col);
+        printFld(mf);
+    }
 }
