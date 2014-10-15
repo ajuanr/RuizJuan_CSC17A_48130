@@ -71,7 +71,8 @@ void setUpGame() {
     //srand(time(0));
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
-    setFlags(mf);
+    select(mf, 3, 5);
+    //setFlags(mf);
     prntObscr(mf);
     int row = 0;
     int col = 9;
@@ -114,8 +115,7 @@ void destroy(MineField *mf) {
 
 
 // print the minefield
-void printFld(MineField* mf) {
-    
+void printFld(MineField* mf) {   
     for (int row = 0; row != mf->rows; ++row){
         for (int col = 0; col != mf->cols; ++col)
             cout << mf->data[row][col] << " ";
@@ -137,6 +137,8 @@ void prntObscr(MineField* mf) {
             if(col == 0) cout << row << " "; // output row number
             if (mf->data[row][col] == 0 || mf->data[row][col] == 9)
                 cout << "* ";
+            else if (mf->data[row][col] == -1 )
+                cout << 0 << " ";
             else
                 cout << mf->data[row][col] << " ";
         }
@@ -300,11 +302,12 @@ void select(MineField * mf, int row, int col) {
         setFlags(mf);
         printFld(mf);
     }
-        
-    else if (isClear(mf, row, col) )
-        ; // show cleared area
+    else if (isClear(mf, row, col) ){
+        showZeros(mf, row, col); // show cleared area
+        prntObscr(mf);
+    }
     else {
         mf->data[row][col] == mAdjacent(mf, row, col);
-        printFld(mf);
+        prntObscr(mf);
     }
 }
