@@ -37,6 +37,7 @@ bool isClear(MineField *, int, int);
 void clrArea(MineField *, int, int);
 
 void showZeros(MineField *, int, int);
+
 void select(MineField *, int, int);
 void setUpGame();
 void prompt(int&, int&);
@@ -55,7 +56,20 @@ void setUpGame() {
     //srand(time(0));
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
-    select(mf, 8,3);
+    prntObscr(mf);
+    int row, col;
+    do {
+        do {                                     // get row input
+            cout << "Enter the row: ";
+                 cin >> row;
+        } while (row < 0 || row >= mf->rows);    // check bounds
+        do {                                     // get column input
+            cout << "Enter the column: ";
+                cin >> col;
+        } while (row < 0 || row >= mf->cols);    // check bounds
+        cout << endl;
+        select(mf, row, col);
+    } while (mf->data[row][col] != 9);
     //setFlags(mf);
     //prntObscr(mf);
     //prntFld(mf);
@@ -88,7 +102,6 @@ void destroy(MineField *mf) {
     delete mf;
 }
 
-
 // print the minefield
 void prntFld(MineField* mf) {   
     for (int row = 0; row != mf->rows; ++row){
@@ -114,6 +127,8 @@ void prntObscr(MineField* mf) {
                 cout << "* ";
             else if (mf->data[row][col] == CLEAR )
                 cout << 0 << " ";
+            else if (mf->data[row][col] == 10 )
+                cout << "X ";
             else
                 cout << mf->data[row][col] << " ";
         }
@@ -273,6 +288,7 @@ void setFlags(MineField *mf) {
 // Find out what is hidden underneath the square user has selected
 void select(MineField * mf, int row, int col) {
     if (mf->data[row][col] == 9) {
+        mf->data[row][col] = 10;
         cout << "You lose\n\n";
         setFlags(mf);
         prntFld(mf);
