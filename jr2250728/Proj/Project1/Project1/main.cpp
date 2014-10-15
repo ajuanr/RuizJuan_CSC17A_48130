@@ -270,11 +270,13 @@ void setFlags(MineField *mf) {
                 mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
+// Find out what is hidden underneath the square user has selected
 void select(MineField * mf, int row, int col) {
     if (mf->data[row][col] == 9) {
-        cout << "You lose\n";
+        cout << "You lose\n\n";
         setFlags(mf);
         prntFld(mf);
+        cout << "Goodbye.\n\n";
     }
     else if (isClear(mf, row, col) ){
         showZeros(mf, row, col); // show cleared area
