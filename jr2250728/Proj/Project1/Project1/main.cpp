@@ -117,6 +117,7 @@ void destroy(MineField *mf) {
 
 // print the minefield
 void printFld(MineField* mf) {
+    
     for (int row = 0; row != mf->rows; ++row){
         for (int col = 0; col != mf->cols; ++col)
             cout << mf->data[row][col] << " ";
@@ -126,10 +127,18 @@ void printFld(MineField* mf) {
 }
 
 // print the minefield obscured
-void prntObscr(MineField* m) {
-    for (int row = 0; row != m->rows; ++row){
-        for (int col = 0; col != m->cols; ++col)
+void prntObscr(MineField* mf) {
+    for (int i = 0; i != mf->cols; ++i){
+        if (i==0)
+            cout << "  "; // blank space to align number with column
+        cout << i << " ";
+    }
+    cout << endl;
+    for (int row = 0; row != mf->rows; ++row){
+        for (int col = 0; col != mf->cols; ++col){
+            if(col == 0) cout << row << " ";
             cout << "* ";
+        }
         cout << endl;
     }
     cout << endl;
