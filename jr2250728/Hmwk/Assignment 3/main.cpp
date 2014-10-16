@@ -22,6 +22,14 @@ struct Weather {
 };
 
 struct MonthlyBudget {
+    static const int size = 10;
+    const char *expense[size] = {"Housing", "Utilities", "Household Expenses",
+                        "Transportation", "Food", "Medical", "Insurance",
+                        "Entertainment", "Clothing", "Miscellanous"};
+    // these values represent the default budget
+    float budget[size]= {500.00, 150.00, 65.00, 50.00, 250.00,
+                       30.00, 100.00, 150.00, 75.00, 50.00};
+    /*
     float housing;              // housing
     float utilities;            // utilities
     float houseExp;             // household expenses
@@ -32,6 +40,7 @@ struct MonthlyBudget {
     float ent;                  // entertainment
     float cloth;                // clothing
     float misc;                 // miscellaneous
+     */ 
 };
 /*
  * Prototypes begin here
@@ -48,9 +57,10 @@ void prntMov(const Movie&);
 void rdWthr(Weather *, int =12); // 12 months in a year
 void calcWthr(Weather *, int = 12);
 void spent(MonthlyBudget *);
+void cmpBudg(MonthlyBudget *, MonthlyBudget *);
 
 int main() {
-    //prob11_11();
+    prob11_11();
 
     return 0;
 } 
@@ -91,17 +101,15 @@ int main() {
  }
  
  void prob11_11() {
-     MonthlyBudget mb;
-    mb->housing=500.00;
-    mb->utilities=150.00;
-    mb->houseExp=65.00;
-    mb->trans=50.00;
-    mb->food=250.00;
-    mb->med=30.00;
-    mb->ins=100.00;
-    mb->ent=150.00;
-    mb->cloth=75.00;
-    mb->misc=50.00;
+    MonthlyBudget *mb= new MonthlyBudget;
+    MonthlyBudget *actual = new MonthlyBudget;
+    
+    spent(actual);
+    cmpBudg(mb, actual);
+    
+    delete actual;
+    delete mb;
+    
  }
  
  void rdWthr(Weather* w, int size) {
@@ -154,24 +162,22 @@ int main() {
  
  // user enter how much was spent on each monthly budget category
  void spent(MonthlyBudget *mb) {
-    cout << "How much was spent on housing: ";
-    cin >> mb->housing;
-    cout << "How much was spent on utilities: ";
-    cin >> mb->utilities;
-    cout << "How much was spent on household expenses: ";
-    cin >> mb->houseExp;
-    cout << "How much was spent on transportation: ";
-    cin >> mb->trans;
-    cout << "How much was spent on food: ";
-    cin >> mb->food;
-    cout << "How much was spent on medicine: ";
-    cin >> mb->med;
-    cout << "How much was spent on insurance: ";
-    cin >> mb->ins;
-    cout << "How much was spent on entertainment: ";
-    cin >> mb->ent;
-    cout << "How much was spent on clothing: ";
-    cin >> mb->cloth;
-    cout << "How much was spent on miscellaneous: ";
-    cin >> mb->misc;
+     // bugdget only contains
+     for (int i = 0; i != mb->size; ++i) {
+         cout << "How much was spent on " << mb->expense[i] << ": ";
+         cin >> mb->budget[i];
+     }
+     cout << endl;
  }
+ 
+ void cmpBudg(MonthlyBudget * deflt, MonthlyBudget *actual) {
+     for (int i = 0; i != 10; ++i) {
+         if ( actual->budget[i] > deflt->budget[i]) 
+             cout << "You spent "<< actual->budget[i] - deflt->budget[i]
+                  <<  "$ too much on " << deflt->expense[i] << ".\n";
+         else
+             cout << "You were "<< deflt->budget[i] - actual->budget[i]
+                  <<  "$ under for " << deflt->expense[i] << ".\n";
+     }
+ } 
+ 
