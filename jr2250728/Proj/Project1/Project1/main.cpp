@@ -69,10 +69,10 @@ void setUpGame() {
         } while (row < 0 || row >= mf->cols);    // check bounds
         cout << endl;
         select(mf, row, col);
-    } while (mf->data[row][col] != 9);
-    //setFlags(mf);
-    //prntObscr(mf);
-    //prntFld(mf);
+    } while (mf->data[row][col] != MINE);
+
+    mf->data[row][col]=10;
+    prntFld(mf);
     destroy(mf);                // deallocate
 }
 
@@ -103,10 +103,17 @@ void destroy(MineField *mf) {
 }
 
 // print the minefield
-void prntFld(MineField* mf) {   
+void prntFld(MineField* mf) {
+    const int LAST=10; // square that caused a loss
     for (int row = 0; row != mf->rows; ++row){
-        for (int col = 0; col != mf->cols; ++col)
-            cout << mf->data[row][col] << " ";
+        
+        for (int col = 0; col != mf->cols; ++col) {
+            //
+            if ( mf->data[row][col] == LAST)
+                cout << "X ";
+            else
+                cout << mf->data[row][col] << " ";
+        }
         cout << endl;
     }
     cout << endl;
@@ -287,11 +294,11 @@ void setFlags(MineField *mf) {
 
 // Find out what is hidden underneath the square user has selected
 void select(MineField * mf, int row, int col) {
-    if (mf->data[row][col] == 9) {
-        mf->data[row][col] = 10;
+    if (mf->data[row][col] == MINE) {
+        //mf->data[row][col] = 10;
         cout << "You lose\n\n";
         setFlags(mf);
-        prntFld(mf);
+
         cout << "Goodbye.\n\n";
     }
     else if (isClear(mf, row, col) ){
@@ -325,6 +332,7 @@ void setPerim(MineField *mf) {
                 if (mf->data[row+1][col] != CLEAR)
                         mf->data[row+1][col] = nAdjacent(mf,row+1, col);
                 }
+                
         }
     }
 }
