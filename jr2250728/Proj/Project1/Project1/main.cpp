@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
 void setUpGame() {
     const int nrows = 10;
     const int ncols = 10;
-    //srand(time(0));
+    srand(time(0));
     MineField *mf = create(nrows, ncols);
     setMines(mf, MineField::EASY);
     prntObscr(mf);
@@ -318,21 +318,20 @@ void setPerim(MineField *mf) {
         for (int col = 0; col != mf->cols; ++col){
             // when you're not on the bounds of the array
             if (row > 0 && row < mf->rows-1
-                    && col > 0 &&  col <mf->cols-1)
-            if (mf->data[row][col] == CLEAR) {
-                // check that the previous number has mines adjacent
-                if (mf->data[row][col-1] != CLEAR)
-                        mf->data[row][col-1] = nAdjacent(mf, row, col-1);
-                // check if the next number has mines adjacent
-                if (mf->data[row][col+1] != CLEAR)
-                        mf->data[row][col+1] = nAdjacent(mf,row, col+1);
-                if (mf->data[row-1][col] != CLEAR)
-                        mf->data[row-1][col] = nAdjacent(mf, row-1, col);
-                // check if the next number has mines adjacent
-                if (mf->data[row+1][col] != CLEAR)
-                        mf->data[row+1][col] = nAdjacent(mf,row+1, col);
-                }
-                
+                    && col > 0 &&  col <mf->cols-1) {
+                if (mf->data[row][col] == CLEAR)
+                    // check that the previous number has mines adjacent
+                    if (mf->data[row][col-1] != CLEAR)
+                            mf->data[row][col-1] = nAdjacent(mf, row, col-1);
+                    // check if the next number has mines adjacent
+                    if (mf->data[row][col+1] != CLEAR)
+                            mf->data[row][col+1] = nAdjacent(mf,row, col+1);
+                    if (mf->data[row-1][col] != CLEAR)
+                            mf->data[row-1][col] = nAdjacent(mf, row-1, col);
+                    // check if the next number has mines adjacent
+                    if (mf->data[row+1][col] != CLEAR)
+                            mf->data[row+1][col] = nAdjacent(mf,row+1, col);
+            }         
         }
     }
 }
