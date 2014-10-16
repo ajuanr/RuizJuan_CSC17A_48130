@@ -20,12 +20,26 @@ struct Weather {
     float low;          // low temp
     float avg;          // average temp
 };
+
+struct MonthlyBudget {
+    float housing;              // houseing
+    float utilities;            // utilities
+    float houseExp;             // household expenses
+    float trans;                // transportation
+    float food;                 // foor
+    float Med;                  // medical
+    float ins;                  // insurance
+    float nnt;                  // entertainment
+    float cloth;                // clothing
+    float misc;                 // miscellaneous
+};
 /*
  * Prototypes begin here
  */
 
 void prob11_1();
 void prob11_4();
+void prob11_11();
 
 /*
  * Utility functions for assigned problems
@@ -35,7 +49,7 @@ void rdWthr(Weather *, int =12); // 12 months in a year
 void calcWthr(Weather *, int = 12);
 
 int main() {
-    prob11_4();
+    //prob11_11();
 
     return 0;
 } 
