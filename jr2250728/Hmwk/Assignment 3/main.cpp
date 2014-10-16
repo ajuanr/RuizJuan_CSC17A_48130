@@ -55,7 +55,7 @@ void rdWthr(Weather *, int =12); // 12 months in a year
 void calcWthr(Weather *, int = 12);
 void spent(MonthlyBudget *);
 void cmpBudg(MonthlyBudget *, MonthlyBudget *);
-void getCourseInfo();
+Course* getCourse();
 
 int main() {
     prob11_11();
@@ -179,7 +179,7 @@ int main() {
      }
  } 
  
- Course* getCourseInfo() {
+ Course* getCourse() {
      int nStudent;
      cout << "How many students are there: ";
      cin >> nStudent;
@@ -189,14 +189,14 @@ int main() {
      cin >> nTest;
      // initialize test array for each student in Course array
      for (int i = 0; i != nStudent; i++);
-        *out->tests = new float[nTest];
+        out->tests = new float[nTest];
 }
  
  // destroy the dynamically allocated array holding test scores
  // then destroy the Course array
  void dstryCrse(Course *c, int size) {
      for (int i = 0; i != size; ++i)
-         delete []c[i];
+         delete [] c[i]->tests;         // delete the array in each course
  
-        delete []c;
+        delete []c;             // delete the course
  }
