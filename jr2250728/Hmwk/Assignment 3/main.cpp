@@ -29,18 +29,15 @@ struct MonthlyBudget {
     // these values represent the default budget
     float budget[size]= {500.00, 150.00, 65.00, 50.00, 250.00,
                        30.00, 100.00, 150.00, 75.00, 50.00};
-    /*
-    float housing;              // housing
-    float utilities;            // utilities
-    float houseExp;             // household expenses
-    float trans;                // transportation
-    float food;                 // food
-    float med;                  // medical
-    float ins;                  // insurance
-    float ent;                  // entertainment
-    float cloth;                // clothing
-    float misc;                 // miscellaneous
-     */ 
+};
+
+struct Course {
+    string name;                // Student name
+    string idNum;               // Student id num
+    float *tests;               // Holds test resuls
+    float avg;                  // Average grade
+    char grade;                 // letter grade
+    
 };
 /*
  * Prototypes begin here
