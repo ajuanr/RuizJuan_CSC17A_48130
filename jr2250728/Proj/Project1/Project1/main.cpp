@@ -306,9 +306,12 @@ void select(MineField * mf, int row, int col) {
 }
 
 void setPerim(MineField *mf) {
-    for (int row = 1; row != mf->rows-1; ++row ){
+    for (int row = 0; row != mf->rows; ++row ){
         // avoid search at left and right edge of array
-        for (int col = 1; col != mf->cols-1; ++col){
+        for (int col = 0; col != mf->cols; ++col){
+            // when you're not on the bounds of the array
+            if (row > 0 && row < mf->rows-1
+                    && col > 0 &&  col <mf->cols-1)
             if (mf->data[row][col] == CLEAR) {
                 // check that the previous number has mines adjacent
                 if (mf->data[row][col-1] != CLEAR)
@@ -322,7 +325,6 @@ void setPerim(MineField *mf) {
                 if (mf->data[row+1][col] != CLEAR)
                         mf->data[row+1][col] = nAdjacent(mf,row+1, col);
                 }
-               
         }
     }
 }
