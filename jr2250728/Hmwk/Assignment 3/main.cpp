@@ -55,7 +55,7 @@ void rdWthr(Weather *, int =12); // 12 months in a year
 void calcWthr(Weather *, int = 12);
 void spent(MonthlyBudget *);
 void cmpBudg(MonthlyBudget *, MonthlyBudget *);
-void getScores(Course*);
+void getCourseInfo();
 
 int main() {
     prob11_11();
@@ -179,7 +179,7 @@ int main() {
      }
  } 
  
- Course* getCourse() {
+ Course* getCourseInfo() {
      int nStudent;
      cout << "How many students are there: ";
      cin >> nStudent;
@@ -190,7 +190,9 @@ int main() {
      // initialize test array for each student in Course array
      for (int i = 0; i != nStudent; i++);
         *out->tests = new float[nTest];
- }
+}
+ 
+ 
  
  void dstryCrse(Course *, int size) {
      for (int i = 0;)
