@@ -192,8 +192,11 @@ int main() {
         *out->tests = new float[nTest];
 }
  
+ // destroy the dynamically allocated array holding test scores
+ // then destroy the Course array
+ void dstryCrse(Course *c, int size) {
+     for (int i = 0; i != size; ++i)
+         delete []c[i];
  
- 
- void dstryCrse(Course *, int size) {
-     for (int i = 0;)
+        delete []c;
  }
