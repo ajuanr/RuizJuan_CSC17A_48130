@@ -22,14 +22,14 @@ struct Weather {
 };
 
 struct MonthlyBudget {
-    float housing;              // houseing
+    float housing;              // housing
     float utilities;            // utilities
     float houseExp;             // household expenses
     float trans;                // transportation
-    float food;                 // foor
-    float Med;                  // medical
+    float food;                 // food
+    float med;                  // medical
     float ins;                  // insurance
-    float nnt;                  // entertainment
+    float ent;                  // entertainment
     float cloth;                // clothing
     float misc;                 // miscellaneous
 };
@@ -47,6 +47,7 @@ void prob11_11();
 void prntMov(const Movie&);
 void rdWthr(Weather *, int =12); // 12 months in a year
 void calcWthr(Weather *, int = 12);
+void spent(MonthlyBudget *);
 
 int main() {
     //prob11_11();
@@ -135,4 +136,28 @@ int main() {
      cout << endl;
      cout << "Low temp was " << high << ". Occured in " << months[index_l];
      cout << endl;
+ }
+ 
+ // user enter how much was spent on each monthly budget catagory
+ void spent(MonthlyBudget *mb) {
+    cout << "How much was spent on housing: ";
+    cin >> mb->housing;
+    cout << "How much was spent on utilities: ";
+    cin >> mb->utilities;
+    cout << "How much was spent on household expenses: ";
+    cin >> mb->houseExp
+    cout << "How much was spent on transportation: ";
+    cin >> mb->trans;
+    cout << "How much was spent on food: ";
+    cin >> mb->food;
+    cout << "How much was spent on medicine: ";
+    cin >> mb->med;
+    cout << "How much was spent on insurance: ";
+    cin >> mb->ins;
+    cout << "How much was spent on entertainment: ";
+    cin >> mb->ent;
+    cout << "How much was spent on clothing: ";
+    cin >> mb->cloth;
+    cout << "How much was spent on miscellaneous: ";
+    cin >> mb->misc;
  }
