@@ -296,6 +296,7 @@ void select(MineField * mf, int row, int col) {
     }
     else if (isClear(mf, row, col) ){
         showZeros(mf, row, col); // show cleared area
+        setPerim(mf);
         prntObscr(mf);
     }
     else {
@@ -305,17 +306,23 @@ void select(MineField * mf, int row, int col) {
 }
 
 void setPerim(MineField *mf) {
-    for (int row = 0; row != mf->rows; ++row ){
+    for (int row = 1; row != mf->rows-1; ++row ){
         // avoid search at left and right edge of array
-        for (int col = 1; col != mf->cols; ++col){
+        for (int col = 1; col != mf->cols-1; ++col){
             if (mf->data[row][col] == CLEAR) {
                 // check that the previous number has mines adjacent
                 if (mf->data[row][col-1] != CLEAR)
-                        mf->data[row][col-1] = 8;
+                        mf->data[row][col-1] = nAdjacent(mf, row, col-1);
                 // check if the next number has mines adjacent
                 if (mf->data[row][col+1] != CLEAR)
-                        mf->data[row][col+1] = 8;
+                        mf->data[row][col+1] = nAdjacent(mf,row, col+1);
+                if (mf->data[row-1][col] != CLEAR)
+                        mf->data[row-1][col] = nAdjacent(mf, row-1, col);
+                // check if the next number has mines adjacent
+                if (mf->data[row+1][col] != CLEAR)
+                        mf->data[row+1][col] = nAdjacent(mf,row+1, col);
                 }
+               
         }
     }
 }
