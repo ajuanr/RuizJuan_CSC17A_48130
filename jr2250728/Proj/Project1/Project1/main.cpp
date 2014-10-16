@@ -35,7 +35,7 @@ void setFlags(MineField *);
 int nAdjacent(MineField *, int, int, int = MINE);
 bool isClear(MineField *, int, int);
 void clrArea(MineField *, int, int);
-
+void setPerim(MineField *);
 void showZeros(MineField *, int, int);
 
 void select(MineField *, int, int);
@@ -304,3 +304,18 @@ void select(MineField * mf, int row, int col) {
     }
 }
 
+void setPerim(MineField *mf) {
+    for (int row = 0; row != mf->rows; ++row ){
+        // avoid search at left and right edge of array
+        for (int col = 1; col != mf->cols; ++col){
+            if (mf->data[row][col] == CLEAR) {
+                // check that the previous number has mines adjacent
+                if (mf->data[row][col-1] != CLEAR)
+                        mf->data[row][col-1] = 8;
+                // check if the next number has mines adjacent
+                if (mf->data[row][col+1] != CLEAR)
+                        mf->data[row][col+1] = 8;
+                }
+        }
+    }
+}
