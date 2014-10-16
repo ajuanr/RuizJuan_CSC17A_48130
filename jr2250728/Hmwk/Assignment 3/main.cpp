@@ -90,6 +90,20 @@ int main() {
      return;
  }
  
+ void prob11_11() {
+     MonthlyBudget mb;
+    mb->housing=500.00;
+    mb->utilities=150.00;
+    mb->houseExp=65.00;
+    mb->trans=50.00;
+    mb->food=250.00;
+    mb->med=30.00;
+    mb->ins=100.00;
+    mb->ent=150.00;
+    mb->cloth=75.00;
+    mb->misc=50.00;
+ }
+ 
  void rdWthr(Weather* w, int size) {
      const char *months[12] = {"January", "February", "March", "April",
                            "May", "June", "July", "August",
@@ -138,14 +152,14 @@ int main() {
      cout << endl;
  }
  
- // user enter how much was spent on each monthly budget catagory
+ // user enter how much was spent on each monthly budget category
  void spent(MonthlyBudget *mb) {
     cout << "How much was spent on housing: ";
     cin >> mb->housing;
     cout << "How much was spent on utilities: ";
     cin >> mb->utilities;
     cout << "How much was spent on household expenses: ";
-    cin >> mb->houseExp
+    cin >> mb->houseExp;
     cout << "How much was spent on transportation: ";
     cin >> mb->trans;
     cout << "How much was spent on food: ";
