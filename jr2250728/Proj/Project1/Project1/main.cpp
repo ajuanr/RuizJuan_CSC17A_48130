@@ -38,6 +38,7 @@ bool isClear(MineField *, int, int);
 void clrArea(MineField *, int, int);
 void setPerim(MineField *);
 void showZeros(MineField *, int, int);
+void isDone(MineField *);
 
 void select(MineField *, int, int);
 void setUpGame();
