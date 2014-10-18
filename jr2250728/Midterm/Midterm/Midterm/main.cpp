@@ -31,7 +31,6 @@ void problem5();
  * Functions for problem 1
  */
 void AcctInfo(Customer *);
-void read(Customer *, int, int);
 void newBalance(Customer *);
 bool isOvrdrwn(Customer *);
 /*
@@ -129,7 +128,7 @@ void AcctInfo(Customer *c) {
         do {
             cout << "Enter the amount of the check. -1 to quit: ";
             cin >> amnt;
-            read(c, amnt, 0);
+            c->chkTotal +=amnt;
         } while(amnt>0);
     }
     cout << endl;
@@ -140,21 +139,9 @@ void AcctInfo(Customer *c) {
         do {
             cout << "Enter the amount of the deposit. -1 to quit: ";
             cin >> amnt;
-            read(c, amnt, 1);
+            c->deposits += amnt;
         } while(amnt>0);
     }
-}
-
-
-// function reads in checks or deposits depending on type
-// type should be 0 or 1
-// if 0 add to check total
-// otherwise add to deposit total
-void read(Customer *c, int amnt, int type ) {
-    if (type)
-        c->deposits+= amnt;
-    else
-        c->chkTotal+=amnt;
 }
 
 void newBalance(Customer *c) {
