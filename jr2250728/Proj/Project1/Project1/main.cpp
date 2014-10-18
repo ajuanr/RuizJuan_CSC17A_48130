@@ -64,7 +64,7 @@ void setUpGame() {
         do {                                     /// get column input
             cout << "Enter the column: ";
                 cin >> col;
-        } while (row < 0 || row >= mf->cols);    /// check bounds
+        } while (col < 0 || col >= mf->cols);    /// check bounds
         cout << endl;
         select(mf, row, col);
     } while (mf->data[row][col] != MineField::MINE);
@@ -111,7 +111,7 @@ void prntClr(MineField* mf) {
             if ( mf->data[row][col] == MineField::LOSER)
                 cout << "t ";
             else
-                cout << *((mf->data)+(row*mf->cols) + col);///cout << mf->data[row][col] << " ";
+                cout << mf->data[row][col] << " ";
         }
         cout << endl;
     }
