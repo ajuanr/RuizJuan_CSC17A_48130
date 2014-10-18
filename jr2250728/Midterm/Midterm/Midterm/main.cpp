@@ -30,9 +30,17 @@ void problem1();
 void problem5();
 
 
-
 /*
  * Functions for problem 1
+ */
+void AcctInfo(Customer *);
+void read(Customer *, int, int);
+void newBalance(Customer *);
+bool isOvrdrwn(Customer *);
+
+
+/*
+ * Functions for problem 5
  */
 template<class T>
 T factorial(T);
@@ -41,20 +49,23 @@ template<class T>
 T maxFac(T);
 
 
-/*
- * Functions for problem 2
- */
-void AcctInfo(Customer *);
-void read(Customer *, int);
-
-
 int main(int argc, const char * argv[]) {
-    //problem5();
+    problem1();
     return 0;
 }
 
 void problem1() {
-    cout << "You called problem 1\n";
+    Customer *c = new Customer;
+    c->balance=1000;
+    AcctInfo(c);
+    cout << endl;
+    newBalance(c);
+    cout << c->acctNum << endl;
+    cout << c->balance << endl;
+    cout << c->chkTotal << endl;
+    cout << c->deposits << endl;
+    
+    delete c;
 }
 
 
@@ -106,18 +117,48 @@ void AcctInfo(Customer *c) {
             valid=true;
     } while (!valid);
     
-    int n;
-    do {
-        cout << "Enter"
+    cout << endl;
+    
+    cout << "Were any checks written this month. 'y' for yes: ";
+    char response;
+    cin >> response;
+    if (response == 'y') {
+        int amnt;
+        do {
+            cout << "Enter the amount of the check. -1 to quit: ";
+            cin >> amnt;
+            read(c, amnt, 0);
+        } while(amnt>0);
+    }
+    cout << endl;
+    cout << "Were any deposits made this month. 'y' for yes: ";
+    cin >> response;
+    if (response == 'y') {
+        int amnt;
+        do {
+            cout << "Enter the amount of the deposit. -1 to quit: ";
+            cin >> amnt;
+            read(c, amnt, 1);
+        } while(amnt>0);
     }
 }
 
 
 // function reads in checks or deposits depending on type
-// type should be 1 or -1
-// if -1, then a check was written and it will be subtracted from balance
-// otherwise add to balance
-void read(Customer *c, int type ) {
-    int num;
-    c->balance += (num * type);
+// type should be 0 or 1
+// if 0 add to check total
+// otherwise add to deposit total
+void read(Customer *c, int amnt, int type ) {
+    if (type)
+        c->deposits+= amnt;
+    else
+        c->chkTotal+=amnt;
+}
+
+void newBalance(Customer *c) {
+    c->balance -= c->chkTotal;
+    c->balance += c->deposits;
+}
+bool isOvrdrwn(Customer *c) {
+    return (c->balance < 0) ? true: false;
 }
