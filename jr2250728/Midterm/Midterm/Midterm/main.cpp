@@ -21,11 +21,7 @@ T maxFac(T);
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-    //prob5();
-    float f=33;
-    cout << factorial(f) << endl;
-    cout << factorial(++f) << endl;
-    cout << factorial(3) << endl;
+    prob5();
     return 0;
 }
 
