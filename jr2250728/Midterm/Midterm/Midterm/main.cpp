@@ -15,21 +15,18 @@ using namespace std;
  * Structures go here
 */
 struct Customer {
-    int acctNum;     // holds account number
-    int balance;      // holds balance at beginning of month
-    int chkTotal;     // total of all checks written this month
-    int deposits;     // total of all deposits credited this month
+    int acctNum=0;     // holds account number
+    int balance=0;      // holds balance at beginning of month
+    int chkTotal=0;     // total of all checks written this month
+    int deposits=0;     // total of all deposits credited this month
 };
 
 
 /*
  *  Menu and problemlem protoypes
  */
-
 void problem1();
 void problem5();
-
-
 /*
  * Functions for problem 1
  */
@@ -37,8 +34,6 @@ void AcctInfo(Customer *);
 void read(Customer *, int, int);
 void newBalance(Customer *);
 bool isOvrdrwn(Customer *);
-
-
 /*
  * Functions for problem 5
  */
@@ -60,11 +55,15 @@ void problem1() {
     AcctInfo(c);
     cout << endl;
     newBalance(c);
-    cout << c->acctNum << endl;
-    cout << c->balance << endl;
-    cout << c->chkTotal << endl;
-    cout << c->deposits << endl;
-    
+    cout << "The current balance on account " << c->acctNum
+    << " is: " << c->balance << endl;
+    if (isOvrdrwn(c)) {
+        cout << "Account was over drawn\n"
+                "An Overdraft fee of 12 dollars was assesed\n";
+        c->balance-=12;
+        cout << "The new balance is: " << c->balance << endl;
+    }
+    cout << endl;
     delete c;
 }
 
@@ -116,6 +115,9 @@ void AcctInfo(Customer *c) {
         if (c->acctNum / 100000 < 1)
             valid=true;
     } while (!valid);
+    
+    cout << "Enter the current balance: ";
+    cin >> c->balance;
     
     cout << endl;
     
