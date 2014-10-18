@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>A31C0C9B-7BEB-427B-A8DB-E3E029F99A3A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Midterm</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>86E1AB299F7E0CC55320D06CA1B49E16B5B1E9E1</key>
+		<string>https://github.com/ajuanr/RuizJuan_CSC17A_48130.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>jr2250728/Midterm/Midterm/Midterm.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>86E1AB299F7E0CC55320D06CA1B49E16B5B1E9E1</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ajuanr/RuizJuan_CSC17A_48130.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>86E1AB299F7E0CC55320D06CA1B49E16B5B1E9E1</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>86E1AB299F7E0CC55320D06CA1B49E16B5B1E9E1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RuizJuan_CSC17A_48130</string>
+		</dict>
+	</array>
+</dict>
+</plist>
