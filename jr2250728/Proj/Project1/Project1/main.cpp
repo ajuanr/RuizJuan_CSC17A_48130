@@ -12,7 +12,7 @@ enum DIFFICULTY {EASY, NORMAL, HARD};
 
 struct MineField {
     enum DIFFICULTY {EASY, NORMAL, HARD};
-    enum FLAGS {EMPTY=0, MINE=9, CLEAR=-1};
+    enum FLAGS {EMPTY=0, MINE=9, CLEAR=-1, LOSER=10};
     int **data;
     int rows;
     int cols;
@@ -69,7 +69,7 @@ void setUpGame() {
         select(mf, row, col);
     } while (mf->data[row][col] != MineField::MINE);
 
-    mf->data[row][col]=10;
+    mf->data[row][col]= MineField::LOSER;
     prntClr(mf);
     destroy(mf);                /// deallocate
 }
@@ -105,15 +105,13 @@ void destroy(MineField *mf) {
 /// Functions prints the minefield with all the squares revealed.
 /// used mostly after player loses
 void prntClr(MineField* mf) {
-    const int LAST=10; /// square that caused a loss
     for (int row = 0; row != mf->rows; ++row){
-        
         for (int col = 0; col != mf->cols; ++col) {
             ///
-            if ( mf->data[row][col] == LAST)
+            if ( mf->data[row][col] == MineField::LOSER)
                 cout << "t ";
             else
-                cout << mf->data[row][col] << " ";
+                cout << *((mf->data)+(row*mf->cols) + col);///cout << mf->data[row][col] << " ";
         }
         cout << endl;
     }
@@ -183,8 +181,8 @@ void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
 
 /// Function returns how 'flag' elements surround a given square
 int nAdjacent(MineField *mf, int row, int col, int FLAG) {
-    /// the number of adjacent
-    int nAd=0;
+    int nAd=0;              /// the number of adjacent mines
+    
     /// not on first or last row or first or last column
     /// most of the searches take place in this area
     if ( row > 0 && col > 0 && row < mf->rows-1 && col < mf->cols-1) {
