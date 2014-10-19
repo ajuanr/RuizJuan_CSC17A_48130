@@ -18,7 +18,6 @@ struct Weather {
     float total;          // total rainfall
     float high;         // high temp
     float low;          // low temp
-    float avg;          // average temp
 };
 
 struct MonthlyBudget {
@@ -123,8 +122,6 @@ int main() {
          cin >> w[i].high;
          cout << "Enter the low temperature: ";
          cin >> w[i].low;
-         cout << "Enter the average temperature: ";
-         cin >> w[i].avg;
          cout << endl;
      }
      cout << endl;
@@ -135,8 +132,8 @@ int main() {
      const char *months[12] = {"January", "February", "March", "April",
                            "May", "June", "July", "August",
                            "September", "October", "November", "December"};
-     float avg_rain, ttl_rain=0;        // rainfall
-     float high=-100, low = 140, avg;        // temperatures
+     float ttl_rain=0;        // rainfall
+     float high=-100, low = 140;        // temperatures
      int index_h=0, index_l=0;              // where high and low temps occured;
      
      for (int i = 0; i != size; ++i) {
