@@ -72,7 +72,7 @@ void setUpGame() {
     /// Prepare to print completed minefield
     if (hasWon(mf)) {
         cout << "You win\n";
-            setFlags(mf);
+        setFlags(mf);
     }
     else{
         setFlags(mf);
