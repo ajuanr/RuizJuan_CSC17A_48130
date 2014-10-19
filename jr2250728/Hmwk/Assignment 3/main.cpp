@@ -33,18 +33,19 @@ struct MonthlyBudget {
 struct Course {
     string name;                // Student name
     string idNum;               // Student id num
-    float *tests;               // Holds test resuls
+    int *tests;                 // Holds test resuls
     float avg;                  // Average grade
     char grade;                 // letter grade
     
 };
 /*
- * Prototypes begin here
+ * Problem Prototypes begin here
  */
 
 void prob11_1();
 void prob11_4();
 void prob11_11();
+void prob11_12();
 
 /*
  * Utility functions for assigned problems
@@ -57,7 +58,7 @@ void cmpBudg(MonthlyBudget *, MonthlyBudget *);
 Course* getCourse();
 
 int main() {
-    prob11_11();
+    prob11_12();
 
     return 0;
 } 
@@ -108,6 +109,42 @@ int main() {
     delete mb;
     
  }
+
+void prob11_12() {
+    cout << "How many students are there: ";
+    int nStudent;
+    cin >> nStudent;
+    Course *roster = new Course[nStudent];
+    cout << "How many tests were taken: ";
+    int nTests;
+    cin >> nTests;
+    for (int i = 0; i != nStudent; ++i) {
+        roster[i].tests = new int[nTests];
+    }
+
+    for (int i = 0; i != nStudent; ++i) {
+        cout << "Enter the student name: ";
+        cin >> roster[i].name;
+        cout << "Enter the student id: ";
+        cin >> roster[i].idNum;
+        for (int j = 0; j != nTests; ++j) {
+            cout << "Enter score for test " << j+1 << ": ";
+            cin >> roster[i].tests[j];
+        }
+    }
+    
+    // calculate the average grade
+    for (int i = 0; i != nStudent; ++i) {
+        int total = 0;
+        for (int j = 0; j != nTests; ++j) {
+            total += roster[i].tests[j];
+        }
+        roster[i].avg = total/nTests;
+    }
+    
+
+
+}
  
  void rdWthr(Weather* w, int size) {
      const char *months[12] = {"January", "February", "March", "April",
@@ -155,7 +192,7 @@ int main() {
      cout << endl;
  }
  
- // user enter how much was spent on each monthly budget category
+ // user enters how much was spent on each monthly budget category
  void spent(MonthlyBudget *mb) {
      // bugdget only contains
      for (int i = 0; i != mb->size; ++i) {
@@ -175,25 +212,28 @@ int main() {
                   <<  "$ under for " << deflt->expense[i] << ".\n";
      }
  } 
- 
+ /*
  Course* getCourse() {
      int nStudent;
      cout << "How many students are there: ";
      cin >> nStudent;
-     Course *out = new Course[nStudent];
+     Course *roster = new Course[nStudent];
+     roster->nStudents=nStudent;
      int nTest;
      cout << "How many tests were taken: ";
      cin >> nTest;
+     roster->nTests = nTest;
      // initialize test array for each student in Course array
      for (int i = 0; i != nStudent; i++)
-        out->tests = new float[nTest];
-     return out;
-}
- 
- // destroy the dynamically allocated array holding test scores
- // then destroy the Course array
- void dstryCrse(Course *c, int size) {
-     delete []c->tests;
-     delete c;
+        roster->tests = new float[nTest];
      
- }
+     for (int i = 0; i != roster->nStudents; ++i) {
+         cout << "Enter student name: ";
+         cin >> roster[i]->name;
+         for (int j = 0; j != roster->nTests; ++j) {
+             
+         }
+     }
+     return roster;
+}
+*/
