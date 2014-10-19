@@ -34,7 +34,7 @@ bool isClear(MineField *, int, int);
 void clrArea(MineField *, int, int);
 void setPerim(MineField *);
 void showZeros(MineField *, int, int);
-bool isDone(MineField *);
+bool hasWon(MineField *);
 
 void select(MineField *, int, int);
 void setUpGame();
@@ -335,6 +335,18 @@ void select(MineField * mf, int row, int col) {
     else {
         mf->data[row][col] = nAdjacent(mf, row, col);
         prntObscr(mf);
+    }
+}
+
+/// Function checks whether the player has won
+bool hasWon(MineField *mf) {
+        for (int i = 0; i != mf->rows; ++i)
+            for (int j = 0; j != mf->cols; ++j)
+                /// if there are empty spaces player has not won
+                if (mf->data[i][j] == MineField::EMPTY)
+                    return false;
+        /// there were no empty spaces left. Player has won
+        return true;
     }
 }
 
