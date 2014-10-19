@@ -18,7 +18,7 @@ struct MineField {
     int rows;
     int cols;
     DIFFICULTY d;   /// determines how many mines
-    int nMines;     /// number of mines
+    int mines;     /// number of mines
     
 };
 
@@ -26,7 +26,7 @@ MineField* create(int, int);
 void destroy(MineField *);
 void prntClr(MineField *);
 void prntObscr(MineField *);
-int nMines(MineField::DIFFICULTY);
+void nMines(MineField *, MineField::DIFFICULTY);
 void setMines(MineField *,  MineField::DIFFICULTY);
 void setFlags(MineField *);
 int nAdjacent(MineField *, int, int, int = MineField::MINE);
@@ -53,7 +53,7 @@ void setUpGame() {
     const int ncols = 10;
     ///srand(time(0));
     MineField *mf = create(nrows, ncols);
-    mf->nMines = nMines(MineField::EASY);
+    nMines(mf, MineField::EASY);
     setMines(mf, MineField::EASY);
     prntObscr(mf);
     int row, col;
@@ -182,17 +182,19 @@ void prntObscr(MineField* mf) {
 }
 
 /// Function returns the number of mines to set
-int nMines(MineField::DIFFICULTY d) {
-    if (d==MineField::EASY) return 15;
-    else if (d==MineField::NORMAL) return 30;
-    else if (d==MineField::HARD) return 45;
-    else return 10;
+void nMines(MineField *mf, MineField::DIFFICULTY d) {
+    if (d==MineField::EASY)
+        mf->mines = 15;
+    else if (d==MineField::NORMAL)
+        mf->mines = 30;
+    else if (d==MineField::HARD)
+        mf->mines = 45;
 }
 
 /// Function places mines in grid
 void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
     /// holds how many mines will be used
-    int mines = mf->nMines;
+    int mines = mf->mines;
     
     /// keep looping through grid until all mines are set
     while (mines) {
