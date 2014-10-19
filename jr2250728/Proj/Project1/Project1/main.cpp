@@ -178,8 +178,7 @@ void prntObscr(MineField* mf) {
     cout << endl;
 }
 
-/// Function returns the number of mines to set and
-/// size of grid to based on the difficulty
+/// Function returns the number of mines to set
 int nMines(MineField::DIFFICULTY d) {
     if (d==MineField::EASY) return 15;
     else if (d==MineField::NORMAL) return 30;
