@@ -20,6 +20,13 @@ struct Weather {
     float low;          // low temp
 };
 
+struct Company {
+    string division;  // East, North, West or South
+    int qrtrSale[4];      // 1,2,3, or 4
+    float sales;      // Total sales
+};
+
+
 struct MonthlyBudget {
     static const int size = 10;
     const char *expense[size] = {"Housing", "Utilities", "Household Expenses",
@@ -43,6 +50,7 @@ struct Course {
  */
 
 void prob11_1();
+void prob11_3();
 void prob11_4();
 void prob11_11();
 void prob11_12();
@@ -55,10 +63,11 @@ void rdWthr(Weather *, int =12); // 12 months in a year
 void calcWthr(Weather *, int = 12);
 void spent(MonthlyBudget *);
 void cmpBudg(MonthlyBudget *, MonthlyBudget *);
+char ltrGrade(int);
 Course* getCourse();
 
 int main() {
-    prob11_12();
+    prob11_3();
 
     return 0;
 } 
@@ -90,6 +99,24 @@ int main() {
           << "Running Time: " << m.length << endl;
      
  }
+
+void prob11_3() {
+    Company *comp = new Company;
+    cout << "Enter company division (East, South, West or North): ";
+    cin >> comp->division;
+    float totalSale=0;
+    for (int i = 0; i != 4; ++i) {
+        cout << "Enter the quarterly sales for quarter " << i+1 << ": ";
+        cin >> *(comp->qrtrSale+i);
+        totalSale+=*(comp->qrtrSale+i);;
+        
+    }
+    cout << "Info for division: " << comp->division << endl;
+    cout << "Total sales were: " << totalSale << endl;
+    cout << "Average quarterly sales were: " << totalSale / 4 << endl;
+    
+    delete comp;
+}
  
  void prob11_4() {
      Weather data[12];          // array containing weather data for the year
@@ -131,6 +158,7 @@ void prob11_12() {
             cout << "Enter score for test " << j+1 << ": ";
             cin >> roster[i].tests[j];
         }
+        cout << endl;
     }
     
     // calculate the average grade
@@ -141,11 +169,39 @@ void prob11_12() {
         }
         roster[i].avg = total/nTests;
     }
+    // get letter grade
+    for (int i = 0; i != nStudent; ++i)
+        for (int j = 0; j != nTests; ++j)
+            roster[i].grade=ltrGrade(roster[i].avg);
     
-
-
+    // Print students
+    for (int i = 0; i != nStudent; ++i) {
+            cout << "Name: " << roster[i].name << endl;
+            cout << "Student id: " <<roster[i].idNum << endl;
+            cout << "Test average: " << roster[i].avg << endl;
+            cout << "Letter Grade: " << roster[i].grade << endl;
+        cout << endl;
+    }
+    
+    // deallocate
+    for (int i = 0; i != nStudent; ++i)
+        delete [] roster[i].tests;
+    delete []roster;
 }
- 
+
+char ltrGrade(int c) {
+    if ( c > 90 )
+        return 'A';
+    else if ( c > 80)
+        return 'B';
+    else if (c > 70)
+        return 'C';
+    else if (c > 60)
+        return 'D';
+    else
+        return 'F';
+}
+
  void rdWthr(Weather* w, int size) {
      const char *months[12] = {"January", "February", "March", "April",
                            "May", "June", "July", "August",
