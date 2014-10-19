@@ -13,7 +13,7 @@ enum DIFFICULTY {EASY, NORMAL, HARD};
 
 struct MineField {
     enum DIFFICULTY {EASY, NORMAL, HARD};
-    enum FLAGS {EMPTY=0, MINE=9, CLEAR=-1, LOSER=10};
+    enum FLAGS {EMPTY=10, MINE, CLEAR, LOSER};
     int **data;
     int rows;
     int cols;
@@ -68,9 +68,13 @@ void setUpGame() {
         } while (col < 0 || col >= mf->cols);    /// check bounds
         cout << endl;
         select(mf, row, col);
-    } while (mf->data[row][col] != MineField::MINE);
+    } while (mf->data[row][col] != MineField::MINE && !hasWon(mf));
     
-    mf->data[row][col]= MineField::LOSER;
+    if (hasWon(mf))
+        cout << "You win\n";
+    else
+        mf->data[row][col]= MineField::LOSER;
+    /// Print the complete minefield
     prntClr(mf);
     
     /// Write the result to a binary file
@@ -92,7 +96,6 @@ void setUpGame() {
         in.read(reinterpret_cast<char *>(&result), sizeof(*result));
         prntClr(result);
         result = 0;
-        
     }
 
     destroy(mf);                /// deallocate the game area
@@ -133,7 +136,7 @@ void prntClr(MineField* mf) {
         for (int col = 0; col != mf->cols; ++col) {
             ///
             if ( mf->data[row][col] == MineField::LOSER)
-                cout << "t ";
+                cout << "T ";
             else
                 cout << mf->data[row][col] << " ";
         }
@@ -173,9 +176,9 @@ void prntObscr(MineField* mf) {
 /// Function returns the number of mines to set and
 /// size of grid to based on the difficulty
 int nMines(MineField::DIFFICULTY d) {
-    if (d==MineField::EASY) return 10;
+    if (d==MineField::EASY) return 15;
     else if (d==MineField::NORMAL) return 30;
-    else if (d==MineField::HARD) return 35;
+    else if (d==MineField::HARD) return 45;
     else return 10;
 }
 
@@ -348,7 +351,6 @@ bool hasWon(MineField *mf) {
         /// there were no empty spaces left. Player has won
         return true;
     }
-}
 
 /// Function find the perimeter of the cleared areas
 void setPerim(MineField *mf) {
