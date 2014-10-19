@@ -137,7 +137,7 @@ int main() {
                            "September", "October", "November", "December"};
      float avg_rain, ttl_rain=0;        // rainfall
      float high=-100, low = 140, avg;        // temperatures
-     int index_h, index_l;              // where high and low temps occured;
+     int index_h=0, index_l=0;              // where high and low temps occured;
      
      for (int i = 0; i != size; ++i) {
          ttl_rain+=w[i].total; // add monthly rainfall to total rainfall
@@ -188,15 +188,15 @@ int main() {
      cout << "How many tests were taken: ";
      cin >> nTest;
      // initialize test array for each student in Course array
-     for (int i = 0; i != nStudent; i++);
+     for (int i = 0; i != nStudent; i++)
         out->tests = new float[nTest];
+     return out;
 }
  
  // destroy the dynamically allocated array holding test scores
  // then destroy the Course array
  void dstryCrse(Course *c, int size) {
-     for (int i = 0; i != size; ++i)
-         delete [] c[i]->tests;         // delete the array in each course
- 
-        delete []c;             // delete the course
+     delete []c->tests;
+     delete c;
+     
  }
