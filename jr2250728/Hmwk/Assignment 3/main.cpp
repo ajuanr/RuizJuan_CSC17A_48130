@@ -15,9 +15,9 @@ struct Movie {
 };
 
 struct Weather {
-    float total;          // total rainfall
-    float high;         // high temp
-    float low;          // low temp
+    int total;          // total rainfall
+    int high;         // high temp
+    int low;          // low temp
 };
 
 struct Company {
@@ -67,7 +67,7 @@ char ltrGrade(int);
 Course* getCourse();
 
 int main() {
-    prob11_3();
+    prob11_4();
 
     return 0;
 } 
@@ -220,14 +220,15 @@ char ltrGrade(int c) {
      cout << endl;
      
  }
- 
+
+// Calculate weather data
  void calcWthr(Weather *w, int size) {
      const char *months[12] = {"January", "February", "March", "April",
                            "May", "June", "July", "August",
                            "September", "October", "November", "December"};
-     float ttl_rain=0;        // rainfall
-     float high=-100, low = 140;        // temperatures
-     int index_h=0, index_l=0;              // where high and low temps occured;
+     int ttl_rain=0;                  // total rainfall
+     int high=-100, low = 140;        // high and lowtemperatures
+     int index_h=0, index_l=0;          // when high and low temps occured;
      
      for (int i = 0; i != size; ++i) {
          ttl_rain+=w[i].total; // add monthly rainfall to total rainfall
@@ -241,10 +242,10 @@ char ltrGrade(int c) {
          }
      }
      cout << "Total rainfall is: " << ttl_rain << endl;
-     cout << "Average rainfall is: " << ttl_rain / size << endl;
+     cout << "Average rainfall is: " << ttl_rain / size << " inches\n";
      cout << "High temp was " << high << ". Occured in " << months[index_h];
      cout << endl;
-     cout << "Low temp was " << high << ". Occured in " << months[index_l];
+     cout << "Low temp was " << low << ". Occured in " << months[index_l];
      cout << endl;
  }
  
