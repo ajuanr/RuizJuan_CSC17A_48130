@@ -70,11 +70,14 @@ void setUpGame() {
         select(mf, row, col);
     } while (mf->data[row][col] != MineField::MINE && !hasWon(mf));
     /// Prepare to print completed minefield
-    setFlags(mf);
-    if (hasWon(mf))
+    if (hasWon(mf)) {
         cout << "You win\n";
-    else
+            setFlags(mf);
+    }
+    else{
+        setFlags(mf);
         mf->data[row][col]= MineField::LOSER;
+    }
     /// Print the complete minefield
     prntClr(mf);
     
