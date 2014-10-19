@@ -87,13 +87,14 @@ void setUpGame() {
     if (response == 'y') {
         cout << "\nHere is the result:\n";
         /// Create space to hold the file read
-        MineField *copy = new MineField;
+        MineField *result;
         fstream in("Result", ios::in | ios::binary);
-        in.read(reinterpret_cast<char *>(&copy), sizeof(*copy));
-        prntClr(copy);
+        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
+        prntClr(result);
+        result = 0;
         
     }
-    
+
     destroy(mf);                /// deallocate the game area
 }
 
