@@ -48,7 +48,9 @@ struct Course {
 /*
  * Problem Prototypes begin here
  */
-
+void Menu();
+int getN();
+void def(int);
 void prob11_1();
 void prob11_3();
 void prob11_4();
@@ -67,24 +69,58 @@ char ltrGrade(int);
 Course* getCourse();
 
 int main() {
-    prob11_4();
+    int inN;
+    do{
+        Menu();
+        inN=getN();
+        switch(inN){
+            case 1:    prob11_1();cout << endl;break;
+            case 2:    prob11_3();cout << endl;break;
+            case 3:    prob11_4();cout << endl;break;
+            case 4:    prob11_11();cout << endl;break;
+            case 5:    prob11_12();cout << endl;break;
+            default:   def(inN);
+        }
+    } while(inN<6);
 
     return 0;
-} 
+}
+
+void Menu()
+{
+    cout<<"Type 1 for problem 1"<<endl;
+    cout<<"Type 2 for problem 2"<<endl;
+    cout<<"Type 3 for problem 3"<<endl;
+    cout<<"Type 4 for problem 4"<<endl;
+    cout<<"Type 5 for problem 5"<<endl;
+    cout<<"Type 6 to exit \n"<<endl;
+}
+int getN()
+{
+    int inN;
+    cin>>inN;
+    return inN;
+}
+
+void def(int inN)
+{
+    cout<<"You typed "<<inN<<" to exit the program"<<endl;
+}
+
 // Create a structure holding movie data
 // Create two movies
 // Print the movie data
  void prob11_1() {
     Movie m1, m2;
-    m1.title = "title of 1";
-    m1.director = "director of 1";
-    m1.released = "release date of 1";
-    m1.length = "length of 1";
+    m1.title = "Gladiator";
+    m1.director = "Ridley Scott";
+    m1.released = "2000";
+    m1.length = "155 min.";
     
-    m2.title = "title of 2";
-    m2.director = "director of 2";
-    m2.released = "release date of 2";
-    m2.length = "length of 2";
+    m2.title = "The Good, the Bad and the Ugly";
+    m2.director = "Sergio Leone";
+    m2.released = "1966";
+    m2.length = "161 min";
     
     prntMov(m1);
     cout << endl;
@@ -95,7 +131,7 @@ int main() {
  void prntMov(const Movie &m) {
      cout << setw(14) << left << "Title: " << m.title << endl
           << setw(14) << left  << "Director: " << m.director << endl
-          << "Release Date: " << m.length << endl
+          << "Release Date: " << m.released << endl
           << "Running Time: " << m.length << endl;
      
  }
@@ -111,6 +147,7 @@ void prob11_3() {
         totalSale+=*(comp->qrtrSale+i);;
         
     }
+    cout << endl;
     cout << "Info for division: " << comp->division << endl;
     cout << "Total sales were: " << totalSale << endl;
     cout << "Average quarterly sales were: " << totalSale / 4 << endl;
@@ -262,35 +299,11 @@ char ltrGrade(int c) {
  void cmpBudg(MonthlyBudget * deflt, MonthlyBudget *actual) {
      for (int i = 0; i != 10; ++i) {
          if ( actual->budget[i] > deflt->budget[i]) 
-             cout << "You spent "<< actual->budget[i] - deflt->budget[i]
-                  <<  "$ too much on " << deflt->expense[i] << ".\n";
+             cout << "You spent $"<< actual->budget[i] - deflt->budget[i]
+                  <<  " too much on " << deflt->expense[i] << ".\n";
          else
-             cout << "You were "<< deflt->budget[i] - actual->budget[i]
-                  <<  "$ under for " << deflt->expense[i] << ".\n";
+             cout << "You were $"<< deflt->budget[i] - actual->budget[i]
+                  <<  " under for " << deflt->expense[i] << ".\n";
      }
  } 
- /*
- Course* getCourse() {
-     int nStudent;
-     cout << "How many students are there: ";
-     cin >> nStudent;
-     Course *roster = new Course[nStudent];
-     roster->nStudents=nStudent;
-     int nTest;
-     cout << "How many tests were taken: ";
-     cin >> nTest;
-     roster->nTests = nTest;
-     // initialize test array for each student in Course array
-     for (int i = 0; i != nStudent; i++)
-        roster->tests = new float[nTest];
-     
-     for (int i = 0; i != roster->nStudents; ++i) {
-         cout << "Enter student name: ";
-         cin >> roster[i]->name;
-         for (int j = 0; j != roster->nTests; ++j) {
-             
-         }
-     }
-     return roster;
-}
-*/
+ 
