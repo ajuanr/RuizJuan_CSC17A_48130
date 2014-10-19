@@ -139,9 +139,9 @@ void prntClr(MineField* mf) {
     for (int row = 0; row != mf->rows; ++row){
         for (int col = 0; col != mf->cols; ++col) {
             ///
-            if ( mf->data[row][col] == MineField::LOSER)
+            if ( *(*(mf->data+row) +col) == MineField::LOSER)
                 cout << "T ";
-            else if (mf->data[row][col] == MineField::MINE)
+            else if (*(*(mf->data+row) +col) == MineField::MINE)
                 cout << "x ";
             else if (!isClear(mf, row, col))
                      cout << nAdjacent(mf, row, col) << " ";
