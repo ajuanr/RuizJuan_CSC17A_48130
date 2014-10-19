@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 
 enum DIFFICULTY {EASY, NORMAL, HARD};
 
@@ -71,7 +72,29 @@ void setUpGame() {
 
     mf->data[row][col]= MineField::LOSER;
     prntClr(mf);
-    destroy(mf);                /// deallocate
+    
+    /// Write the result to a binary file
+    fstream out("Result", ios::out | ios::binary);    /// open the file
+    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
+    out.close();
+    
+    
+    /// Ask user if they want to see the result of the last game
+    char response;
+    cout << "Would you like to see the result of the last game?\n"
+            "Hit 'y' if yes: ";
+    cin >> response;
+    if (response == 'y') {
+        /// Create space to hold the file read
+        MineField *copy = new MineField;
+        fstream in("Result", ios::in | ios::binary);
+        in.seekg(8*sizeof(int), ios::beg);
+        in.read(reinterpret_cast<char *>(&copy), sizeof(*copy));
+        prntClr(copy);
+        
+    }
+    
+    destroy(mf);                /// deallocate the game area
 }
 
 /// Function that creates the grid on which game will be played
