@@ -1,8 +1,8 @@
 /*
  * Ruiz, Juan - Project 1 - 48130
- * 
+ *
  * Project runs a game of minesweeper
- * 
+ *
  */
 
 #include <iostream>
@@ -19,7 +19,7 @@ struct MineField {
     int cols;
     DIFFICULTY d;   /// determines how many mines
     int nMines;     /// number of mines
-
+    
 };
 
 MineField* create(int, int);
@@ -44,7 +44,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     setUpGame();
-
+    
     return 0;
 }
 
@@ -60,16 +60,16 @@ void setUpGame() {
     do {
         do {                                     /// get row input
             cout << "Enter the row: ";
-                 cin >> row;
+            cin >> row;
         } while (row < 0 || row >= mf->rows);    /// check bounds
         do {                                     /// get column input
             cout << "Enter the column: ";
-                cin >> col;
+            cin >> col;
         } while (col < 0 || col >= mf->cols);    /// check bounds
         cout << endl;
         select(mf, row, col);
     } while (mf->data[row][col] != MineField::MINE);
-
+    
     mf->data[row][col]= MineField::LOSER;
     prntClr(mf);
     
@@ -82,13 +82,13 @@ void setUpGame() {
     /// Ask user if they want to see the result of the last game
     char response;
     cout << "Would you like to see the result of the last game?\n"
-            "Hit 'y' if yes: ";
+    "Hit 'y' if yes: ";
     cin >> response;
     if (response == 'y') {
+        cout << "\nHere is the result:\n";
         /// Create space to hold the file read
         MineField *copy = new MineField;
         fstream in("Result", ios::in | ios::binary);
-        in.seekg(8*sizeof(int), ios::beg);
         in.read(reinterpret_cast<char *>(&copy), sizeof(*copy));
         prntClr(copy);
         
@@ -182,7 +182,7 @@ int nMines(MineField::DIFFICULTY d) {
 void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
     /// holds how many mines will be used
     int mines = mf->nMines;
-
+    
     /// keep looping through grid until all mines are set
     while (mines) {
         for (int i = 0; i != mf->rows; ++i) {
@@ -281,7 +281,7 @@ int nAdjacent(MineField *mf, int row, int col, int FLAG) {
 /// Function is true if there 0 landmines adjacent to
 /// selected square
 bool isClear(MineField * mf, int row, int col) {
-    if (nAdjacent(mf, row, col)) 
+    if (nAdjacent(mf, row, col))
         return false;            /// there was at least one mine adjacent
     return true;                 /// area was clear
 }
@@ -292,14 +292,14 @@ void showZeros(MineField *mf, int row, int col) {
         return;
     if (isClear(mf, row, col) && mf->data[row][col] != MineField::CLEAR){
         mf->data[row][col] = MineField::CLEAR;
-            showZeros(mf, row+1, col); /// go up one row
-            showZeros(mf, row-1, col); /// go down one row
-            showZeros(mf, row, col+1); /// go right one col
-            showZeros(mf, row, col-1); /// go left one col
-        }
-        /// space was not clear or already shown
-        else
-            return;
+        showZeros(mf, row+1, col); /// go up one row
+        showZeros(mf, row-1, col); /// go down one row
+        showZeros(mf, row, col+1); /// go right one col
+        showZeros(mf, row, col-1); /// go left one col
+    }
+    /// space was not clear or already shown
+    else
+        return;
 }
 
 /// Function shows how many mines are adjacent to selected square
@@ -318,10 +318,10 @@ void select(MineField * mf, int row, int col) {
     /// check if user selected a losing square
     if (mf->data[row][col] == MineField::MINE) {
         cout << "You lose\n"                    /// Output message informing
-                "The t marks your grave.\n"     ///  user of their loss
-                "Goodbye.\n\n";
+        "The t marks your grave.\n"     ///  user of their loss
+        "Goodbye.\n\n";
         setFlags(mf);                           /// set all the spaces
-                                                /// before printing
+        /// before printing
     }
     /// Square is a zero, clear the surrounding area if necessary
     else if (isClear(mf, row, col) ){
@@ -344,7 +344,7 @@ void setPerim(MineField *mf) {
         for (int col = 0; col != mf->cols; ++col) {
             /// when you're not on the bounds of the array
             if (row > 0 && row < mf->rows-1
-                    && col > 0 &&  col <mf->cols-1)
+                && col > 0 &&  col <mf->cols-1)
                 if (mf->data[row][col] == MineField::CLEAR) {
                     /// check that the previous number has mines adjacent
                     if (mf->data[row][col-1] != MineField::CLEAR)
