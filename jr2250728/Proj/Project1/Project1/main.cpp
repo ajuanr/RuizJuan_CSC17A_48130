@@ -69,7 +69,8 @@ void setUpGame() {
         cout << endl;
         select(mf, row, col);
     } while (mf->data[row][col] != MineField::MINE && !hasWon(mf));
-    
+    /// Prepare to print completed minefield
+    setFlags(mf);
     if (hasWon(mf))
         cout << "You win\n";
     else
@@ -137,8 +138,12 @@ void prntClr(MineField* mf) {
             ///
             if ( mf->data[row][col] == MineField::LOSER)
                 cout << "T ";
+            else if (mf->data[row][col] == MineField::MINE)
+                cout << "x ";
+            else if (!isClear(mf, row, col))
+                     cout << nAdjacent(mf, row, col) << " ";
             else
-                cout << mf->data[row][col] << " ";
+                cout << "0 ";
         }
         cout << endl;
     }
@@ -322,9 +327,8 @@ void select(MineField * mf, int row, int col) {
     /// check if user selected a losing square
     if (mf->data[row][col] == MineField::MINE) {
         cout << "You lose\n"                    /// Output message informing
-        "The t marks your grave.\n"     ///  user of their loss
         "Goodbye.\n\n";
-        setFlags(mf);                           /// set all the spaces
+        
         /// before printing
     }
     /// Square is a zero, clear the surrounding area if necessary
