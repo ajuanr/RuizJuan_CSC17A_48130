@@ -37,6 +37,7 @@ void clrArea(MineField *, short, short);
 void setPerim(MineField *);
 void showZeros(MineField *, short, short);
 bool hasWon(MineField *);
+void rwFile(MineField *);
 
 void select(MineField *, short, short);
 void playGame();
@@ -83,26 +84,27 @@ void playGame() {
     /// Print the complete minefield
     prntClr(mf);
     
-    /// Write the result to a binary file
-    fstream out("Result", ios::out | ios::binary);    /// open the file
-    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
-    out.close();
+    rwFile(mf);
     
-    
-    /// Ask user if they want to see the result of the last game
-    char response;
-    cout << "Would you like to see the result of the last game?\n"
-    "Hit 'y' if yes: ";
-    cin >> response;
-    if (response == 'y') {
-        cout << "\nHere is the result:\n";
-        /// Create space to hold the file read
-        MineField *result;
-        fstream in("Result", ios::in | ios::binary);
-        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
-        prntClr(result);
-        result = 0;
-    }
+//    /// Write the result to a binary file
+//    fstream out("Result", ios::out | ios::binary);    /// open the file
+//    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
+//    out.close();
+//   
+//    /// Ask user if they want to see the result of the last game
+//    char response;
+//    cout << "Would you like to see the result of the last game?\n"
+//    "Hit 'y' if yes: ";
+//    cin >> response;
+//    if (response == 'y') {
+//        cout << "\nResult of your last game:\n";
+//        /// Create space to hold the file read
+//        MineField *result;
+//        fstream in("Result", ios::in | ios::binary);
+//        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
+//        prntClr(result);
+//        result = 0;
+//    }
 
     destroy(mf);                /// deallocate the game area
 }
@@ -384,5 +386,28 @@ void setPerim(MineField *mf) {
                         mf->data[row+1][col] = nAdjacent(mf,row+1, col);
                 }
         }
+    }
+}
+
+/// This function writes to and reads from a binary file
+void rwFile(MineField *mf) {
+        /// Write the result to a binary file
+    fstream out("Result", ios::out | ios::binary);    /// open the file
+    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
+    out.close();
+   
+    /// Ask user if they want to see the result of the last game
+    char response;
+    cout << "Would you like to see the result of the last game?\n"
+    "Hit 'y' if yes: ";
+    cin >> response;
+    if (response == 'y') {
+        cout << "\nResult of your last game:\n";
+        /// Create space to hold the file read
+        MineField *result;
+        fstream in("Result", ios::in | ios::binary);
+        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
+        prntClr(result);
+        result = 0;
     }
 }
