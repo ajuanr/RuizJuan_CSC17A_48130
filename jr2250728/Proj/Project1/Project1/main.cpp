@@ -47,7 +47,14 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     playGame();
-    //fields();
+    cout << endl;
+    cout << "Would you like to see some empty minefields.\n"
+            "Hit 'y' for yes: ";
+    char ans;
+    cin >> ans;
+    if (ans == 'y')
+        fields();
+    
     return 0;
 }
 
