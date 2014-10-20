@@ -51,8 +51,8 @@ int main(int argc, const char * argv[]) {
 }
 
 void playGame() {
-    const short nrows = 3;
-    const short ncols = 3;
+    const short nrows = 10;
+    const short ncols = 10;
     srand(time(0));
     /// Get the user name
     char *player = userName();
@@ -185,7 +185,7 @@ void prntObscr(MineField* mf) {
 /// Function returns the number of mines to set
 void nMines(MineField *mf, MineField::DIFFICULTY d) {
     if (d==MineField::EASY)
-        mf->mines = 1;
+        mf->mines = 15;
     else if (d==MineField::NORMAL)
         mf->mines = 30;
     else if (d==MineField::HARD)
