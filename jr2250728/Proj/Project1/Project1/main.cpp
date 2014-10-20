@@ -28,7 +28,7 @@ void destroy(MineField *);
 void prntClr(MineField *);
 void prntObscr(MineField *);
 void nMines(MineField *, MineField::DIFFICULTY);
-void setMines(MineField *,  MineField::DIFFICULTY);
+void setMines(MineField *);
 void setFlags(MineField *);
 short nAdjacent(MineField *, short, short, short = MineField::MINE);
 bool isClear(MineField *, short, short);
@@ -44,8 +44,10 @@ void prompt(short&, short&);
 char * userName();
 using namespace std;
 
+
 int main(int argc, const char * argv[]) {
     playGame();
+    //fields();
     return 0;
 }
 
@@ -57,7 +59,7 @@ void playGame() {
     char *player = userName();
     MineField *mf = create(nrows, ncols);
     nMines(mf, MineField::EASY);
-    setMines(mf, MineField::EASY);
+    setMines(mf);
     prntObscr(mf);
     short row, col;
     do {
@@ -192,7 +194,7 @@ void nMines(MineField *mf, MineField::DIFFICULTY d) {
 }
 
 /// Function places mines in grid
-void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
+void setMines(MineField *mf) {
     /// holds how many mines will be used
     short mines = mf->mines;
     
@@ -201,9 +203,9 @@ void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
         for (short i = 0; i != mf->rows; ++i) {
             for (short j = 0; j != mf->cols; ++j) {
                 /// place mines if result of rand()%15 == 0
-                if (rand() % 15 == 0){
+                if ((rand() % 100) % 10 == 0){
                     ///only place mines if mines are still available
-                    /// and current position does not have a mine
+                    /// and current is empty
                     if (mines && mf->data[i][j] == MineField::EMPTY) {
                         mf->data[i][j] = MineField::MINE;  /// set the mine
                         --mines;         /// decrement number of mines available
@@ -425,12 +427,14 @@ void fields() {
     cin >> n;
     
     MineField **mf = new MineField*[n];
-    const int row = 6;
-    const int col = 6;
+    const int row = 10;
+    const int col = 10;
     /// create the fields
     for (int i = 0; i != n; ++i) {
-        mf[i] = create(row, col);
-        //setFlags(*(mf+i));
+        mf[i] = create(row, col);               /// Create each field
+        nMines(*(mf+i), MineField::EASY);
+        setMines(*(mf+i));   /// place the mines
+        setFlags(*(mf+i));                      ///  set the flags
         prntClr(*(mf+i));
         cout << endl;   
     }
