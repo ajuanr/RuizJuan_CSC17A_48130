@@ -45,8 +45,7 @@ char * userName();
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-    //playGame();
-    fields();
+    playGame();
     return 0;
 }
 
@@ -140,9 +139,9 @@ void prntClr(MineField* mf) {
     for (short row = 0; row != mf->rows; ++row){
         for (short col = 0; col != mf->cols; ++col) {
             ///
-            if ( *(*(mf->data+row) +col) == MineField::LOSER)
+            if ( *(*(mf->data+row) + col) == MineField::LOSER)
                 cout << "T ";
-            else if (*(*(mf->data+row) +col) == MineField::MINE)
+            else if (*(*(mf->data+row) + col) == MineField::MINE)
                 cout << "x ";
             else if (!isClear(mf, row, col))
                      cout << nAdjacent(mf, row, col) << " ";
@@ -182,7 +181,7 @@ void prntObscr(MineField* mf) {
     cout << endl;
 }
 
-/// Function returns the number of mines to set
+/// Function returns the number of mines to set based on difficulty
 void nMines(MineField *mf, MineField::DIFFICULTY d) {
     if (d==MineField::EASY)
         mf->mines = 15;
@@ -431,18 +430,14 @@ void fields() {
     /// create the fields
     for (int i = 0; i != n; ++i) {
         mf[i] = create(row, col);
-    }
-    
-    /// print the fields
-    for (int i = 0; i !=n; ++i) {
-        setFlags(*(mf+i));
+        //setFlags(*(mf+i));
         prntClr(*(mf+i));
-        cout << endl;
+        cout << endl;   
     }
     cout << endl;
     
     for (int i = 0; i != n; ++i) {
-        delete *(mf+i);
+        destroy(*(mf+i));
     }
     delete mf;
 }
