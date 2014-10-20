@@ -438,15 +438,16 @@ void fields() {
     const int col = 10;
     /// create the fields
     for (int i = 0; i != n; ++i) {
-        mf[i] = create(row, col);               /// Create each field
-        nMines(*(mf+i), MineField::EASY);
-        setMines(*(mf+i));   /// place the mines
-        setFlags(*(mf+i));                      ///  set the flags
-        prntClr(*(mf+i));
+        mf[i] = create(row, col);                /// Create each field
+        nMines(*(mf+i), MineField::EASY);        /// get number of mines
+        setMines(*(mf+i));   /// place the mines /// set the mines
+        setFlags(*(mf+i));                       /// set the flags
+        prntClr(*(mf+i));                        /// print the field
         cout << endl;   
     }
     cout << endl;
     
+    /// deallocate memory
     for (int i = 0; i != n; ++i) {
         destroy(*(mf+i));
     }
