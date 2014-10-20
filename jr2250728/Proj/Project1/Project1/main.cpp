@@ -37,7 +37,7 @@ void setPerim(MineField *);
 void showZeros(MineField *, short, short);
 bool hasWon(MineField *);
 void rwFile(MineField *);
-
+void fields();
 bool cont(MineField *, short, short);
 void playGame();
 void prompt(short&, short&);
@@ -45,8 +45,8 @@ char * userName();
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-    playGame();
-    
+    //playGame();
+    fields();
     return 0;
 }
 
@@ -417,4 +417,32 @@ void rwFile(MineField *mf) {
         prntClr(result);
         result = 0;
     }
+}
+
+/// This function is to show that I can create an array of structures
+void fields() {
+    cout << "How many mine fields do you want to see: ";
+    int n;
+    cin >> n;
+    
+    MineField **mf = new MineField*[n];
+    const int row = 6;
+    const int col = 6;
+    /// create the fields
+    for (int i = 0; i != n; ++i) {
+        mf[i] = create(row, col);
+    }
+    
+    /// print the fields
+    for (int i = 0; i !=n; ++i) {
+        setFlags(*(mf+i));
+        prntClr(*(mf+i));
+        cout << endl;
+    }
+    cout << endl;
+    
+    for (int i = 0; i != n; ++i) {
+        delete *(mf+i);
+    }
+    delete mf;
 }
