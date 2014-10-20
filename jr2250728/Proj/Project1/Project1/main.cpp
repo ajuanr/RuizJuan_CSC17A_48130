@@ -14,7 +14,7 @@ enum DIFFICULTY {EASY, NORMAL, HARD};
 struct MineField {
     /// Determines how many mines to set
     enum DIFFICULTY {EASY, NORMAL, HARD};
-    /// Flags representing various square possibiities
+    /// Flags representing various square possibilities
     enum FLAGS {EMPTY=10, MINE, CLEAR, LOSER};
     short **data;      /// This is the minefield
     short rows;        /// number of rows
@@ -39,7 +39,7 @@ void showZeros(MineField *, short, short);
 bool hasWon(MineField *);
 void rwFile(MineField *);
 
-void select(MineField *, short, short);
+bool cont(MineField *, short, short);
 void playGame();
 void prompt(short&, short&);
 char * userName();
@@ -52,8 +52,8 @@ int main(int argc, const char * argv[]) {
 }
 
 void playGame() {
-    const short nrows = 10;
-    const short ncols = 10;
+    const short nrows = 2;
+    const short ncols = 2;
     srand(time(0));
     char *player = userName();
     MineField *mf = create(nrows, ncols);
@@ -71,15 +71,14 @@ void playGame() {
             cin >> col;
         } while (col < 0 || col >= mf->cols);    /// check bounds
         cout << endl;
-        select(mf, row, col);
-    } while (mf->data[row][col] != MineField::MINE && !hasWon(mf));
+    } while (cont(mf, row, col) && !hasWon(mf));
     /// Prepare to print completed minefield
     if (hasWon(mf)) {
-        cout << "You win\n";
+        cout << player << "You win\n";
         setFlags(mf);
     }
     else{
-        cout << player << " you have lost\n";
+        cout << player << "you have lost\n";
         setFlags(mf);
         mf->data[row][col]= MineField::LOSER;
     }
@@ -186,7 +185,7 @@ void prntObscr(MineField* mf) {
 /// Function returns the number of mines to set
 void nMines(MineField *mf, MineField::DIFFICULTY d) {
     if (d==MineField::EASY)
-        mf->mines = 15;
+        mf->mines = 1;
     else if (d==MineField::NORMAL)
         mf->mines = 30;
     else if (d==MineField::HARD)
@@ -327,27 +326,27 @@ void setFlags(MineField *mf) {
                 mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
-/// Function reveals what is underneath the selected square
-/// that the user has selected
-void select(MineField * mf, short row, short col) {
+/// Function reveals what is underneath the square that the user has selected
+/// and whether to continue based on what is revealed
+/// i.e selecting a mines means you lost
+bool cont(MineField * mf, short row, short col) {
     /// check if user selected a losing square
-    if (mf->data[row][col] == MineField::MINE) {
-        cout << "You lose\n"                    /// Output message informing
-        "Goodbye.\n\n";
-        
-        /// before printing
-    }
+    if (mf->data[row][col] == MineField::MINE)
+        return false;
+
     /// Square is a zero, clear the surrounding area if necessary
     else if (isClear(mf, row, col) ){
         showZeros(mf, row, col); /// show cleared area
         setPerim(mf);
         prntObscr(mf);
+        return true;
     }
     /// Square had adjacent landmine
     /// reveal the number to the user
     else {
         mf->data[row][col] = nAdjacent(mf, row, col);
         prntObscr(mf);
+        return true;
     }
 }
 
