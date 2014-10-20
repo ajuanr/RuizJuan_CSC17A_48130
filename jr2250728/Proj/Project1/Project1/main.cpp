@@ -42,7 +42,7 @@ void rwFile(MineField *);
 void select(MineField *, short, short);
 void playGame();
 void prompt(short&, short&);
-
+char * userName();
 using namespace std;
 
 int main(int argc, const char * argv[]) {
@@ -55,6 +55,7 @@ void playGame() {
     const short nrows = 10;
     const short ncols = 10;
     srand(time(0));
+    char *player = userName();
     MineField *mf = create(nrows, ncols);
     nMines(mf, MineField::EASY);
     setMines(mf, MineField::EASY);
@@ -78,35 +79,32 @@ void playGame() {
         setFlags(mf);
     }
     else{
+        cout << player << " you have lost\n";
         setFlags(mf);
         mf->data[row][col]= MineField::LOSER;
     }
     /// Print the complete minefield
     prntClr(mf);
     
+    /// write and read binary file
     rwFile(mf);
     
-//    /// Write the result to a binary file
-//    fstream out("Result", ios::out | ios::binary);    /// open the file
-//    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
-//    out.close();
-//   
-//    /// Ask user if they want to see the result of the last game
-//    char response;
-//    cout << "Would you like to see the result of the last game?\n"
-//    "Hit 'y' if yes: ";
-//    cin >> response;
-//    if (response == 'y') {
-//        cout << "\nResult of your last game:\n";
-//        /// Create space to hold the file read
-//        MineField *result;
-//        fstream in("Result", ios::in | ios::binary);
-//        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
-//        prntClr(result);
-//        result = 0;
-//    }
-
     destroy(mf);                /// deallocate the game area
+}
+
+char *userName() {
+    cout << "Enter your name: ";
+    string in;
+    cin >> in;
+    
+    short size = in.size();
+    char *name = new char[size+1]; /// make room for '\0'
+    for (short i = 0; i != size; ++i) {
+        *(name+i) = in[i];
+    }
+    *(name+size+1) = '\0';
+    
+    return name;
 }
 
 /// Function that creates the grid on which game will be played
