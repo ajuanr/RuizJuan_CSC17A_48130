@@ -21,7 +21,6 @@ struct MineField {
     short cols;        /// Number of columns
     DIFFICULTY d;    /// determines how many mines
     short mines;       /// number of mines
-    
 };
 
 MineField* create(short, short);
@@ -52,9 +51,10 @@ int main(int argc, const char * argv[]) {
 }
 
 void playGame() {
-    const short nrows = 2;
-    const short ncols = 2;
+    const short nrows = 3;
+    const short ncols = 3;
     srand(time(0));
+    /// Get the user name
     char *player = userName();
     MineField *mf = create(nrows, ncols);
     nMines(mf, MineField::EASY);
@@ -87,7 +87,7 @@ void playGame() {
     
     /// write and read binary file
     rwFile(mf);
-    
+    delete player;
     destroy(mf);                /// deallocate the game area
 }
 
@@ -317,6 +317,7 @@ void showZeros(MineField *mf, short row, short col) {
 }
 
 /// Function shows how many mines are adjacent to selected square
+/// for the entire minefield
 void setFlags(MineField *mf) {
     for (short i = 0; i != mf->rows; ++i)
         for (short j = 0; j != mf->cols; ++j)
@@ -341,7 +342,7 @@ bool cont(MineField * mf, short row, short col) {
         prntObscr(mf);
         return true;
     }
-    /// Square had adjacent landmine
+    /// Square had adjacent mine
     /// reveal the number to the user
     else {
         mf->data[row][col] = nAdjacent(mf, row, col);
@@ -381,6 +382,15 @@ void setPerim(MineField *mf) {
                     /// check if the next number has mines adjacent
                     if (mf->data[row+1][col] != MineField::CLEAR)
                         mf->data[row+1][col] = nAdjacent(mf,row+1, col);
+                    /// check the adjacent corners
+                    if (mf->data[row+1][col-1] != MineField::CLEAR)
+                        mf->data[row-1][col-1] = nAdjacent(mf,row-1, col-1);
+                    if (mf->data[row-1][col+1] != MineField::CLEAR)
+                        mf->data[row-1][col+1] = nAdjacent(mf,row-1, col+1);
+                    if (mf->data[row+1][col-1] != MineField::CLEAR)
+                        mf->data[row+1][col-1] = nAdjacent(mf,row+1, col-1);
+                    if (mf->data[row+1][col+1] != MineField::CLEAR)
+                        mf->data[row+1][col+1] = nAdjacent(mf,row+1, col+1);  
                 }
         }
     }
