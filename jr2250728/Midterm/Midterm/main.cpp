@@ -37,13 +37,12 @@ struct statsResult {
     int maxFreq; //max frequency of modes
 };
 
-void print(int *array, int size);
-
 /*
  *  Menu and problemlem protoypes
  */
 void problem1();
 void problem2();
+void problem3();
 void problem5();
 
 /*
@@ -63,7 +62,9 @@ void formatCheck(Employee*, string);
 /*
  * Functions for problem 3
  */
-statsResult *avgMedMode(int *,int); 
+statsResult *avgMedMode(int *,int);
+void mode(statsResult*, int *,int );
+void printSR(statsResult *);
 
 /*
  * Functions for problem 5
@@ -75,14 +76,19 @@ template<class T>
 T maxFac(T);
 
 
+/****************************************
+ *
+ *                  Main
+ *
+****************************************/
 int main(int argc, const char * argv[]) {
-    int a[7] = {3,6,4,3,7,3,9};
-    print(a,7);
-    avgMedMode(a, 7);
-    print(a, 7);
-    //problem2();
+        problem3();
     return 0;
 }
+/*
+ *
+ *
+*/
 
 void problem1() {
     Customer *c = new Customer;
@@ -135,6 +141,36 @@ void problem2() {
     delete []eArray;
     
     
+}
+
+// Modes problem
+void problem3() {
+    int size = 109;
+    int a[size];
+        //Allocate memory
+        //Initialize with
+        for(int i=0;i<size;i++){
+            a[i]=i%8;
+            cout << a[i] << " ";
+        }
+    cout << endl;
+    statsResult *sr = avgMedMode(a, size);
+    
+    // calculate average;
+    int total = 0;
+    for (int i = 0; i != size; ++i)
+        total += *(a+i);
+    sr->avg=total / size;
+    
+    // for calculating median
+    int mid = size /2;
+    if ( size % 2 == 1)
+        sr->median = sr->mode[mid];
+    else
+        sr->median = (sr->mode[mid] + sr->mode[mid+1])/2;
+    
+    printSR(sr);
+
 }
 
 void getEmpInfo(Employee *e) {
@@ -275,13 +311,97 @@ bool isOvrdrwn(Customer *c) {
 }
 
 statsResult *avgMedMode(int *array, int size) {
-    sort(array, array+size);
+    statsResult *result = new statsResult;
+    
+    mode(result, array,size);
+
+    return result;
+    
 }
 
+void mode(statsResult* s, int *a,int n){
+    
+    //Create a parallel array to sort
+    int *b=new int [n];
+    
+    for (int i=0; i !=n; ++i)
+        b[i] = a[i];
+    // sort the array
+    sort(b, b+n);
 
-void print(int *array, int size) {
-    for (int i = 0; i != size; ++i) {
-        cout << array[i] << " ";
+    //Count to max frequency
+    int count=0,maxFreq=0;
+    for(int i=1;i<n;i++){
+        if(b[i]==b[i-1]){
+            count++;
+            if(maxFreq<count)maxFreq=count;
+        }else{
+            count=0;
+        }
     }
-    cout << endl;
+    s->maxFreq=maxFreq+1;
+    
+    //cout<<"Max Freq = "<<maxFreq+1<<endl;
+    //Count number of modes
+    count=0;
+    int nmodes=0;
+    for(int i=1;i<n;i++){
+        if(b[i]==b[i-1]){
+            count++;
+            if(maxFreq==count)nmodes++;
+        }else{
+            count=0;
+        }
+    }
+    s->nModes=nmodes;
+    //cout<<"Number of Modes = "<<nmodes<<endl;
+    //Declare and fill the mode array
+    s->mode =new int[nmodes];
+    nmodes=0;
+    count=0;
+    for(int i=1;i<n;i++){
+        if(b[i]==b[i-1]){
+            count++;
+            if(maxFreq==count)
+                s->mode[nmodes++]=b[i];
+        }else{
+            count=0;
+        }
+    }
+    
+    //Clean up and return
+    delete []b;
+}
+
+// Function prints the statsResult structure
+void printSR(statsResult* sr) {
+    cout << "Median is : " << sr->median << endl;
+    cout << "Average is : " << sr->avg << endl;
+    cout<<"Number of modes = "<<sr->nModes<<endl;
+    cout<<"The frequency of the modes = "<<sr->maxFreq<<endl;
+    if(sr->nModes==0){
+        cout<<"The mode set = {0}"<<endl;
+    }else{
+        cout<<"The mode set = {";
+        // don't print the last element in loop
+        for(int i=0;i!=sr->nModes-1; ++i){
+            cout<<*(sr->mode+i)<<",";
+        }
+        // print the last element
+        cout<<*(sr->mode + (sr->nModes-1))<<"}"<<endl;
+    }
+
+
+//    cout << "Max frequency is: " << sr->maxFreq << endl;
+//    cout << "The number of modes are: " << sr->nModes << endl;
+//    cout << "The modes set: {";
+//    
+//    for (int i = 0; i != sr->nModes; ++i) {
+//        cout << *(sr->mode + i) << " ";
+//    }
+//    // closing brace for mode set
+//    cout << "}" << endl;
+
+    
+    
 }
