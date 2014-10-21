@@ -145,14 +145,23 @@ void problem2() {
 
 // Modes problem
 void problem3() {
-    int size = 109;
-    int a[size];
-        //Allocate memory
-        //Initialize with
+    int size;
+    cout << "How many elements will you enter: ";
+    cin >> size;
+    
+    // create new array and fill with user supplied elements
+    int *a = new int [size];
         for(int i=0;i<size;i++){
-            a[i]=i%8;
-            cout << a[i] << " ";
+            cout << "Enter element " << i << ": ";
+            int elem;
+            cin >> elem;
+            a[i] = elem;
         }
+    
+    // print what user entered
+    cout << "You entered:\n";
+    for (int i =0; i != size; ++i)
+        cout << a[i] << " ";
     cout << endl;
     statsResult *sr = avgMedMode(a, size);
     
@@ -162,14 +171,14 @@ void problem3() {
         total += *(a+i);
     sr->avg=total / size;
     
-    // for calculating median
-    int mid = size /2;
-    if ( size % 2 == 1)
-        sr->median = sr->mode[mid];
-    else
-        sr->median = (sr->mode[mid] + sr->mode[mid+1])/2;
+    
     
     printSR(sr);
+    
+    // clean up
+    delete []a;
+    delete []sr->mode;
+    delete sr;
 
 }
 
@@ -190,7 +199,6 @@ int pay(Employee* e) {
     int r3;               // temp
     int r4;               // holds the hours > than pay differential
 
-    /// remember r4 must be preserved: push {r4}
     // check if triple time applies
     if ( r2 > 40) {
         r4 = r2 - 40;           // r4 holds hours > 40 worked
@@ -328,6 +336,13 @@ void mode(statsResult* s, int *a,int n){
         b[i] = a[i];
     // sort the array
     sort(b, b+n);
+    
+    // for calculating median
+    int mid = n /2;
+    if ( n % 2 == 1)
+        s->median = b[mid];
+    else
+        s->median = (b[mid] + b[mid+1])/2;
 
     //Count to max frequency
     int count=0,maxFreq=0;
