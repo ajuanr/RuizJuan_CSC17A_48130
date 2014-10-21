@@ -14,14 +14,13 @@ enum DIFFICULTY {EASY, NORMAL, HARD};
 struct MineField {
     /// Determines how many mines to set
     enum DIFFICULTY {EASY, NORMAL, HARD};
-    /// Flags representing various square possibiities
+    /// Flags representing various square possibilities
     enum FLAGS {EMPTY=10, MINE, CLEAR, LOSER};
     short **data;      /// This is the minefield
     short rows;        /// number of rows
     short cols;        /// Number of columns
     DIFFICULTY d;    /// determines how many mines
     short mines;       /// number of mines
-    
 };
 
 MineField* create(short, short);
@@ -29,7 +28,7 @@ void destroy(MineField *);
 void prntClr(MineField *);
 void prntObscr(MineField *);
 void nMines(MineField *, MineField::DIFFICULTY);
-void setMines(MineField *,  MineField::DIFFICULTY);
+void setMines(MineField *);
 void setFlags(MineField *);
 short nAdjacent(MineField *, short, short, short = MineField::MINE);
 bool isClear(MineField *, short, short);
@@ -37,15 +36,24 @@ void clrArea(MineField *, short, short);
 void setPerim(MineField *);
 void showZeros(MineField *, short, short);
 bool hasWon(MineField *);
-
-void select(MineField *, short, short);
+void rwFile(MineField *);
+void fields();
+bool cont(MineField *, short, short);
 void playGame();
 void prompt(short&, short&);
-
+char * userName();
 using namespace std;
+
 
 int main(int argc, const char * argv[]) {
     playGame();
+    cout << endl;
+    cout << "Would you like to see some empty minefields.\n"
+            "Hit 'y' for yes: ";
+    char ans;
+    cin >> ans;
+    if (ans == 'y')
+        fields();
     
     return 0;
 }
@@ -54,9 +62,11 @@ void playGame() {
     const short nrows = 10;
     const short ncols = 10;
     srand(time(0));
+    /// Get the user name
+    char *player = userName();
     MineField *mf = create(nrows, ncols);
     nMines(mf, MineField::EASY);
-    setMines(mf, MineField::EASY);
+    setMines(mf);
     prntObscr(mf);
     short row, col;
     do {
@@ -69,42 +79,39 @@ void playGame() {
             cin >> col;
         } while (col < 0 || col >= mf->cols);    /// check bounds
         cout << endl;
-        select(mf, row, col);
-    } while (mf->data[row][col] != MineField::MINE && !hasWon(mf));
+    } while (cont(mf, row, col) && !hasWon(mf));
     /// Prepare to print completed minefield
     if (hasWon(mf)) {
-        cout << "You win\n";
+        cout << player << "You win\n";
         setFlags(mf);
     }
     else{
+        cout << player << "you have lost\n";
         setFlags(mf);
         mf->data[row][col]= MineField::LOSER;
     }
     /// Print the complete minefield
     prntClr(mf);
     
-    /// Write the result to a binary file
-    fstream out("Result", ios::out | ios::binary);    /// open the file
-    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
-    out.close();
-    
-    
-    /// Ask user if they want to see the result of the last game
-    char response;
-    cout << "Would you like to see the result of the last game?\n"
-    "Hit 'y' if yes: ";
-    cin >> response;
-    if (response == 'y') {
-        cout << "\nHere is the result:\n";
-        /// Create space to hold the file read
-        MineField *result;
-        fstream in("Result", ios::in | ios::binary);
-        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
-        prntClr(result);
-        result = 0;
-    }
-
+    /// write and read binary file
+    rwFile(mf);
+    delete player;
     destroy(mf);                /// deallocate the game area
+}
+
+char *userName() {
+    cout << "Enter your name: ";
+    string in;
+    cin >> in;
+    
+    short size = in.size();
+    char *name = new char[size+1]; /// make room for '\0'
+    for (short i = 0; i != size; ++i) {
+        *(name+i) = in[i];
+    }
+    *(name+size+1) = '\0';
+    
+    return name;
 }
 
 /// Function that creates the grid on which game will be played
@@ -141,9 +148,9 @@ void prntClr(MineField* mf) {
     for (short row = 0; row != mf->rows; ++row){
         for (short col = 0; col != mf->cols; ++col) {
             ///
-            if ( *(*(mf->data+row) +col) == MineField::LOSER)
+            if ( *(*(mf->data+row) + col) == MineField::LOSER)
                 cout << "T ";
-            else if (*(*(mf->data+row) +col) == MineField::MINE)
+            else if (*(*(mf->data+row) + col) == MineField::MINE)
                 cout << "x ";
             else if (!isClear(mf, row, col))
                      cout << nAdjacent(mf, row, col) << " ";
@@ -183,7 +190,7 @@ void prntObscr(MineField* mf) {
     cout << endl;
 }
 
-/// Function returns the number of mines to set
+/// Function returns the number of mines to set based on difficulty
 void nMines(MineField *mf, MineField::DIFFICULTY d) {
     if (d==MineField::EASY)
         mf->mines = 15;
@@ -194,7 +201,7 @@ void nMines(MineField *mf, MineField::DIFFICULTY d) {
 }
 
 /// Function places mines in grid
-void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
+void setMines(MineField *mf) {
     /// holds how many mines will be used
     short mines = mf->mines;
     
@@ -203,9 +210,9 @@ void setMines(MineField *mf,  MineField::DIFFICULTY diff) {
         for (short i = 0; i != mf->rows; ++i) {
             for (short j = 0; j != mf->cols; ++j) {
                 /// place mines if result of rand()%15 == 0
-                if (rand() % 15 == 0){
+                if ((rand() % 100) % 10 == 0){
                     ///only place mines if mines are still available
-                    /// and current position does not have a mine
+                    /// and current is empty
                     if (mines && mf->data[i][j] == MineField::EMPTY) {
                         mf->data[i][j] = MineField::MINE;  /// set the mine
                         --mines;         /// decrement number of mines available
@@ -318,6 +325,7 @@ void showZeros(MineField *mf, short row, short col) {
 }
 
 /// Function shows how many mines are adjacent to selected square
+/// for the entire minefield
 void setFlags(MineField *mf) {
     for (short i = 0; i != mf->rows; ++i)
         for (short j = 0; j != mf->cols; ++j)
@@ -327,27 +335,27 @@ void setFlags(MineField *mf) {
                 mf->data[i][j] = nAdjacent(mf, i, j);
 }
 
-/// Function reveals what is underneath the selected square
-/// that the user has selected
-void select(MineField * mf, short row, short col) {
+/// Function reveals what is underneath the square that the user has selected
+/// and whether to continue based on what is revealed
+/// i.e selecting a mines means you lost
+bool cont(MineField * mf, short row, short col) {
     /// check if user selected a losing square
-    if (mf->data[row][col] == MineField::MINE) {
-        cout << "You lose\n"                    /// Output message informing
-        "Goodbye.\n\n";
-        
-        /// before printing
-    }
+    if (mf->data[row][col] == MineField::MINE)
+        return false;
+
     /// Square is a zero, clear the surrounding area if necessary
     else if (isClear(mf, row, col) ){
         showZeros(mf, row, col); /// show cleared area
         setPerim(mf);
         prntObscr(mf);
+        return true;
     }
-    /// Square had adjacent landmine
+    /// Square had adjacent mine
     /// reveal the number to the user
     else {
         mf->data[row][col] = nAdjacent(mf, row, col);
         prntObscr(mf);
+        return true;
     }
 }
 
@@ -382,7 +390,66 @@ void setPerim(MineField *mf) {
                     /// check if the next number has mines adjacent
                     if (mf->data[row+1][col] != MineField::CLEAR)
                         mf->data[row+1][col] = nAdjacent(mf,row+1, col);
+                    /// check the adjacent corners
+                    if (mf->data[row+1][col-1] != MineField::CLEAR)
+                        mf->data[row-1][col-1] = nAdjacent(mf,row-1, col-1);
+                    if (mf->data[row-1][col+1] != MineField::CLEAR)
+                        mf->data[row-1][col+1] = nAdjacent(mf,row-1, col+1);
+                    if (mf->data[row+1][col-1] != MineField::CLEAR)
+                        mf->data[row+1][col-1] = nAdjacent(mf,row+1, col-1);
+                    if (mf->data[row+1][col+1] != MineField::CLEAR)
+                        mf->data[row+1][col+1] = nAdjacent(mf,row+1, col+1);  
                 }
         }
     }
+}
+
+/// This function writes to and reads from a binary file
+void rwFile(MineField *mf) {
+        /// Write the result to a binary file
+    fstream out("Result", ios::out | ios::binary);    /// open the file
+    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
+    out.close();
+   
+    /// Ask user if they want to see the result of the last game
+    char response;
+    cout << "Would you like to see the result of the last game?\n"
+    "Hit 'y' if yes: ";
+    cin >> response;
+    if (response == 'y') {
+        cout << "\nResult of your last game:\n";
+        /// Create space to hold the file read
+        MineField *result;
+        fstream in("Result", ios::in | ios::binary);
+        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
+        prntClr(result);
+        result = 0;
+    }
+}
+
+/// This function is to show that I can create an array of structures
+void fields() {
+    cout << "How many mine fields do you want to see: ";
+    int n;
+    cin >> n;
+    
+    MineField **mf = new MineField*[n];
+    const int row = 10;
+    const int col = 10;
+    /// create the fields
+    for (int i = 0; i != n; ++i) {
+        mf[i] = create(row, col);                /// Create each field
+        nMines(*(mf+i), MineField::EASY);        /// get number of mines
+        setMines(*(mf+i));   /// place the mines /// set the mines
+        setFlags(*(mf+i));                       /// set the flags
+        prntClr(*(mf+i));                        /// print the field
+        cout << endl;   
+    }
+    cout << endl;
+    
+    /// deallocate memory
+    for (int i = 0; i != n; ++i) {
+        destroy(*(mf+i));
+    }
+    delete mf;
 }
