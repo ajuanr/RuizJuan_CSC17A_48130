@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Juan. All rights reserved.
 //
 
+#include <algorithm> //for sort function
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -16,10 +17,10 @@ using namespace std;
  * Structures go here
 */
 struct Customer {
-    int acctNum=0;     // holds account number
-    int balance=0;      // holds balance at beginning of month
-    int chkTotal=0;     // total of all checks written this month
-    int deposits=0;     // total of all deposits credited this month
+    int acctNum;     // holds account number
+    int balance;      // holds balance at beginning of month
+    int chkTotal;     // total of all checks written this month
+    int deposits;     // total of all deposits credited this month
 };
 
 struct Employee {
@@ -28,6 +29,15 @@ struct Employee {
     int rate;
 };
 
+struct statsResult {
+    float avg;
+    float median;
+    int *mode;   //array containing the modes
+    int nModes;  //number of modes in the array
+    int maxFreq; //max frequency of modes
+};
+
+void print(int *array, int size);
 
 /*
  *  Menu and problemlem protoypes
@@ -35,18 +45,25 @@ struct Employee {
 void problem1();
 void problem2();
 void problem5();
+
 /*
  * Functions for problem 1
  */
 void AcctInfo(Customer *);
 void newBalance(Customer *);
 bool isOvrdrwn(Customer *);
+
 /*
  * Functions for problem 2
  */
 int pay(Employee*);
 void getEmpInfo(Employee*);
 void formatCheck(Employee*, string);
+
+/*
+ * Functions for problem 3
+ */
+statsResult *avgMedMode(int *,int); 
 
 /*
  * Functions for problem 5
@@ -59,13 +76,20 @@ T maxFac(T);
 
 
 int main(int argc, const char * argv[]) {
-    problem2();
+    int a[7] = {3,6,4,3,7,3,9};
+    print(a,7);
+    avgMedMode(a, 7);
+    print(a, 7);
+    //problem2();
     return 0;
 }
 
 void problem1() {
     Customer *c = new Customer;
+    // initialize data members
     c->balance=1000;
+    c->chkTotal=0;
+    c->deposits=0;
     AcctInfo(c);
     cout << endl;
     newBalance(c);
@@ -248,4 +272,16 @@ void newBalance(Customer *c) {
 }
 bool isOvrdrwn(Customer *c) {
     return (c->balance < 0) ? true: false;
+}
+
+statsResult *avgMedMode(int *array, int size) {
+    sort(array, array+size);
+}
+
+
+void print(int *array, int size) {
+    for (int i = 0; i != size; ++i) {
+        cout << array[i] << " ";
+    }
+    cout << endl;
 }
