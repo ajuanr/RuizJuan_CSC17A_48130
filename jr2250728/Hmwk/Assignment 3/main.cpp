@@ -306,4 +306,3 @@ char ltrGrade(int c) {
                   <<  " under for " << deflt->expense[i] << ".\n";
      }
  } 
- 

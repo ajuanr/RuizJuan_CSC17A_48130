@@ -21,11 +21,18 @@ struct Customer {
     int deposits=0;     // total of all deposits credited this month
 };
 
+struct Employee {
+    string name;
+    int hours;
+    int rate;
+};
+
 
 /*
  *  Menu and problemlem protoypes
  */
 void problem1();
+void problem2();
 void problem5();
 /*
  * Functions for problem 1
@@ -33,6 +40,12 @@ void problem5();
 void AcctInfo(Customer *);
 void newBalance(Customer *);
 bool isOvrdrwn(Customer *);
+/*
+ * Functions for problem 2
+ */
+void pay(Employee*);
+void getEmpInfo(Employee*);
+
 /*
  * Functions for problem 5
  */
@@ -64,6 +77,66 @@ void problem1() {
     }
     cout << endl;
     delete c;
+}
+
+
+void problem2() {
+    cout << "How many employees: ";
+    int nEmp;
+    cin >> nEmp;
+    Employee **eArray = new Employee *[nEmp];
+    for (int i = 0; i != nEmp; ++i) {
+        getEmpInfo(*(eArray+i));
+    }
+}
+
+void getEmpInfo(Employee *e) {
+    cout <<  "Enter the employee name: ";
+    cin.clear();
+    getline(cin,e->name);
+    cout << "Enter the pay rate: ";
+    cin >> e->rate;
+    cout << "Enter the hours worked";
+    cin >> e->hours;
+}
+
+void pay(Employee* e) {
+    int r0=0;             // total pay
+    int r1 = e->rate;     // r1 holds pay rate
+    int r2 = e->hours;    // r2 holds hours worked
+    int r3;               // temp
+    int r4;               // holds the hours > than pay differential
+    cin >> r1 >> r2;
+
+    cout << "Hours: " << r1 << endl;
+    cout << "Pay rate: " << r2 << endl;
+
+    /// remember r4 must be preserved: push {r4}
+    // check if triple time applies
+    if ( r2 > 40) {
+        r4 = r2 - 40;           // r4 holds hours > 40 worked
+        r3 = r1 * 3;            // triple time pay
+        r3 = r3 * r4;           // r3 holds that amount of triple time pay
+        r2 = r2 - r4;           // move hours into double time
+        r0 = r0 + r3;           // add to total pay
+        cout << r0 << endl;
+    }
+
+    // check if double time applies
+    if ( r2 > 20) {
+        r4 = r2 - 20;           // r4 holds hours > 20 worked
+        r3 = r1 * 2;            // double time pay
+        r3 = r3 * r4;           // r3 holds that amount of double time pay
+        r2 = r2 - r4;           // move hours into straight time
+        r0 = r0 + r3;           // add to total pay
+    }
+
+    // check if straight time applies
+    if ( r1 > 0) {
+        r3 = r1 * r2;
+        r0 = r0 + r3;
+    }
+    cout << "Pay: " << r0 << endl;
 }
 
 
