@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -43,8 +44,9 @@ bool isOvrdrwn(Customer *);
 /*
  * Functions for problem 2
  */
-void pay(Employee*);
+int pay(Employee*);
 void getEmpInfo(Employee*);
+void formatCheck(Employee*, string);
 
 /*
  * Functions for problem 5
@@ -57,7 +59,7 @@ T maxFac(T);
 
 
 int main(int argc, const char * argv[]) {
-    problem1();
+    problem2();
     return 0;
 }
 
@@ -84,32 +86,49 @@ void problem2() {
     cout << "How many employees: ";
     int nEmp;
     cin >> nEmp;
+    // create array containing employees
     Employee **eArray = new Employee *[nEmp];
+    for (int i = 0; i != nEmp; ++i)
+        *(eArray+i) = new Employee;
+    
+    cout << endl;
+    
+    cout << "Enter the date: ";
+    string date;
+    cin >> date;
+    cout << endl;
+    // Get employee info
     for (int i = 0; i != nEmp; ++i) {
         getEmpInfo(*(eArray+i));
+        formatCheck(*(eArray + i), date);
+        cout << endl;
     }
+    
+     // deallocate
+    for (int i = 0; i != nEmp; ++i) {
+        delete *(eArray+i);
+    }
+    delete []eArray;
+    
+    
 }
 
 void getEmpInfo(Employee *e) {
     cout <<  "Enter the employee name: ";
-    cin.clear();
+    cin.ignore();
     getline(cin,e->name);
     cout << "Enter the pay rate: ";
     cin >> e->rate;
-    cout << "Enter the hours worked";
+    cout << "Enter the hours worked: ";
     cin >> e->hours;
 }
 
-void pay(Employee* e) {
+int pay(Employee* e) {
     int r0=0;             // total pay
     int r1 = e->rate;     // r1 holds pay rate
     int r2 = e->hours;    // r2 holds hours worked
     int r3;               // temp
     int r4;               // holds the hours > than pay differential
-    cin >> r1 >> r2;
-
-    cout << "Hours: " << r1 << endl;
-    cout << "Pay rate: " << r2 << endl;
 
     /// remember r4 must be preserved: push {r4}
     // check if triple time applies
@@ -119,7 +138,6 @@ void pay(Employee* e) {
         r3 = r3 * r4;           // r3 holds that amount of triple time pay
         r2 = r2 - r4;           // move hours into double time
         r0 = r0 + r3;           // add to total pay
-        cout << r0 << endl;
     }
 
     // check if double time applies
@@ -136,9 +154,16 @@ void pay(Employee* e) {
         r3 = r1 * r2;
         r0 = r0 + r3;
     }
-    cout << "Pay: " << r0 << endl;
+    return r0;
 }
 
+void formatCheck(Employee *e, string date) {
+    cout << setw(60) << right << date << endl << endl
+    << left << "Pay to the order of: " << e->name
+    << setw(35 - (e->name).size()) << right  << "$ " << pay(e) << endl;
+    
+    cout << endl;
+}
 
 void problem5() {
     unsigned uB;
