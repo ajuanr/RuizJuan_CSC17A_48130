@@ -75,6 +75,7 @@ int *intArray(int, int=4);
 int encrypt(int *, int=4);
 int decrypt(int *, int=4);
 void swap(int &a, int &);
+bool isValid(int*, int =4);
 
 /*
  * Functions for problem 5
@@ -192,21 +193,30 @@ void problem3() {
 
 // Phone line problem
 void problem4() {
-    cout << "Do you want to encrypt or decrypt a number: ";
+    cout << "Do you want to encrypt or decrypt a number.\n"
+            "Enter 1 to encrypt\n"
+            "Enter 2 to decrypt: ";
+    int ans;
+    cin >> ans;
     int num;
-    cout << "Enter the number you want encrypted or decrypted: ";
+    cout << "Enter your number: ";
     cin >> num;
+    int *numArray = intArray(num);
+    // check whether number entered is valid
+    if (isValid(numArray)) {
+        if ( ans == 1) {
+            cout << "Your encrypted number is: " << encrypt(numArray);
+        }
+    }
+    // number was not valid
+    else
+        cout << "Number was not valid.\n";
     
-    int *numArray = intArray(num, 4);
-    
-    cout << encrypt(numArray)<< endl;
-    for (int i = 0; i != 4; ++i)
-        cout << numArray[i] << " ";
     cout << endl;
-    
 }
 
 // Functions puts the n digits of a number into an array
+// Uses default value of 4 as the input should be a 4 digit number
 int *intArray(int num, int size) {
     // create the array to hold the numbers
     int *ret = new int [size];
@@ -215,6 +225,14 @@ int *intArray(int num, int size) {
         num /= 10;
     }
     return ret;
+}
+
+bool isValid(int*array, int size) {
+    for (int i = 0; i != size; ++i)
+        // only 0 to 7 are allowed
+        if (*(array+i) >7)
+            return false;
+    return true;
 }
 
 // Function encrypts an array of integers
@@ -231,17 +249,11 @@ int encrypt(int *array, int size) {
     swap(*(array), *(array+1));
     swap(*(array+2), *(array+3));
     
-    // DELETE THIS: FOR PRINTING
-    for (int i = 0; i != 4; ++i)
-        cout << array[i] << " ";
-    cout << endl;
-    
     // turn array back into int;
     int ret=0;
-    for (int i = 0, power = size-1; i != size; ++i, --power) {
-        cout << ret <<endl;
+    for (int i = 0, power = size-1; i != size; ++i, --power)
         ret +=(*(array+i)*pow(10,power)); // ret + a[i] * 10^size-1)
-    }
+
     return ret;
 }
 
