@@ -70,9 +70,10 @@ void printSR(statsResult *);
 /*
  * Functions for problem 4
  */
-int *intArray(int, int);
-int encrypt(int *);
-int decrypt(int *);
+int *intArray(int, int=4);
+int encrypt(int *, int=4);
+int decrypt(int *, int=4);
+void swap(int &a, int &);
 
 /*
  * Functions for problem 5
@@ -147,8 +148,6 @@ void problem2() {
         delete *(eArray+i);
     }
     delete []eArray;
-    
-    
 }
 
 // Modes problem
@@ -171,7 +170,7 @@ void problem3() {
     for (int i =0; i != size; ++i)
         cout << a[i] << " ";
     cout << endl;
-    statsResult *sr = avgMedMode(a, size);
+    statsResult *sr = avgMedMode(a);
     
     // calculate average;
     int total = 0;
@@ -215,8 +214,22 @@ int *intArray(int num, int size) {
     return ret;
 }
 
-int encrypt(int *numArray) {
-    return -1;
+// Function encrypts an array of integers
+// used for problem 4
+int encrypt(int *array, int size) {
+    for (int i = 0; i != size; ++i){
+        // first add three to each digit
+        *(array+i) += 3;
+        // then mod it by 8
+        *(array+i) %= 8;
+    }
+}
+
+void swap(int &a, int &b) {
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
 }
 
 void getEmpInfo(Employee *e) {
