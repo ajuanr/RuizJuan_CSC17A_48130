@@ -39,7 +39,7 @@ struct statsResult {
 };
 
 /*
- *  Menu and problem protoypes
+ *  Menu and problem prototypes
  */
 void problem1();
 void problem2();
@@ -192,12 +192,14 @@ void problem3() {
 
 // Phone line problem
 void problem4() {
+    cout << "Do you want to encrypt or decrypt a number: ";
     int num;
-    cout << "Enter the number you want encrypted or decrypted:";
+    cout << "Enter the number you want encrypted or decrypted: ";
     cin >> num;
     
     int *numArray = intArray(num, 4);
     
+    cout << encrypt(numArray)<< endl;
     for (int i = 0; i != 4; ++i)
         cout << numArray[i] << " ";
     cout << endl;
@@ -224,15 +226,23 @@ int encrypt(int *array, int size) {
         // then mod it by 8
         *(array+i) %= 8;
     }
+    
     // swap elements 1,2 and 3,4
     swap(*(array), *(array+1));
     swap(*(array+2), *(array+3));
     
+    // DELETE THIS: FOR PRINTING
+    for (int i = 0; i != 4; ++i)
+        cout << array[i] << " ";
+    cout << endl;
+    
     // turn array back into int;
     int ret=0;
-    for (int i = 0; i != size; ++i) {
-        ret +=(*(array+i)*pow(10,i));
+    for (int i = 0, power = size-1; i != size; ++i, --power) {
+        cout << ret <<endl;
+        ret +=(*(array+i)*pow(10,power)); // ret + a[i] * 10^size-1)
     }
+    return ret;
 }
 
 void swap(int &a, int &b) {
