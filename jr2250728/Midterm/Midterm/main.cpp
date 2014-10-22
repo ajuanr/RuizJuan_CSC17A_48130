@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
@@ -38,7 +39,7 @@ struct statsResult {
 };
 
 /*
- *  Menu and problemlem protoypes
+ *  Menu and problem protoypes
  */
 void problem1();
 void problem2();
@@ -170,7 +171,7 @@ void problem3() {
     for (int i =0; i != size; ++i)
         cout << a[i] << " ";
     cout << endl;
-    statsResult *sr = avgMedMode(a);
+    statsResult *sr = avgMedMode(a,size);
     
     // calculate average;
     int total = 0;
@@ -222,6 +223,15 @@ int encrypt(int *array, int size) {
         *(array+i) += 3;
         // then mod it by 8
         *(array+i) %= 8;
+    }
+    // swap elements 1,2 and 3,4
+    swap(*(array), *(array+1));
+    swap(*(array+2), *(array+3));
+    
+    // turn array back into int;
+    int ret=0;
+    for (int i = 0; i != size; ++i) {
+        ret +=(*(array+i)*pow(10,i));
     }
 }
 
