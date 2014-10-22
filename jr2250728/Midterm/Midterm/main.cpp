@@ -207,6 +207,11 @@ void problem4() {
         if ( ans == 1) {
             cout << "Your encrypted number is: " << encrypt(numArray);
         }
+        else if (ans == 2) {
+            cout << "Your decrypted number is: " << decrypt(numArray);
+        }
+        else
+            cout << "Invalid choice: ";
     }
     // number was not valid
     else
@@ -248,6 +253,30 @@ int encrypt(int *array, int size) {
     // swap elements 1,2 and 3,4
     swap(*(array), *(array+1));
     swap(*(array+2), *(array+3));
+    
+    // turn array back into int;
+    int ret=0;
+    for (int i = 0, power = size-1; i != size; ++i, --power)
+        ret +=(*(array+i)*pow(10,power)); // ret + a[i] * 10^size-1)
+
+    return ret;
+}
+
+int decrypt(int *array, int size) {
+    // swap back elements 1,2 and 3,4
+    swap(*(array), *(array+1));
+    swap(*(array+2), *(array+3));
+    
+    // unmod the numbers
+    for (int i = 0; i != size; ++i){
+        if (*(array+i) <3)
+            *(array+i) = 8+ *(array+i);
+        else
+            *(array+i) = *(array+i);
+        cout << *(array+i) << endl;
+        // undo the addition
+        *(array+i) -= 3;
+    }
     
     // turn array back into int;
     int ret=0;
