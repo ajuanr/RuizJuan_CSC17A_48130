@@ -43,6 +43,7 @@ struct statsResult {
 void problem1();
 void problem2();
 void problem3();
+void problem4();
 void problem5();
 
 /*
@@ -67,6 +68,13 @@ void mode(statsResult*, int *,int );
 void printSR(statsResult *);
 
 /*
+ * Functions for problem 4
+ */
+int *intArray(int, int);
+int encrypt(int *);
+int decrypt(int *);
+
+/*
  * Functions for problem 5
  */
 template<class T>
@@ -82,7 +90,7 @@ T maxFac(T);
  *
 ****************************************/
 int main(int argc, const char * argv[]) {
-        problem3();
+        problem4();
     return 0;
 }
 /*
@@ -180,6 +188,26 @@ void problem3() {
     delete []sr->mode;
     delete sr;
 
+}
+
+// Phone line problem
+void problem4() {
+    int num;
+    cout << "Enter the number you want encrypted or decrypted:";
+    cin >> num;
+    
+    int *numArray = intArray(num, 4);
+    
+}
+
+// Functions puts the n digits of a number into an array
+void *numArray(int, int size) {
+    // create the array to hold the numbers
+    
+}
+
+void encrypt(int *numArray) {
+    
 }
 
 void getEmpInfo(Employee *e) {
