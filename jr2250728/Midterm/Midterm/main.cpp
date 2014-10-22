@@ -38,6 +38,8 @@ struct statsResult {
     int maxFreq; //max frequency of modes
 };
 
+void print(int*, int, string ="");
+
 /*
  *  Menu and problem prototypes
  */
@@ -72,8 +74,8 @@ void printSR(statsResult *);
  * Functions for problem 4
  */
 int *intArray(int, int=4);
-int encrypt(int *, int=4);
-int decrypt(int *, int=4);
+int *encrypt(int *, int=4);
+int *decrypt(int *, int=4);
 void swap(int &a, int &);
 bool isValid(int*, int =4);
 
@@ -192,31 +194,41 @@ void problem3() {
 }
 
 // Phone line problem
+// Enter a number. Encrypt it or decrypt it.
 void problem4() {
-    cout << "Do you want to encrypt or decrypt a number.\n"
-            "Enter 1 to encrypt\n"
-            "Enter 2 to decrypt: ";
-    int ans;
-    cin >> ans;
+    const int nDigit=4; // user is expected to enter a 4 digit number
     int num;
     cout << "Enter your number: ";
     cin >> num;
     int *numArray = intArray(num);
-    // check whether number entered is valid
+    // check if number is valid. No 8s or 9s
     if (isValid(numArray)) {
-        if ( ans == 1) {
-            cout << "Your encrypted number is: " << encrypt(numArray);
+        /// Ask user what to do with number
+        cout << "Do you want your number encrypted or decrypted.\n"
+                "Enter 1 to encrypt\n"
+                "Enter 2 to decrypt\n";
+        int ans;
+        cin >> ans;
+        // user want to encrypt number
+        if (ans == 1) {
+            numArray = encrypt(numArray);
+            cout << "Your encrypted number is: ";
+            print(numArray, nDigit);
         }
+        // user wants to decrypt number
         else if (ans == 2) {
-            cout << "Your decrypted number is: " << decrypt(numArray);
+            numArray= decrypt(numArray);
+            cout << "Your decrypted number is: ";
+            print(numArray, nDigit);
         }
         else
             cout << "Invalid choice: ";
     }
     // number was not valid
-    else
-        cout << "Number was not valid.\n";
-    
+    else {
+        print(numArray, nDigit);
+        cout << " is not valid.\n";
+    }
     cout << endl;
 }
 
@@ -232,6 +244,8 @@ int *intArray(int num, int size) {
     return ret;
 }
 
+// For problem 4
+// Function checks if the value supplied by the user is valid
 bool isValid(int*array, int size) {
     for (int i = 0; i != size; ++i)
         // only 0 to 7 are allowed
@@ -242,7 +256,7 @@ bool isValid(int*array, int size) {
 
 // Function encrypts an array of integers
 // used for problem 4
-int encrypt(int *array, int size) {
+int *encrypt(int *array, int size) {
     for (int i = 0; i != size; ++i){
         // first add three to each digit
         *(array+i) += 3;
@@ -257,12 +271,14 @@ int encrypt(int *array, int size) {
     // turn array back into int;
     int ret=0;
     for (int i = 0, power = size-1; i != size; ++i, --power)
-        ret +=(*(array+i)*pow(10,power)); // ret + a[i] * 10^size-1)
+        ret +=(*(array+i)*pow(10,power));
 
-    return ret;
+    return array;
 }
 
-int decrypt(int *array, int size) {
+// For problem 4
+// Function decrypt a number supplied by the users
+int *decrypt(int *array, int size) {
     // swap back elements 1,2 and 3,4
     swap(*(array), *(array+1));
     swap(*(array+2), *(array+3));
@@ -270,10 +286,9 @@ int decrypt(int *array, int size) {
     // unmod the numbers
     for (int i = 0; i != size; ++i){
         if (*(array+i) <3)
-            *(array+i) = 8+ *(array+i);
+            *(array+i) = 8 + *(array+i);
         else
             *(array+i) = *(array+i);
-        cout << *(array+i) << endl;
         // undo the addition
         *(array+i) -= 3;
     }
@@ -283,16 +298,11 @@ int decrypt(int *array, int size) {
     for (int i = 0, power = size-1; i != size; ++i, --power)
         ret +=(*(array+i)*pow(10,power)); // ret + a[i] * 10^size-1)
 
-    return ret;
+    return array;
 }
 
-void swap(int &a, int &b) {
-    int temp;
-    temp = a;
-    a = b;
-    b = temp;
-}
-
+// For problem 2
+// Function get employee information
 void getEmpInfo(Employee *e) {
     cout <<  "Enter the employee name: ";
     cin.ignore();
@@ -303,6 +313,9 @@ void getEmpInfo(Employee *e) {
     cin >> e->hours;
 }
 
+
+// For problem 2
+// Function calculates the pay for an employee
 int pay(Employee* e) {
     int r0=0;             // total pay
     int r1 = e->rate;     // r1 holds pay rate
@@ -336,6 +349,9 @@ int pay(Employee* e) {
     return r0;
 }
 
+
+// For problem 2
+// Function prints a "check" for employee
 void formatCheck(Employee *e, string date) {
     cout << setw(60) << right << date << endl << endl
     << left << "Pay to the order of: " << e->name
@@ -344,6 +360,8 @@ void formatCheck(Employee *e, string date) {
     cout << endl;
 }
 
+
+// Function outputs largest factorial for various data types
 void problem5() {
     unsigned uB;
     cout << "Largest unsigned byte factorial is: " << maxFac(uB) << endl;
@@ -371,6 +389,7 @@ T factorial(T n) {
     return n*factorial(n-1);
 }
 
+// Function calculates largest factorial for various data types
 template<class T>
 T maxFac(T) {
     T n=2; // can't use 1, factorial(1) == factorial(0)
@@ -499,6 +518,7 @@ void mode(statsResult* s, int *a,int n){
     delete []b;
 }
 
+// For problem 3
 // Function prints the statsResult structure
 void printSR(statsResult* sr) {
     cout << "Median is : " << sr->median << endl;
@@ -516,18 +536,20 @@ void printSR(statsResult* sr) {
         // print the last element
         cout<<*(sr->mode + (sr->nModes-1))<<"}"<<endl;
     }
+}
 
+// Function swaps two values
+void swap(int &a, int &b) {
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
 
-//    cout << "Max frequency is: " << sr->maxFreq << endl;
-//    cout << "The number of modes are: " << sr->nModes << endl;
-//    cout << "The modes set: {";
-//    
-//    for (int i = 0; i != sr->nModes; ++i) {
-//        cout << *(sr->mode + i) << " ";
-//    }
-//    // closing brace for mode set
-//    cout << "}" << endl;
-
-    
-    
+// For problem 4
+// Function prints out values of array
+void print(int *array, int size, string sep) {
+    for (int i = 0; i != size; ++i) {
+        cout << array[i] << sep;
+    }
 }
