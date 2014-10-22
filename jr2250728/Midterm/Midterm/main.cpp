@@ -198,16 +198,25 @@ void problem4() {
     
     int *numArray = intArray(num, 4);
     
+    for (int i = 0; i != 4; ++i)
+        cout << numArray[i] << " ";
+    cout << endl;
+    
 }
 
 // Functions puts the n digits of a number into an array
-void *numArray(int, int size) {
+int *intArray(int num, int size) {
     // create the array to hold the numbers
-    
+    int *ret = new int [size];
+    for (int i = size-1; i >= 0; --i) {
+        ret[i] = num % 10;
+        num /= 10;
+    }
+    return ret;
 }
 
-void encrypt(int *numArray) {
-    
+int encrypt(int *numArray) {
+    return -1;
 }
 
 void getEmpInfo(Employee *e) {
