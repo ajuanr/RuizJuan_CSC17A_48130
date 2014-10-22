@@ -10,7 +10,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <cmath>
 
 using namespace std;
 
@@ -62,6 +61,7 @@ bool isOvrdrwn(Customer *);
 int pay(Employee*);
 void getEmpInfo(Employee*);
 void formatCheck(Employee*, string);
+bool validEmp(Employee *);
 
 /*
  * Functions for problem 3
@@ -95,7 +95,7 @@ T maxFac(T);
  *
 ****************************************/
 int main(int argc, const char * argv[]) {
-        problem4();
+        problem2();
     return 0;
 }
 /*
@@ -124,30 +124,30 @@ void problem1() {
     delete c;
 }
 
-
+// Employee pay problem
 void problem2() {
-    cout << "How many employees: ";
-    int nEmp;
-    cin >> nEmp;
-    // create array containing employees
+    // create array large enough to hold 10 employees
+    const int nEmp = 10;
     Employee **eArray = new Employee *[nEmp];
     for (int i = 0; i != nEmp; ++i)
         *(eArray+i) = new Employee;
-    
-    cout << endl;
     
     cout << "Enter the date: ";
     string date;
     cin >> date;
     cout << endl;
-    // Get employee info
-    for (int i = 0; i != nEmp; ++i) {
-        getEmpInfo(*(eArray+i));
-        formatCheck(*(eArray + i), date);
-        cout << endl;
-    }
-    
-     // deallocate
+    int count = 0;          // the number of employees entered
+    // get employee info
+    // and print check while employee info is valid
+    do {
+        ++count;
+        getEmpInfo(*(eArray+count));
+        if(validEmp(*(eArray+count)))
+            formatCheck(*(eArray + count), date);
+        else
+            cout << "\nInvalid info. Goodbye\n";
+    } while (validEmp(*(eArray+count)) && count != nEmp);
+
     for (int i = 0; i != nEmp; ++i) {
         delete *(eArray+i);
     }
@@ -168,11 +168,11 @@ void problem3() {
             cin >> elem;
             a[i] = elem;
         }
-    
+    cout << endl;
     // print what user entered
     cout << "You entered:\n";
-    for (int i =0; i != size; ++i)
-        cout << a[i] << " ";
+    print(a, size, " ");
+    cout << endl;
     cout << endl;
     statsResult *sr = avgMedMode(a,size);
     
@@ -181,8 +181,6 @@ void problem3() {
     for (int i = 0; i != size; ++i)
         total += *(a+i);
     sr->avg=total / size;
-    
-    
     
     printSR(sr);
     
@@ -229,10 +227,12 @@ void problem4() {
         print(numArray, nDigit);
         cout << " is not valid.\n";
     }
+    
+    delete []numArray;
     cout << endl;
 }
 
-// Functions puts the n digits of a number into an array
+// Function puts the n digits of a number into an array
 // Uses default value of 4 as the input should be a 4 digit number
 int *intArray(int num, int size) {
     // create the array to hold the numbers
@@ -267,11 +267,6 @@ int *encrypt(int *array, int size) {
     // swap elements 1,2 and 3,4
     swap(*(array), *(array+1));
     swap(*(array+2), *(array+3));
-    
-    // turn array back into int;
-    int ret=0;
-    for (int i = 0, power = size-1; i != size; ++i, --power)
-        ret +=(*(array+i)*pow(10,power));
 
     return array;
 }
@@ -292,11 +287,6 @@ int *decrypt(int *array, int size) {
         // undo the addition
         *(array+i) -= 3;
     }
-    
-    // turn array back into int;
-    int ret=0;
-    for (int i = 0, power = size-1; i != size; ++i, --power)
-        ret +=(*(array+i)*pow(10,power)); // ret + a[i] * 10^size-1)
 
     return array;
 }
@@ -313,6 +303,13 @@ void getEmpInfo(Employee *e) {
     cin >> e->hours;
 }
 
+// For problem 2
+// Function return true is employee rate and hours are greater than zero
+bool validEmp(Employee *e) {
+    if ( e->rate < 0 || e->hours < 0)
+        return false;
+    return true;
+}
 
 // For problem 2
 // Function calculates the pay for an employee
@@ -353,9 +350,9 @@ int pay(Employee* e) {
 // For problem 2
 // Function prints a "check" for employee
 void formatCheck(Employee *e, string date) {
-    cout << setw(60) << right << date << endl << endl
+    cout << setw(50) << right << date << endl << endl
     << left << "Pay to the order of: " << e->name
-    << setw(35 - (e->name).size()) << right  << "$ " << pay(e) << endl;
+    << setw(25 - (e->name).size()) << right  << "$ " << pay(e) << endl;
     
     cout << endl;
 }
@@ -529,11 +526,8 @@ void printSR(statsResult* sr) {
         cout<<"The mode set = {0}"<<endl;
     }else{
         cout<<"The mode set = {";
-        // don't print the last element in loop
-        for(int i=0;i!=sr->nModes-1; ++i){
-            cout<<*(sr->mode+i)<<",";
-        }
-        // print the last element
+        print(sr->mode, sr->nModes-1, ",");
+        // cout<<*(sr->mode+i)<<",";
         cout<<*(sr->mode + (sr->nModes-1))<<"}"<<endl;
     }
 }
@@ -546,8 +540,8 @@ void swap(int &a, int &b) {
     b = temp;
 }
 
-// For problem 4
 // Function prints out values of array
+// separated by sep
 void print(int *array, int size, string sep) {
     for (int i = 0; i != size; ++i) {
         cout << array[i] << sep;
