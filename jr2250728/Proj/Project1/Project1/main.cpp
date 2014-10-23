@@ -9,25 +9,28 @@
 #include <cstdlib>
 #include <fstream>
 
-enum DIFFICULTY {EASY, NORMAL, HARD};
+enum Difficulty {EASY, NORMAL, HARD};
 
 struct MineField {
     /// Determines how many mines to set
-    enum DIFFICULTY {EASY, NORMAL, HARD};
+    enum Difficulty {EASY, NORMAL, HARD};
     /// Flags representing various square possibilities
     enum FLAGS {EMPTY=10, MINE, CLEAR, LOSER};
-    short **data;      /// This is the minefield
-    short rows;        /// number of rows
-    short cols;        /// Number of columns
-    DIFFICULTY d;    /// determines how many mines
-    short mines;       /// number of mines
+    /// This is the minefield
+    short **data;
+    short rows;
+    short cols;
+    /// determines how many mines
+    Difficulty d;
+    /// number of mines
+    short mines;
 };
 
 MineField* create(short, short);
 void destroy(MineField *);
 void prntClr(MineField *);
 void prntObscr(MineField *);
-void nMines(MineField *, MineField::DIFFICULTY);
+void nMines(MineField *, MineField::Difficulty);
 void setMines(MineField *);
 void setFlags(MineField *);
 short nAdjacent(MineField *, short, short, short = MineField::MINE);
@@ -70,16 +73,19 @@ void playGame() {
     prntObscr(mf);
     short row, col;
     do {
-        do {                                     /// get row input
+        do {
             cout << "Enter the row: ";
             cin >> row;
-        } while (row < 0 || row >= mf->rows);    /// check bounds
-        do {                                     /// get column input
+            /// check bounds
+        } while (row < 0 || row >= mf->rows);
+        do {
             cout << "Enter the column: ";
             cin >> col;
-        } while (col < 0 || col >= mf->cols);    /// check bounds
+            /// check bounds
+        } while (col < 0 || col >= mf->cols);
         cout << endl;
     } while (cont(mf, row, col) && !hasWon(mf));
+    
     /// Prepare to print completed minefield
     if (hasWon(mf)) {
         cout << player << "You win\n";
@@ -96,7 +102,8 @@ void playGame() {
     /// write and read binary file
     rwFile(mf);
     delete player;
-    destroy(mf);                /// deallocate the game area
+    /// deallocate the game area
+    destroy(mf);
 }
 
 char *userName() {
@@ -105,7 +112,8 @@ char *userName() {
     cin >> in;
     
     short size = in.size();
-    char *name = new char[size+1]; /// make room for '\0'
+    /// make room for '\0'
+    char *name = new char[size+1];
     for (short i = 0; i != size; ++i) {
         *(name+i) = in[i];
     }
@@ -173,7 +181,7 @@ void prntObscr(MineField* mf) {
     cout << endl;
     for (short row = 0; row != mf->rows; ++row){
         for (short col = 0; col != mf->cols; ++col){
-            if(col == 0) cout << row << " ";            /// output row index
+            if(col == 0) cout << row << " ";
             /// KEEP EMPTY spaces and MINEs hidden
             if (mf->data[row][col] == MineField::EMPTY ||
                 mf->data[row][col] == MineField::MINE)
@@ -190,8 +198,8 @@ void prntObscr(MineField* mf) {
     cout << endl;
 }
 
-/// Function returns the number of mines to set based on difficulty
-void nMines(MineField *mf, MineField::DIFFICULTY d) {
+/// Function returns the number of mines to set based on Difficulty
+void nMines(MineField *mf, MineField::Difficulty d) {
     if (d==MineField::EASY)
         mf->mines = 15;
     else if (d==MineField::NORMAL)
@@ -215,8 +223,7 @@ void setMines(MineField *mf) {
                     /// and current is empty
                     if (mines && mf->data[i][j] == MineField::EMPTY) {
                         mf->data[i][j] = MineField::MINE;  /// set the mine
-                        --mines;         /// decrement number of mines available
-                        //set = true;
+                        --mines;
                     }
                 }
             }
@@ -224,7 +231,7 @@ void setMines(MineField *mf) {
     }
 }
 
-/// Function returns how 'flag' elements surround a given square
+/// Function returns how  many 'flag' elements surround a given square
 short nAdjacent(MineField *mf, short row, short col, short FLAG) {
     short nAd=0;              /// the number of adjacent mines
     
@@ -427,7 +434,7 @@ void rwFile(MineField *mf) {
     }
 }
 
-/// This function is to show that I can create an array of structures
+/// This function creates an array of the Minefield structure
 void fields() {
     cout << "How many mine fields do you want to see: ";
     int n;
@@ -438,11 +445,16 @@ void fields() {
     const int col = 10;
     /// create the fields
     for (int i = 0; i != n; ++i) {
-        mf[i] = create(row, col);                /// Create each field
-        nMines(*(mf+i), MineField::EASY);        /// get number of mines
-        setMines(*(mf+i));   /// place the mines /// set the mines
-        setFlags(*(mf+i));                       /// set the flags
-        prntClr(*(mf+i));                        /// print the field
+        /// Create each field
+        mf[i] = create(row, col);
+        /// get number of mines
+        nMines(*(mf+i), MineField::EASY);
+        /// set the mines
+        setMines(*(mf+i));
+        /// set the flags
+        setFlags(*(mf+i));
+        /// print the field
+        prntClr(*(mf+i));
         cout << endl;   
     }
     cout << endl;
@@ -451,5 +463,5 @@ void fields() {
     for (int i = 0; i != n; ++i) {
         destroy(*(mf+i));
     }
-    delete mf;
+    delete []mf;
 }
