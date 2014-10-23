@@ -42,11 +42,16 @@ void print(int*, int, string ="");
 /*
  *  Menu and problem prototypes
  */
+void Menu();
+int getN();
+void def(int);
+
 void problem1();
 void problem2();
 void problem3();
 void problem4();
 void problem5();
+void problem6();
 
 /*
  * Functions for problem 1
@@ -95,7 +100,21 @@ T maxFac(T);
  *
 ****************************************/
 int main(int argc, const char * argv[]) {
-        problem2();
+    int inN;
+    do{
+        Menu();
+        inN=getN();
+        switch(inN){
+            case 1:    problem1();break;
+            case 2:    problem2();break;
+            case 3:    problem3();break;
+            case 4:    problem4();break;
+            case 5:    problem5();break;
+            case 6:    problem6();break;
+            default:   def(inN);}
+        cout << endl;
+    }while(inN>=1&&inN<=6);
+
     return 0;
 }
 /*
@@ -103,7 +122,25 @@ int main(int argc, const char * argv[]) {
  *
 */
 
+void Menu(){
+    cout<<"Menu for the Midterm"<<endl;
+    cout<<"Type 1 for problem 1"<<endl;
+    cout<<"Type 2 for problem 2"<<endl;
+    cout<<"Type 3 for problem 3"<<endl;
+    cout<<"Type 4 for problem 4"<<endl;
+    cout<<"Type 5 for problem 5"<<endl;
+    cout<<"Type 6 for problem 6"<<endl;
+    cout<<"Type anything else to exit \n"<<endl;
+}
+
+int getN(){
+    int inN;
+    cin>>inN;
+    return inN;
+}
+
 void problem1() {
+    cout << "In problem 1\n\n";
     Customer *c = new Customer;
     // initialize data members
     c->balance=1000;
@@ -126,6 +163,7 @@ void problem1() {
 
 // Employee pay problem
 void problem2() {
+    cout << "In problem 2\n\n";
     // create array large enough to hold 10 employees
     const int nEmp = 10;
     Employee **eArray = new Employee *[nEmp];
@@ -156,6 +194,7 @@ void problem2() {
 
 // Modes problem
 void problem3() {
+    cout << "In problem 3\n\n";
     int size;
     cout << "How many elements will you enter: ";
     cin >> size;
@@ -194,9 +233,10 @@ void problem3() {
 // Phone line problem
 // Enter a number. Encrypt it or decrypt it.
 void problem4() {
+    cout << "In problem 4\n\n";
     const int nDigit=4; // user is expected to enter a 4 digit number
     int num;
-    cout << "Enter your number: ";
+    cout << "Enter a four digit number: ";
     cin >> num;
     int *numArray = intArray(num);
     // check if number is valid. No 8s or 9s
@@ -230,6 +270,10 @@ void problem4() {
     
     delete []numArray;
     cout << endl;
+}
+
+void problem6() {
+    cout << "In problem 1\n\n";
 }
 
 // Function puts the n digits of a number into an array
@@ -360,10 +404,11 @@ void formatCheck(Employee *e, string date) {
 
 // Function outputs largest factorial for various data types
 void problem5() {
+    cout << "In problem 5\n\n";
     unsigned uB;
-    cout << "Largest unsigned byte factorial is: " << maxFac(uB) << endl;
+    cout << "Largest unsigned factorial is: " << maxFac(uB) << endl;
     signed sB;
-    cout << "Largest signed byte factorial is: " << maxFac(sB) << endl;
+    cout << "Largest signed factorial is: " << maxFac(sB) << endl;
     unsigned short uS;
     cout << "Largest unsigned short factorial is: " << maxFac(uS) << endl;
     signed short sS;
@@ -546,4 +591,8 @@ void print(int *array, int size, string sep) {
     for (int i = 0; i != size; ++i) {
         cout << array[i] << sep;
     }
+}
+
+void def(int inN){
+    cout<<"You typed "<<inN<<" to exit the program"<<endl;
 }
