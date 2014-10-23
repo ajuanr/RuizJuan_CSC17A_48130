@@ -9,7 +9,12 @@
 #include <cstdlib>
 #include <fstream>
 
-enum Difficulty {EASY, NORMAL, HARD};
+
+/***************************************************
+ *
+ *                  Structure
+ *
+ **************************************************/
 
 struct MineField {
     /// Determines how many mines to set
@@ -26,6 +31,12 @@ struct MineField {
     short mines;
 };
 
+
+/***************************************************
+ *
+ *             Function Prototypes
+ *
+ **************************************************/
 MineField* create(short, short);
 void destroy(MineField *);
 void prntClr(MineField *);
@@ -48,6 +59,11 @@ char * userName();
 using namespace std;
 
 
+/***************************************************
+ *
+ *                      Main
+ *
+ **************************************************/
 int main(int argc, const char * argv[]) {
     playGame();
     cout << endl;
@@ -92,7 +108,7 @@ void playGame() {
         setFlags(mf);
     }
     else{
-        cout << player << "you have lost\n";
+        cout << player << " you have lost\n";
         setFlags(mf);
         mf->data[row][col]= MineField::LOSER;
     }
@@ -222,7 +238,8 @@ void setMines(MineField *mf) {
                     ///only place mines if mines are still available
                     /// and current is empty
                     if (mines && mf->data[i][j] == MineField::EMPTY) {
-                        mf->data[i][j] = MineField::MINE;  /// set the mine
+                        /// set the mine
+                        mf->data[i][j] = MineField::MINE;
                         --mines;
                     }
                 }
@@ -420,7 +437,8 @@ void rwFile(MineField *mf) {
    
     /// Ask user if they want to see the result of the last game
     char response;
-    cout << "Would you like to see the result of the last game?\n"
+    cout << "Would you like to see the result of the last game as "
+             "read from a binary file?\n"
     "Hit 'y' if yes: ";
     cin >> response;
     if (response == 'y') {
