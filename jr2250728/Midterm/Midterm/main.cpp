@@ -532,7 +532,7 @@ void mode(statsResult* s, int *a,int n){
     if ( n % 2 == 1)
         s->median = b[mid];
     else
-        s->median = (b[mid] + b[mid+1])/2;
+        s->median = (b[mid] + b[mid-1])/2;
 
     //Count to max frequency
     int count=0,maxFreq=0;
