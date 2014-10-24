@@ -143,19 +143,18 @@ void problem1() {
     cout << "In problem 1\n\n";
     Customer *c = new Customer;
     // initialize data members
-    c->balance=1000;
     c->chkTotal=0;
     c->deposits=0;
     AcctInfo(c);
     cout << endl;
     newBalance(c);
     cout << "The current balance on account " << c->acctNum
-    << " is: " << c->balance << endl;
+    << " is: $" << c->balance << endl;
     if (isOvrdrwn(c)) {
-        cout << "Account was over drawn\n"
-                "An Overdraft fee of 12 dollars was assesed\n";
+        cout << "Account was overdrawn\n"
+                "An Overdraft fee of $12 was assesed\n";
         c->balance-=12;
-        cout << "The new balance is: " << c->balance << endl;
+        cout << "The new balance is: $" << c->balance << endl;
     }
     cout << endl;
     delete c;
@@ -272,6 +271,7 @@ void problem4() {
     cout << endl;
 }
 
+// Function outputs the converions that were given
 void problem6() {
     cout << "In problem 6\n";
     
@@ -284,13 +284,13 @@ void problem6() {
     << endl;
     // -2.125 -> hex, binary, octal
     cout << setw(12) << "-2.125"<<
-    setw(6) << "5.C"<<  setw(8) << "101.11"<< setw(6) << "5.7"
+    setw(6) << "5.C"<<  setw(8) << "101.11"<< setw(6) << "5.6"
     << endl;
     
     cout << "b)\n";
     cout << "46666601 = 1.09999991" << endl;
     cout << "46666602 = 2.19999981" << endl;
-    cout << "B9999AFE = -0.13749981" << endl;
+    cout << "B9999AFE = -0.58750045" << endl;
     
 }
 
@@ -349,7 +349,6 @@ int *decrypt(int *array, int size) {
         // undo the addition
         *(array+i) -= 3;
     }
-
     return array;
 }
 
@@ -482,9 +481,10 @@ void AcctInfo(Customer *c) {
     if (response == 'y') {
         int amnt;
         do {
-            cout << "Enter the amount of the check. -1 to quit: ";
+            cout << "Enter the amount of the check. -1 to end check input: ";
             cin >> amnt;
-            c->chkTotal +=amnt;
+            if (amnt > 0)
+                c->chkTotal +=amnt;
         } while(amnt>0);
     }
     cout << endl;
@@ -493,9 +493,10 @@ void AcctInfo(Customer *c) {
     if (response == 'y') {
         int amnt;
         do {
-            cout << "Enter the amount of the deposit. -1 to quit: ";
+            cout <<"Enter the amount of the deposit. -1 to end deposit input: ";
             cin >> amnt;
-            c->deposits += amnt;
+            if (amnt > 0)
+                c->deposits += amnt;
         } while(amnt>0);
     }
 }
@@ -518,7 +519,6 @@ statsResult *avgMedMode(int *array, int size) {
 }
 
 void mode(statsResult* s, int *a,int n){
-    
     //Create a parallel array to sort
     int *b=new int [n];
     
