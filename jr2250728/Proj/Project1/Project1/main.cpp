@@ -53,7 +53,7 @@ bool hasWon(MineField *);
 void rwFile(MineField *);
 void fields();
 bool cont(MineField *, short, short);
-void playGame();
+void playGame(short, short, short);
 void prompt(short&, short&);
 char * userName();
 using namespace std;
@@ -65,21 +65,47 @@ using namespace std;
  *
  **************************************************/
 int main(int argc, const char * argv[]) {
-    playGame();
-    cout << endl;
-    cout << "Would you like to see some empty minefields.\n"
-            "Hit 'y' for yes: ";
+    /// ask user if they want to play
+    cout << "Would you like to play a game of minesweeper?\n"
+            "Hit 'y' if yes\n";
     char ans;
     cin >> ans;
-    if (ans == 'y')
-        fields();
+    
+    const int size = 3;
+    if (ans == 'y') {
+        const short nrows = 10;
+        const short ncols = 10;
+        /// store the results of the last 3 games
+        MineField **results = new MineField *[size];
+        for(int i = 0; i != size;++i)
+            create(10,10);
+        // how many games have been saved, not greater than 2
+        int nSaved = 0;
+        
+        while (ans == 'y')
+        {
+            playGame(10,10,0);
+            cout << endl;
+            cout << "Would you like to play again: ";
+            cin >> ans;
+            cout << endl;
+        }
+    }
+    cout << endl;
+//    cout << "Would you like to see some empty minefields.\n"
+//            "Hit 'y' for yes: ";
+//    char ans;
+//    cin >> ans;
+//    if (ans == 'y')
+//        fields();
+    
     
     return 0;
 }
 
-void playGame() {
-    const short nrows = 10;
-    const short ncols = 10;
+/// Play a game of minesweeper
+/// User inputs how many rows and columns and the dicculty
+void playGame(int nrows, int ncols, int diff) {
     srand(time(0));
     /// Get the user name
     char *player = userName();
