@@ -11,7 +11,6 @@
 #include <string>
 #include <iomanip>
 
-
 /***************************************************
  *
  *                  Structure
@@ -32,7 +31,6 @@ struct MineField {
     /// number of mines
     short mines;
 };
-
 
 using namespace std;
 
@@ -64,10 +62,6 @@ void prompt(short&, MineField::Difficulty&);
 char * userName();
 void writeBin(MineField *, string);
 void readBin(string);
-
-
-
-
 
 /***************************************************
  *
@@ -137,8 +131,7 @@ void prompt(short &rows, MineField::Difficulty &d) {
     d = shortToDiff(diff);
 }
 
-
-
+/// Function returns true if input was valid
 bool isValidIn(short rows, short cols, MineField::Difficulty diff) {
     /// make sure that the number of mines does not exceed
     /// the number of spots available
@@ -149,7 +142,7 @@ bool isValidIn(short rows, short cols, MineField::Difficulty diff) {
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
 void playGame(short nrows, short ncols, MineField::Difficulty diff, char *p) {
-    srand(time(0));
+    srand(static_cast<unsigned int>(time(0)));
     MineField *mf = create(nrows, ncols);
     mf->mines=nMines(diff);
     setMines(mf);
@@ -189,6 +182,7 @@ void playGame(short nrows, short ncols, MineField::Difficulty diff, char *p) {
     destroy(mf);
 }
 
+/// Function gets the user name as a string converts it to a char array
 char *userName() {
     cout << "Enter your name: ";
     string in;
@@ -224,6 +218,8 @@ MineField* create(short rows, short cols) {
     return out;
 }
 
+/// Function return the MineField::Difficulty type from
+/// the short variable
 MineField::Difficulty shortToDiff(short choice) {
     switch (choice) {
         case (0):
@@ -513,36 +509,16 @@ void setPerim(MineField *mf) {
     }
 }
 
-/// This function writes to and reads from a binary file
-void rwFile(MineField *mf) {
-        /// Write the result to a binary file
-    fstream out("Result", ios::out | ios::binary);    /// open the file
-    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
-    out.close();
-   
-    /// Ask user if they want to see the result of the last game
-    char response;
-    cout << "Would you like to see the result of the last game as "
-             "read from a binary file?\n"
-    "Hit 'y' if yes: ";
-    cin >> response;
-    if (response == 'y') {
-        cout << "\nResult of your last game:\n";
-        /// Create space to hold the file read
-        MineField *result;
-        fstream in("Result", ios::in | ios::binary);
-        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
-        prntClr(result);
-        result = 0;
-    }
-}
-
+/// Function writes the minefield structure to a binary file
 void writeBin(MineField *mf, string fileName) {
     /// Write the result to a binary file
     fstream out(fileName.c_str(), ios::out | ios::binary);    /// open the file
     out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
     out.close();
 }
+
+/// Function prints the data variable from the Minefield structure
+/// writen to a binary file
 void readBin(string fileName) {
     /// Ask user if they want to see the result of the last game
     char response;
@@ -562,9 +538,9 @@ void readBin(string fileName) {
 
 }
 
-
-
 /// This function creates an array of the Minefield structure
+/// as part of the requirments to be able to write to and read
+/// from an array of structures
 void fields() {
     cout << "How many mine fields do you want to see: ";
     int n;
