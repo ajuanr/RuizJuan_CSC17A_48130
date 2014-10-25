@@ -115,7 +115,8 @@ int main(int argc, const char * argv[]) {
     
     readBin("result");
     
-    cout << "Would you like to see some empty minefields.\n"
+    cout << "Would you like to see some empty minefields "
+            "stored in a structure?\n"
             "Hit 'y' for yes: ";
     cin >> ans;
     if (ans == 'y')
