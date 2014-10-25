@@ -34,6 +34,8 @@ struct MineField {
 };
 
 
+using namespace std;
+
 /***************************************************
  *
  *             Function Prototypes
@@ -60,7 +62,11 @@ bool cont(MineField *, short, short);
 void playGame(short, short, MineField::Difficulty, char*);
 void prompt(short&, MineField::Difficulty&);
 char * userName();
-using namespace std;
+void writeBin(MineField *, string);
+void readBin(string);
+
+
+
 
 
 /***************************************************
@@ -106,6 +112,8 @@ int main(int argc, const char * argv[]) {
     
     /// Cleanup
     delete player;
+    
+    readBin("result");
     
     cout << "Would you like to see some empty minefields.\n"
             "Hit 'y' for yes: ";
@@ -174,8 +182,8 @@ void playGame(short nrows, short ncols, MineField::Difficulty diff, char *p) {
     /// Print the complete minefield
     prntClr(mf);
     
-    /// write and read binary file
-    rwFile(mf);
+    /// write result to binary file
+    writeBin(mf, "result");
     /// deallocate the game area
     destroy(mf);
 }
@@ -527,6 +535,33 @@ void rwFile(MineField *mf) {
         result = 0;
     }
 }
+
+void writeBin(MineField *mf, string fileName) {
+    /// Write the result to a binary file
+    fstream out(fileName.c_str(), ios::out | ios::binary);    /// open the file
+    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
+    out.close();
+}
+void readBin(string fileName) {
+    /// Ask user if they want to see the result of the last game
+    char response;
+    cout << "Would you like to see the result of the last game as "
+    "read from a binary file?\n"
+    "Hit 'y' if yes: ";
+    cin >> response;
+    if (response == 'y') {
+        cout << "\nResult of your last game:\n";
+        /// Create space to hold the file read
+        MineField *result;
+        fstream in(fileName.c_str(), ios::in | ios::binary);
+        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
+        prntClr(result);
+        in.close();
+    }
+
+}
+
+
 
 /// This function creates an array of the Minefield structure
 void fields() {
