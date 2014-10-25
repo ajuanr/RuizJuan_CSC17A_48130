@@ -41,7 +41,9 @@ MineField* create(short, short);
 void destroy(MineField *);
 void prntClr(MineField *);
 void prntObscr(MineField *);
-void nMines(MineField *, MineField::Difficulty);
+MineField::Difficulty shortToDiff(short);
+bool isValidIn(short, short, MineField::Difficulty);
+short nMines(MineField::Difficulty);
 void setMines(MineField *);
 void setFlags(MineField *);
 short nAdjacent(MineField *, short, short, short = MineField::MINE);
@@ -53,8 +55,8 @@ bool hasWon(MineField *);
 void rwFile(MineField *);
 void fields();
 bool cont(MineField *, short, short);
-void playGame(short, short, short);
-void prompt(short&, short&);
+void playGame(short, short, MineField::Difficulty);
+void prompt(short&, MineField::Difficulty&);
 char * userName();
 using namespace std;
 
@@ -73,44 +75,76 @@ int main(int argc, const char * argv[]) {
     
     const int size = 3;
     if (ans == 'y') {
-        const short nrows = 10;
-        const short ncols = 10;
-        /// store the results of the last 3 games
-        MineField **results = new MineField *[size];
-        for(int i = 0; i != size;++i)
-            create(10,10);
-        // how many games have been saved, not greater than 2
-        int nSaved = 0;
-        
-        while (ans == 'y')
-        {
-            playGame(10,10,0);
-            cout << endl;
-            cout << "Would you like to play again: ";
-            cin >> ans;
-            cout << endl;
+        /// create minefield variables
+        short nrows;
+        MineField::Difficulty d;
+        /// Get game information from user
+        prompt(nrows, d);
+        /// Check that data is valid before creating the array
+        /// that holds the results of previous games
+        if (isValidIn(nrows, nrows, d)) {
+            /// store the results of the last 3 games
+            MineField **results = new MineField *[size];
+            for(int i = 0; i != size;++i)
+                results[i] = create(nrows, nrows);
+            // how many games have been saved, not greater than 2
+            int nSaved = 0;
+            
+            while (ans == 'y' && isValidIn(nrows, nrows, d)) {
+                playGame(nrows, nrows, d);
+                cout << endl;
+                cout << "Would you like to play again: ";
+                cin >> ans;
+                cout << endl;
+                /// Get new data only if user wants to continue
+                if (ans =='y')
+                    prompt(nrows, d);
+            }
         }
+        /// User information was invalid
+        else
+            cout << "Minefield too small. Goodbye: ";
     }
-    cout << endl;
+    cout << "Goodbye.\n";
 //    cout << "Would you like to see some empty minefields.\n"
 //            "Hit 'y' for yes: ";
 //    char ans;
 //    cin >> ans;
 //    if (ans == 'y')
 //        fields();
-    
-    
+
     return 0;
+}
+
+void prompt(short &rows, MineField::Difficulty &d) {
+    cout << "Enter the number of rows\n"
+            "Minefield will be NxN in size: ";
+    cin >> rows;
+
+    short diff;
+    cout << "Enter the difficulty\n"
+            "0=Easy\t 1=Normal\t 2=Hard\n";
+    cin >> diff;
+    d = shortToDiff(diff);
+}
+
+
+
+bool isValidIn(short rows, short cols, MineField::Difficulty diff) {
+    /// make sure that the number of mines does not exceed
+    /// the number of spots available
+    return (rows * cols) > nMines(diff);
+        
 }
 
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
-void playGame(int nrows, int ncols, int diff) {
+void playGame(short nrows, short ncols, MineField::Difficulty diff) {
     srand(time(0));
     /// Get the user name
     char *player = userName();
     MineField *mf = create(nrows, ncols);
-    nMines(mf, MineField::EASY);
+    mf->mines=nMines(diff);
     setMines(mf);
     prntObscr(mf);
     short row, col;
@@ -183,6 +217,22 @@ MineField* create(short rows, short cols) {
     return out;
 }
 
+MineField::Difficulty shortToDiff(short choice) {
+    switch (choice) {
+        case (0):
+            return MineField::Difficulty::EASY;
+            break;
+        case (1):
+            return MineField::Difficulty::NORMAL;
+            break;
+        case (2):
+            return MineField::Difficulty::HARD;
+        default:
+            return MineField::Difficulty::EASY;
+            break;
+    }
+}
+
 /// Function deallocates memory
 void destroy(MineField *mf) {
     /// delete each dynamically allocated row
@@ -217,13 +267,14 @@ void prntObscr(MineField* mf) {
     /// Print the column index
     for (short i = 0; i != mf->cols; ++i){
         if (i==0)
-            cout << "  ";
+            cout << "   ";
         cout << i << " ";
     }
     cout << endl;
     for (short row = 0; row != mf->rows; ++row){
         for (short col = 0; col != mf->cols; ++col){
-            if(col == 0) cout << row << " ";
+            if(col == 0 && row < 10) cout << row << "  ";
+            if (col == 0 && row >= 10) cout << row << " ";
             /// KEEP EMPTY spaces and MINEs hidden
             if (mf->data[row][col] == MineField::EMPTY ||
                 mf->data[row][col] == MineField::MINE)
@@ -241,13 +292,13 @@ void prntObscr(MineField* mf) {
 }
 
 /// Function returns the number of mines to set based on Difficulty
-void nMines(MineField *mf, MineField::Difficulty d) {
+short nMines(MineField::Difficulty d) {
     if (d==MineField::EASY)
-        mf->mines = 15;
+        return 15;
     else if (d==MineField::NORMAL)
-        mf->mines = 30;
-    else if (d==MineField::HARD)
-        mf->mines = 45;
+        return 30;
+    else
+         return 45;
 }
 
 /// Function places mines in grid
@@ -477,7 +528,7 @@ void rwFile(MineField *mf) {
         result = 0;
     }
 }
-
+/*
 /// This function creates an array of the Minefield structure
 void fields() {
     cout << "How many mine fields do you want to see: ";
@@ -509,3 +560,4 @@ void fields() {
     }
     delete []mf;
 }
+*/
