@@ -16,7 +16,9 @@
  *                  Structure
  *
  **************************************************/
-
+/// This is the structure that holds the minefield
+/// as well as the associated flags that occur when
+/// a user selects a square
 struct MineField {
     /// Determines how many mines to set
     enum Difficulty {EASY, NORMAL, HARD};
@@ -54,7 +56,6 @@ void clrArea(MineField *, short, short);
 void setPerim(MineField *);
 void showZeros(MineField *, short, short);
 bool hasWon(MineField *);
-void rwFile(MineField *);
 void fields();
 bool cont(MineField *, short, short);
 void playGame(short, short, MineField::Difficulty, char*);
