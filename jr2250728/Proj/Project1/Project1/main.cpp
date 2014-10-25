@@ -23,13 +23,13 @@ struct MineField {
     /// Determines how many mines to set
     enum Difficulty {EASY, NORMAL, HARD};
     /// Flags representing various square possibilities
-    enum FLAGS {EMPTY=10, MINE, CLEAR, LOSER};
+    enum Flags {EMPTY=10, MINE, CLEAR, LOSER};
     /// This is the minefield
     short **data;
+    /// The total number of rows
     short rows;
+    /// The total number of columns
     short cols;
-    /// determines how many mines
-    Difficulty d;
     /// number of mines
     short mines;
 };
@@ -103,7 +103,7 @@ int main(int argc, const char * argv[]) {
         else
             cout << "Minefield too small. Goodbye: ";
     }
-    cout << "Goodbye.\n";
+    cout << "Game is Over.\n";
     
     /// Cleanup
     delete player;
@@ -116,6 +116,9 @@ int main(int argc, const char * argv[]) {
     cin >> ans;
     if (ans == 'y')
         fields();
+    
+    cout << endl;
+    cout << "Goodbye\n";
 
     return 0;
 }
