@@ -1,8 +1,29 @@
 /*
  * Ruiz, Juan - Project 1 - 48130
  *
- * Project runs a game of minesweeper
+ * Project allows user to play Minesweeper
+ * 
+ * Structures
+ *      Functions with structure input: Most of the functions
+ *      Functions returning structures: Function create()      Line 235
+ *      Function with array of structures: Function fields()   Line 584
  *
+ * Memory allocation:
+ *      dynamic 2D array in function create()                  Line 242
+ *      dynamic 1D array in function userName()                Line 225
+ *
+ * Binary Files
+ *      Writing to: function writeBin()                        Line 553
+ *      Reading from: function readBin()                       Line 562
+ * Strings
+ *      Function:
+ *          writeBin(), readBin(), userName()               Line 553, 562, 220
+ *
+ * Pointers
+ *      Structure passed as pointer in most functions
+ *      2D array pointer notation in prntClear()               Line 288, 290
+ *      1D array pointer notation in userName()                 Line 227, 229
+ *      Returning pointer in create()                           Line 235
  */
 
 #include <iostream>
@@ -41,7 +62,7 @@ using namespace std;
  *             Function Prototypes
  *
  **************************************************/
-MineField* create(short, short);
+MineField *create(short, short);
 void destroy(MineField *);
 void prntClr(MineField *);
 void prntObscr(MineField *);
@@ -60,7 +81,7 @@ void fields();
 bool cont(MineField *, short, short);
 void playGame(short, short, MineField::Difficulty, char*);
 void prompt(short&, MineField::Difficulty&);
-char * userName();
+char *userName();
 void writeBin(MineField *, string);
 void readBin(string);
 
@@ -122,6 +143,12 @@ int main(int argc, const char * argv[]) {
 
     return 0;
 }
+
+/***************************************************************
+ *
+ *              Function definitions
+ *
+ **************************************************************/
 
 void prompt(short &rows, MineField::Difficulty &d) {
     cout << "Enter the number of rows\n"
@@ -187,6 +214,7 @@ void playGame(short nrows, short ncols, MineField::Difficulty diff, char *p) {
 }
 
 /// Function gets the user name as a string converts it to a char array
+/// for the 1d dynamic array requirement
 char *userName() {
     cout << "Enter your name: ";
     string in;
@@ -209,6 +237,8 @@ MineField* create(short rows, short cols) {
     MineField *out = new MineField;
     out->rows=rows;
     out->cols = cols;
+    
+    /// Create the 2D game minefield
     out->data = new short *[rows];
     
     /// Create each row
@@ -417,16 +447,22 @@ bool isClear(MineField * mf, short row, short col) {
     return true;                 /// area was clear
 }
 
+/// Clear an area whose values are clear
+/// i.e 0 adjacent  mines
 void showZeros(MineField *mf, short row, short col) {
     /// check bounds
     if ( row >= mf->rows || row < 0 || col >= mf->cols || col < 0)
         return;
     if (isClear(mf, row, col) && mf->data[row][col] != MineField::CLEAR){
         mf->data[row][col] = MineField::CLEAR;
-        showZeros(mf, row+1, col); /// go up one row
-        showZeros(mf, row-1, col); /// go down one row
-        showZeros(mf, row, col+1); /// go right one col
-        showZeros(mf, row, col-1); /// go left one col
+        /// go up one row
+        showZeros(mf, row+1, col);
+        /// go down one row
+        showZeros(mf, row-1, col);
+        /// go right one col
+        showZeros(mf, row, col+1);
+        /// go left one col
+        showZeros(mf, row, col-1);
     }
     /// space was not clear or already shown
     else
@@ -446,7 +482,7 @@ void setFlags(MineField *mf) {
 
 /// Function reveals what is underneath the square that the user has selected
 /// and whether to continue based on what is revealed
-/// i.e selecting a mines means you lost
+/// i.e selecting a mine means you lost, game over
 bool cont(MineField * mf, short row, short col) {
     /// check if user selected a losing square
     if (mf->data[row][col] == MineField::MINE)
