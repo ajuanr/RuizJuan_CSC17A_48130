@@ -58,19 +58,30 @@ private:
 
 
 /***************************************************
- **********Chapter 13 Problem 11 ********************
+ **********Chapter 13 Problem 11 *******************
  **************************************************/
 class Numbers {
 public:
     Numbers(int);
     ~Numbers();
-    void setNum(int, int);
-    void getNum(int, int) const;;
-    void max() const;
-    void min() const;
-    void avg() const;
+    void fill();
+    void setNum(int, float);
+    float getNum(int) const;;
+    float max() const;
+    float min() const;
+    float avg() const;
 private:
     float *data;
     int size;
 };
+
+/***************************************************
+ **********Chapter 13 Problem 12 *******************
+ **************************************************/
+class Payroll {
+public:
+private:
+};
+
+
 #endif

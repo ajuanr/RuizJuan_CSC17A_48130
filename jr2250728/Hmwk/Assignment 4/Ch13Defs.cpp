@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <cstdlib>
 #include "Ch13Prototypes.h"
 
 using namespace std;
@@ -79,6 +80,8 @@ Numbers::Numbers(int n) {
         size=1;
         data = new float[1];
     }
+    // fill the array
+    fill();
 }
 
 Numbers::~Numbers() {
@@ -86,3 +89,47 @@ Numbers::~Numbers() {
     delete []data;
 }
 
+// fill array with values from 10-99
+void Numbers::fill() {
+    for (int i = 0; i != size; ++i) {
+        data[i] = rand() % 90 + 10;
+    }
+}
+
+void Numbers::setNum(int index, float val) {
+    // only set value if it falls within the array
+    if (index >=0 && index < size)
+        data[index] = val;
+}
+
+float Numbers::getNum(int index) const {
+    // only set value if it falls within the array
+    if (index >=0 && index < size)
+        return data[index];
+    return -1;
+}
+
+float Numbers::max() const {
+    float max = data[0];
+    for (int i = 0; i != size; ++i)
+        if (data[i] > max)
+            max = data[i];
+    return max;
+}
+
+float Numbers::min() const {
+    float min = data[0];
+    for (int i = 0; i != size; ++i)
+        if (data[i] > min)
+            min = data[i];
+    return min;
+}
+
+float Numbers::avg() const {
+    float sum = 0.0;
+    int count=0;
+    while (count++ != size) {
+        sum += data[count];
+    }
+    return sum / count;
+}
