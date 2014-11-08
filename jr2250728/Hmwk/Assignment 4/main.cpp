@@ -46,7 +46,7 @@ void prob13_6() {
     float cost;
     cin >> cost;
     
-    Inventory item(itemNum, cost, quantity);
+    InventoryItem item(itemNum, cost, quantity);
     cout << "The total cost for item: " << item.getItemNumber() << " is: $"
     << item.getTotalCost() << endl;
 }

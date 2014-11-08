@@ -38,10 +38,10 @@ private:
 /***************************************************
  **********Chapter 13 Problem 6 ********************
  **************************************************/
-class Inventory {
+class InventoryItem {
 public:
-    Inventory();
-    Inventory(int, float, int);
+    InventoryItem();
+    InventoryItem(int, float, int);
     void setItemNumber(int);
     void setQuantity(int);
     void setCost(float);
@@ -92,5 +92,19 @@ private:
     int payRate;
 };
 
-
+/***************************************************
+ **********Chapter 13 Problem 15 *******************
+ **************************************************/
+// requires the InventoryItem class
+class CashRegister {
+public:
+    CashRegister();
+    void print();
+private:
+    int nItems;
+    InventoryItem *inventory;
+    
+    //void fillItems();
+};
+void fillItems(InventoryItem *, int);
 #endif

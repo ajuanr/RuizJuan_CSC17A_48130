@@ -42,29 +42,29 @@ void Date::print(int n) const {
 }
 
 /***************************************************
- ***************** Inventory class definitions *****
+ ***************** InventoryItem class definitions *****
  **************************************************/
-Inventory::Inventory() {
+InventoryItem::InventoryItem() {
     setCost(0);
     setQuantity(0);
     setItemNumber(0);
 }
 
-Inventory::Inventory(int itemNum, float cost, int quant) {
+InventoryItem::InventoryItem(int itemNum, float cost, int quant) {
     setCost(cost);
     setQuantity(quant);
     setItemNumber(itemNum);
 }
 
-void Inventory::setCost(float c) {
+void InventoryItem::setCost(float c) {
     (c > 0) ? cost=c : cost=0;
 }
 
-void Inventory::setItemNumber(int i) {
+void InventoryItem::setItemNumber(int i) {
     (i > 0) ? itemNumber = i : itemNumber = 0;
 }
 
-void Inventory::setQuantity(int q) {
+void InventoryItem::setQuantity(int q) {
     (q > 0) ? quantity = q : quantity = 0;
 }
 
@@ -149,4 +149,32 @@ void Payroll::setHours(int h) {
 
 void Payroll::setRate(int rate) {
     (rate > 0 ) ? payRate = rate : rate = 0;
+}
+
+/***************************************************
+ ************ CashRegister class definitions *******
+ **************************************************/
+
+CashRegister::CashRegister() {
+    // number of items available for sale
+    nItems = 5;
+    
+    inventory = new InventoryItem[nItems];
+    
+    fillItems(this->inventory, nItems);
+    
+}
+// fill the cash register with inventory
+void fillItems(InventoryItem *inventory, int size) {
+    for (int i=0; i != size; ++i ) {
+        // give inventory a five digit identifier
+        int itemNum = rand() % 10000 + 100000;
+        // set the cost of the items between $1 and $100
+        float itemCost = rand() % 100 + 1;
+        // the number of units available
+        int nUnit = rand() % 20 + 1;
+        inventory[i].setItemNumber(itemNum);
+        inventory[i].setCost(itemCost);
+        inventory[i].setQuantity(nUnit);
+    }
 }
