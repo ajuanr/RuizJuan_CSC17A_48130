@@ -7,10 +7,17 @@
 //
 
 #include <stdio.h>
+#include <iostream>
 #include "Ch13Prototypes.h"
+
+using namespace std;
 
 Date::Date(int m, int d, int y) {
     (m < 13 && m > 0) ? month = m: month=1;
     (d < 32 && d > 0) ? day = d: day=1;
     (y < 2050 && y > 1950 ) ? year = d: year=1950;
+}
+
+void Date::print1() const{
+    cout << month << "/" << day << "/" << year << endl;
 }

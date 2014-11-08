@@ -12,10 +12,11 @@
 #ifndef RuizJuan_Chapter13_Ch13Prototypes_h
 #define RuizJuan_Chapter13_Ch13Prototypes_h
 
-// Chapter 13 Problem
+// Chapter 13 Problem 1
 class Date{
 public:
     Date(int, int, int);
+    void print(){print1();};
 private:
     int month;
     int day;

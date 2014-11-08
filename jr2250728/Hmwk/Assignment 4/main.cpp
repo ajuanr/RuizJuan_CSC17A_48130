@@ -7,9 +7,10 @@
 //
 
 #include <iostream>
+#include "Ch13Prototypes.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    Date d(02, 23, 2014);
+    d.print();
     return 0;
 }
