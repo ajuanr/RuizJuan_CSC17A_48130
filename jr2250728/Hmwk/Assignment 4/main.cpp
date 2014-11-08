@@ -7,6 +7,8 @@
 //
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "Ch13Prototypes.h"
 
 using namespace std;
@@ -14,9 +16,11 @@ using namespace std;
 void prob13_1();
 void prob13_6();
 void prob13_11();
+void prob13_12();
 
 int main(int argc, const char * argv[]) {
-    prob13_11();
+    srand(static_cast<unsigned int>(time(0)));
+    prob13_12();
     return 0;
 }
 
@@ -61,4 +65,30 @@ void prob13_11() {
     cout << "The largest value is: " << numArray.max() << endl;
     cout << "The smallest value is: " << numArray.min() << endl;
     cout << "The average value is: " << numArray.avg() << endl;
+}
+
+void prob13_12() {
+    // problem ho
+    const int size = 7;
+    Payroll *emp = new Payroll[7];
+    // fill the array with randomly generated employee pay and hours
+    for (int i = 0; i != size; ++i) {
+        // create random hour between 0 and 60
+        int randHr = rand() % 59 + 1;
+        // create random payRate between 1 and 45
+        int randRate = rand() % 45 + 1;
+        emp[i].setHours(randHr);
+        emp[i].setRate(randRate);
+    }
+    
+    // print the employee pay
+    for (int i = 0; i != size; ++i) {
+        cout << "Pay for employee" << i+1 << ":\n\t"
+             << emp[i].getHours() << " hours x "
+             << emp[i].getRate() << " = $" << emp[i].pay()
+             << endl;
+    }
+    
+    // deallocate
+    delete []emp;
 }

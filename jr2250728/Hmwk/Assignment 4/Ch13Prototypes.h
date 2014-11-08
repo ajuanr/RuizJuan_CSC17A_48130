@@ -80,7 +80,16 @@ private:
  **************************************************/
 class Payroll {
 public:
+    Payroll():hours(0), payRate(0) {}
+    Payroll(int, int);
+    void setHours(int);
+    void setRate(int);
+    int getHours() const {return hours;}
+    int getRate() const {return payRate;}
+    int pay() const { return hours * payRate;}
 private:
+    int hours;
+    int payRate;
 };
 
 

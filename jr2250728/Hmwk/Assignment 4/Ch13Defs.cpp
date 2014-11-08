@@ -69,7 +69,7 @@ void Inventory::setQuantity(int q) {
 }
 
 /***************************************************
- ***************** Numbers class definitions *****
+ ***************** Numbers class definitions *******
  **************************************************/
 Numbers::Numbers(int n) {
     if (n > 0) {
@@ -132,4 +132,21 @@ float Numbers::avg() const {
         sum += data[count];
     }
     return sum / count;
+}
+
+/***************************************************
+ ***************** PayRoll class definitions *******
+ **************************************************/
+Payroll::Payroll(int hours, int rate) {
+    setHours(hours);
+    setRate(rate);
+}
+
+void Payroll::setHours(int h) {
+    // do not accept hours worked over 60
+    (h < 61 && h >=0) ? hours = h : hours=0;
+}
+
+void Payroll::setRate(int rate) {
+    (rate > 0 ) ? payRate = rate : rate = 0;
 }
