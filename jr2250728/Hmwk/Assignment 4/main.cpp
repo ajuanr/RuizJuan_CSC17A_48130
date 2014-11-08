@@ -11,14 +11,15 @@
 
 using namespace std;
 
-void problem13_1();
+void prob13_1();
+void prob13_6();
 
 int main(int argc, const char * argv[]) {
-    problem13_1();
+    prob13_6();
     return 0;
 }
 
-void problem13_1() {
+void prob13_1() {
     Date d(02, 23, 2014);
     cout << "Print date in what format:\n"
             "1. mm/dd/yyyy\n"
@@ -27,4 +28,20 @@ void problem13_1() {
     int choice;
     cin >> choice;
     d.print(choice);
+}
+
+void prob13_6() {
+    cout << "Enter the item number: ";
+    int itemNum;
+    cin >> itemNum;
+    cout << "Enter the item quantity: ";
+    int quantity;
+    cin >> quantity;
+    cout << "Enter the item cost: ";
+    float cost;
+    cin >> cost;
+    
+    Inventory item(itemNum, cost, quantity);
+    cout << "The total cost for item: " << item.getItemNumber() << " is: $"
+    << item.getTotalCost() << endl;
 }

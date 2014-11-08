@@ -39,3 +39,30 @@ void Date::print(int n) const {
     }
     cout << endl;
 }
+
+/***************************************************
+ ***************** Inventory class definitions *****
+ **************************************************/
+Inventory::Inventory() {
+    setCost(0);
+    setQuantity(0);
+    setItemNumber(0);
+}
+
+Inventory::Inventory(int itemNum, float cost, int quant) {
+    setCost(cost);
+    setQuantity(quant);
+    setItemNumber(itemNum);
+}
+
+void Inventory::setCost(float c) {
+    (c > 0) ? cost=c : cost=0;
+}
+
+void Inventory::setItemNumber(int i) {
+    (i > 0) ? itemNumber = i : itemNumber = 0;
+}
+
+void Inventory::setQuantity(int q) {
+    (q > 0) ? quantity = q : quantity = 0;
+}

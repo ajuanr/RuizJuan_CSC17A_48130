@@ -12,7 +12,9 @@
 #ifndef RuizJuan_Chapter13_Ch13Prototypes_h
 #define RuizJuan_Chapter13_Ch13Prototypes_h
 
-// Chapter 13 Problem 1
+/***************************************************
+ **********Chapter 13 Problem 1 ********************
+ **************************************************/
 class Date{
 public:
     Date(int, int, int);
@@ -31,6 +33,27 @@ private:
     void print2() const;
     // Format 01 January 2000
     void print3() const;
+};
+
+/***************************************************
+ **********Chapter 13 Problem 6 ********************
+ **************************************************/
+class Inventory {
+public:
+    Inventory();
+    Inventory(int, float, int);
+    void setItemNumber(int);
+    void setQuantity(int);
+    void setCost(float);
+    int getItemNumber() const {return itemNumber;}
+    int getQuantity() const {return quantity;}
+    float getCost() const {return cost;}
+    float getTotalCost() const { return cost * quantity;}
+private:
+    int itemNumber;
+    int quantity;
+    float cost;
+    float totalCost;
 };
 
 #endif
