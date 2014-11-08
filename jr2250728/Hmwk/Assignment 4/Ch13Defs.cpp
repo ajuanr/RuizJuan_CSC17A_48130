@@ -18,6 +18,18 @@ Date::Date(int m, int d, int y) {
     (y < 2050 && y > 1950 ) ? year = d: year=1950;
 }
 
-void Date::print1() const{
+void Date::print1() const {
     cout << month << "/" << day << "/" << year << endl;
+}
+
+void Date::print2() const {
+    cout << months[month-1] << " " << day << ", " << year << endl;
+}
+
+void Date::print3() const {
+    cout << day << " " << months[month-1] << " " << year << endl;
+}
+
+void Date::print(int n) const {
+    
 }

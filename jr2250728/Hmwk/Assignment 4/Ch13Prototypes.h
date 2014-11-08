@@ -16,11 +16,14 @@
 class Date{
 public:
     Date(int, int, int);
-    void print(){print1();};
+    void print(int =1) const;
 private:
     int month;
     int day;
     int year;
+    const char* months[12] = {"January", "February", "March", "April", "May",
+                              "June", "July", "August", "Setptember",
+        "October", "November", "December"};
     
     // Format: 01/01/2000
     void print1() const;
