@@ -66,3 +66,23 @@ void Inventory::setItemNumber(int i) {
 void Inventory::setQuantity(int q) {
     (q > 0) ? quantity = q : quantity = 0;
 }
+
+/***************************************************
+ ***************** Numbers class definitions *****
+ **************************************************/
+Numbers::Numbers(int n) {
+    if (n > 0) {
+        data = new float[n];
+        size = n;
+    }
+    else {
+        size=1;
+        data = new float[1];
+    }
+}
+
+Numbers::~Numbers() {
+    cout << "In destructor. Deleting data.\n";
+    delete []data;
+}
+

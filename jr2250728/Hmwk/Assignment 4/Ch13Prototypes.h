@@ -56,4 +56,21 @@ private:
     float totalCost;
 };
 
+
+/***************************************************
+ **********Chapter 13 Problem 11 ********************
+ **************************************************/
+class Numbers {
+public:
+    Numbers(int);
+    ~Numbers();
+    void setNum(int, int);
+    void getNum(int, int) const;;
+    void max() const;
+    void min() const;
+    void avg() const;
+private:
+    float *data;
+    int size;
+};
 #endif
