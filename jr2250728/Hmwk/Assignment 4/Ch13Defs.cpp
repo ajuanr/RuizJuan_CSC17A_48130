@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include "Ch13Prototypes.h"
 
@@ -154,7 +155,6 @@ void Payroll::setRate(int rate) {
 /***************************************************
  ************ CashRegister class definitions *******
  **************************************************/
-
 CashRegister::CashRegister() {
     // number of items available for sale
     nItems = 5;
@@ -164,6 +164,26 @@ CashRegister::CashRegister() {
     fillItems(this->inventory, nItems);
     
 }
+
+void CashRegister::print() const {
+    for (int i =0; i != nItems; ++i) {
+        cout << setw(18) << left << "Item number: " << inventory[i].getItemNumber()
+             << setw(19) << "\ncost: " << inventory[i].getCost()
+             << setw(18) << "\nNumber available: " << inventory[i].getQuantity()
+             << "\n\n";
+    }
+    cout << endl;
+}
+
+int CashRegister::findItem(int itmNum) const {
+    for (int i = 0; i != nItems; ++i) {
+        if (itmNum == inventory[i].getItemNumber())
+            return i;
+    }
+    // item was not found
+    return -1;
+}
+
 // fill the cash register with inventory
 void fillItems(InventoryItem *inventory, int size) {
     for (int i=0; i != size; ++i ) {
@@ -178,3 +198,4 @@ void fillItems(InventoryItem *inventory, int size) {
         inventory[i].setQuantity(nUnit);
     }
 }
+

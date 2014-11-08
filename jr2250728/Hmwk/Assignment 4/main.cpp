@@ -17,10 +17,11 @@ void prob13_1();
 void prob13_6();
 void prob13_11();
 void prob13_12();
+void prob13_15();
 
 int main(int argc, const char * argv[]) {
-    srand(static_cast<unsigned int>(time(0)));
-    prob13_12();
+    //srand(static_cast<unsigned int>(time(0)));
+    prob13_15();
     return 0;
 }
 
@@ -91,4 +92,9 @@ void prob13_12() {
     
     // deallocate
     delete []emp;
+}
+
+void prob13_15() {
+    CashRegister cr;
+    cr.print();
 }

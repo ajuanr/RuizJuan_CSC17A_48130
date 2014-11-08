@@ -99,12 +99,13 @@ private:
 class CashRegister {
 public:
     CashRegister();
-    void print();
+    void print() const;
+    void buyItem();
 private:
     int nItems;
     InventoryItem *inventory;
     
-    //void fillItems();
+    int findItem(int) const;
 };
 void fillItems(InventoryItem *, int);
 #endif
