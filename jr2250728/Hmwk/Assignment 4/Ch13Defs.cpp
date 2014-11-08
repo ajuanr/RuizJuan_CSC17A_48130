@@ -15,7 +15,7 @@ using namespace std;
 Date::Date(int m, int d, int y) {
     (m < 13 && m > 0) ? month = m: month=1;
     (d < 32 && d > 0) ? day = d: day=1;
-    (y < 2050 && y > 1950 ) ? year = d: year=1950;
+    (y < 2050 && y > 1950 ) ? year = y: year=1950;
 }
 
 void Date::print1() const {
@@ -31,5 +31,11 @@ void Date::print3() const {
 }
 
 void Date::print(int n) const {
-    
+    switch (n) {
+        case (1): print1(); break;
+        case (2): print2(); break;
+        case (3): print3(); break;
+        default: print1(); break;
+    }
+    cout << endl;
 }
