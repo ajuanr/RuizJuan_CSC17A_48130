@@ -96,5 +96,6 @@ void prob13_12() {
 
 void prob13_15() {
     CashRegister cr;
-    cr.print();
+    cr.buyItem();
+    //cr.print();
 }

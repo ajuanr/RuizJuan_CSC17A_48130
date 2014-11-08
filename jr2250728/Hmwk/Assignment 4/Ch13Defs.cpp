@@ -165,6 +165,32 @@ CashRegister::CashRegister() {
     
 }
 
+void CashRegister::buyItem() {
+    cout << "select an item from the following items\n";
+    print();
+    int itemNum;
+    cin >> itemNum;
+    // -1 means failed to find item
+    int itemIndex = findItem(itemNum);
+    if ( itemIndex != -1 ) {
+        float profit = 0.30;
+        float unitPrice = inventory[itemIndex].getCost();
+        unitPrice += (unitPrice * profit);
+        // how many will be purchased
+        cout << "How many will you buy: ";
+        int qty;
+        cin >> qty;
+        float subtotal = unitPrice * qty;
+        subtotal += (subtotal * 0.06);
+        
+        cout << "The total is: " << subtotal << endl;
+    }
+    else
+        cout << "Item not found.\n";
+    
+}
+
+// print a list of the the item available
 void CashRegister::print() const {
     for (int i =0; i != nItems; ++i) {
         cout << setw(18) << left << "Item number: " << inventory[i].getItemNumber()
