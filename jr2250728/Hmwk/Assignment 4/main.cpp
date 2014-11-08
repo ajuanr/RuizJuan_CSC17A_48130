@@ -68,7 +68,7 @@ void prob13_11() {
 }
 
 void prob13_12() {
-    // problem ho
+    // problem wants array of seven employees
     const int size = 7;
     Payroll *emp = new Payroll[7];
     // fill the array with randomly generated employee pay and hours
