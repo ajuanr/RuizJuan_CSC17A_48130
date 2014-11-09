@@ -9,6 +9,5 @@
 #ifndef __Chapter14__Ch14Classes__
 #define __Chapter14__Ch14Classes__
 
-#include <stdio.h>
 
 #endif /* defined(__Chapter14__Ch14Classes__) */
