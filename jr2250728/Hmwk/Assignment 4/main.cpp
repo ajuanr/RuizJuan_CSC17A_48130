@@ -1,9 +1,13 @@
 //
 //  main.cpp
-//  RuizJuan-Chapter13
+//  Ruiz, Juan - Chapter 13 Problems
+//
+//  Files required:
+//      Ch13Prototypes.h
+//      Ch13Defs.cpp
 //
 //  Created by Juan Ruiz on 11/7/14.
-//  Copyright (c) 2014 Juan Ruiz. All rights reserved.
+//
 //
 
 #include <iostream>
