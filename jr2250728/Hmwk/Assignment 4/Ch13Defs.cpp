@@ -168,22 +168,27 @@ CashRegister::CashRegister() {
 void CashRegister::buyItem() {
     cout << "select an item from the following items\n";
     print();
+    cout << "Item #: ";
     int itemNum;
     cin >> itemNum;
     // -1 means failed to find item
     int itemIndex = findItem(itemNum);
     if ( itemIndex != -1 ) {
-        float profit = 0.30;
-        float unitPrice = inventory[itemIndex].getCost();
-        unitPrice += (unitPrice * profit);
         // how many will be purchased
         cout << "How many will you buy: ";
         int qty;
         cin >> qty;
-        float subtotal = unitPrice * qty;
-        subtotal += (subtotal * 0.06);
+        float subtotal = inventory[itemIndex].getTotalCost() * qty;
+        int tax = subtotal * 0.06;
+        int total = subtotal+tax;
+        // update the quantity
+        int newQty = inventory[itemIndex].getQuantity()-qty;
+        inventory[itemIndex].setQuantity(newQty);
+        // Print out subtotal, tax, and total
+        cout << setw(10) << "Subtotal:" << subtotal
+             << setw(11) << "\nTax:" << tax
+             << setw(11) << "\nTotal:" << total << endl;
         
-        cout << "The total is: " << subtotal << endl;
     }
     else
         cout << "Item not found.\n";
@@ -193,7 +198,8 @@ void CashRegister::buyItem() {
 // print a list of the the item available
 void CashRegister::print() const {
     for (int i =0; i != nItems; ++i) {
-        cout << setw(18) << left << "Item number: " << inventory[i].getItemNumber()
+        cout << setw(18) << left
+             << "Item number: " << inventory[i].getItemNumber()
              << setw(19) << "\ncost: " << inventory[i].getCost()
              << setw(18) << "\nNumber available: " << inventory[i].getQuantity()
              << "\n\n";
@@ -217,6 +223,8 @@ void fillItems(InventoryItem *inventory, int size) {
         int itemNum = rand() % 10000 + 100000;
         // set the cost of the items between $1 and $100
         float itemCost = rand() % 100 + 1;
+        // add 30 percent profit to each item
+        itemCost += (itemCost *0.30);
         // the number of units available
         int nUnit = rand() % 20 + 1;
         inventory[i].setItemNumber(itemNum);
