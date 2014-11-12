@@ -7,10 +7,10 @@
 //
 
 #include <iostream>
-#include "Ch14Classes.h"
+//#include "Ch14Classes.h"
 
 int main(int argc, const char * argv[]) {
-    Numbers n(1234);
-    n.print();
+    //Numbers n(1234);
+    //n.print();
     return 0;
 }

@@ -18,6 +18,7 @@ class Numbers {
 public:
     Numbers(int);
     void print() const;
+    
     //  Static variables. As specified in text
     static char lessThan20 [20][25];
     static char hundred[];
