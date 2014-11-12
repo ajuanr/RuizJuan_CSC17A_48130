@@ -10,34 +10,26 @@
 #define __Chapter14__Ch14Classes__
 
 /**********************************************
- ********* Chapter 14 - Problem 1 *************
+ ********* Chapter 14 - Problem 2 *************
  *********************************************/
-// convert integers to their english description
-// e.g. 100 = one hundred
-class Numbers {
+class DayofYear {
 public:
-    Numbers(int);
+    DayofYear(int);
     void print() const;
-    
-    //  Static variables. As specified in text
-    static char lessThan20 [20][25];
-    static char hundred[];
-    static char thousand[];
-    
+    static int dPerM[12];
+    static const char* months[12];
 private:
-    int num;
-    
-    // utitiliy functions
-    int *numArray() const;
+    int day;
 };
 
-// static var definitions
-char Numbers::lessThan20[20][25]  = {"one", "two", "three", "four", "five",
-                                     "six", "seven", "eight", "nine", "ten",
-                                     "eleven", "twelve", "thirteen", "fourteen",
-                                     "fifteen", "sixteen", "seventeen",
-                                     "eighteen", "nineteen"};
-char Numbers::hundred[] = {"hundred"};
-char Numbers::thousand[] = {"thousand"};
+
+/**********************************************
+ ********* Chapter 14 - Problem 4 *************
+ *********************************************/
+// 8hrs = 1 work day
+class NumDays {
+    
+};
+
 
 #endif /* defined(__Chapter14__Ch14Classes__) */

@@ -11,40 +11,31 @@
 
 using namespace std;
 
-Numbers::Numbers(int n) {
-    // make sure number entered is not negative
-    (n>0) ? num = n : num=0;
+
+/**********************************************
+ ********* Chapter 14 - Problem 2 *************
+ *********************************************/
+
+// static variable
+int DayofYear::dPerM[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+const char* DayofYear::months[12] = {"Junuary", "February", "March", "April",
+                               "May", "June", "July", "August", "September",
+                                "October", "November", "December"};
+
+// Functions
+DayofYear::DayofYear(int d) {
+    // validate day selected
+    // range from day 1 to last day, 365
+    (d > 0 && d < 366 ) ? day = d : day = 1;
 }
 
-void Numbers::print() const {
-    int * array = numArray();
-    int size = sizeof(array) / sizeof(int);
-    for (int i = 0; i !=size; ++i) {
-        cout << array[i] <<  " ";
+void DayofYear::print() const {
+    int index = 0;
+    int dayCpy = day;
+    while ( dayCpy > dPerM[index] ) {
+        // subtract number of days in the current month from day entered
+        dayCpy-= dPerM[index];
+        ++index;
     }
-    cout << endl;
-}
-
-int* Numbers::numArray() const{
-    int size = 0;
-    int numCpy = num;
-    while ( numCpy != 0 ) {
-        numCpy/=10;
-        size++;
-    }
-    // reset the copy of num to store the values in an array
-    numCpy = num;
-    int* array = new int[size];
-    
-    // pick of the values and place them into the array
-    // starting at the end of the array
-    int index = size - 1;
-    while (numCpy != 0) {
-        // pick of the last number and place it into the end of the array
-        array[index] = numCpy%10;
-        // remove the digit
-        numCpy /= 10;
-    }
-    
-    return array;
+    cout << "Day " << day << " is: " << months[index] << " " << dayCpy << endl;
 }
