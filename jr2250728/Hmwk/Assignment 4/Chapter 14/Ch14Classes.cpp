@@ -39,3 +39,20 @@ void DayofYear::print() const {
     }
     cout << "Day " << day << " is: " << months[index] << " " << dayCpy << endl;
 }
+
+
+/**********************************************
+ ********* Chapter 14 - Problem 4 *************
+ *********************************************/
+NumDays::NumDays(int h) {
+    // don't accept negative hours
+    (hours >= 0 ) ? hours = h : hours = 0;
+}
+
+int NumDays::operator+(const NumDays &rhs) {
+    return this->hours + rhs.hours;
+}
+
+int NumDays::operator-(const NumDays &rhs) {
+    return this->hours - rhs.hours;
+}

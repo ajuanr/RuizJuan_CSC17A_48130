@@ -28,7 +28,13 @@ private:
  *********************************************/
 // 8hrs = 1 work day
 class NumDays {
-    
+public:
+    NumDays(int);
+    float getDays() {return hours / 8.0;}
+    int operator+(const NumDays&);
+    int operator-(const NumDays&);
+private:
+    int hours;
 };
 
 
