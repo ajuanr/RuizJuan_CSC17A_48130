@@ -7,9 +7,10 @@
 //
 
 #include <iostream>
+#include "Ch14Classes.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    Numbers n(1234);
+    n.print();
     return 0;
 }
