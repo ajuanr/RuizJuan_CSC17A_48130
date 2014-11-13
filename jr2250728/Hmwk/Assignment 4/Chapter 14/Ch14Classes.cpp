@@ -56,3 +56,23 @@ int NumDays::operator+(const NumDays &rhs) {
 int NumDays::operator-(const NumDays &rhs) {
     return this->hours - rhs.hours;
 }
+
+NumDays NumDays::operator++(int) {
+    ++(this->hours);
+    return *this;
+}
+
+NumDays& NumDays::operator++() {
+    ++(this->hours);
+    return *this;
+}
+
+NumDays NumDays::operator--(int) {
+    --(this->hours);
+    return *this;
+}
+
+NumDays& NumDays::operator--() {
+    --(this->hours);
+    return *this;
+}

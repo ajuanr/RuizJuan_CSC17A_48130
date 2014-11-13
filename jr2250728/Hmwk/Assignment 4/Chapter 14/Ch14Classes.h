@@ -33,6 +33,10 @@ public:
     float getDays() {return hours / 8.0;}
     int operator+(const NumDays&);
     int operator-(const NumDays&);
+    NumDays operator++(int);            // postfix operator
+    NumDays& operator++();              // prefix operator
+    NumDays operator--(int);            // postfix operator
+    NumDays& operator--();              // prefix operator
 private:
     int hours;
 };

@@ -25,7 +25,9 @@ void prob2() {
 }
 
 void prob4() {
-    NumDays n(12);
+    NumDays n1(12);
+    --n1;
     NumDays n2(4);
-    cout << n - n2 << endl;
+    ++n2;
+    cout << n1 + n2 << endl;
 }
