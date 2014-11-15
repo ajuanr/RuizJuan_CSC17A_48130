@@ -107,3 +107,32 @@ float DivSales::getDivSales(int index) {
 void DivSales::addSales(float sales) {
         yrlySales += sales;
 }
+
+/**********************************************
+ ********* Chapter 14 - Problem 13 ************
+ *********************************************/
+FeetInches::FeetInches(int ft, int inch) {
+    feet = ft;
+    inches = inch;
+    simplify();
+}
+
+void FeetInches::simplify() {
+    if (inches >=12 ) {
+        feet+= inches/12;
+        inches %= 12;
+    }
+    else if (inches < 0 ) {
+        feet-= (inches *-1)/12+1;
+        inches = 12 - (inches * -1) % 12;
+    }
+}
+
+FeetInches FeetInches::operator*(const FeetInches &rhs) {
+    FeetInches temp;
+    temp.setFeet(this->inches * rhs.feet);
+    temp.setInches(this->inches * rhs.inches);
+    temp.simplify();
+    
+    return temp;
+}

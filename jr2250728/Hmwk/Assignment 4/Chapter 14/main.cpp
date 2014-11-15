@@ -24,11 +24,13 @@ int main(int argc, const char * argv[]) {
 }
 
 void prob2() {
+    cout << "In problem 2" << endl;
     DayofYear d(96);
     d.print();
 }
 
 void prob4() {
+    cout << "In problem 4" << endl;
     NumDays n1(12);
     --n1;
     NumDays n2(4);
@@ -37,6 +39,7 @@ void prob4() {
 }
 
 void prob10() {
+    cout << "In problem 10" << endl;
     // create an array of four DivSales objects
     // each representing a geographic region
     const int nRegion = 4;

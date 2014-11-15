@@ -59,4 +59,31 @@ private:
     float salesFig[4];    // four divisions in company
 };
 
+/**********************************************
+ ********* Chapter 14 - Problem 13 ************
+ *********************************************/
+class FeetInches{
+public:
+    FeetInches():feet(0), inches(0){}
+    FeetInches(int, int);
+    void simplify();
+    void setFeet(int n) { feet = n; }
+    void setInches(int n) { inches = n; }
+    int getFeet() const { return feet; }
+    int getInches() const { return inches; }
+    
+    FeetInches operator*(const FeetInches&);
+private:
+    int feet;
+    int inches;
+};
+class RoomDimension {
+public:
+    RoomDimension();
+    RoomDimension(int, int);
+private:
+    FeetInches length;
+    FeetInches width;
+};
+
 #endif /* defined(__Chapter14__Ch14Classes__) */
