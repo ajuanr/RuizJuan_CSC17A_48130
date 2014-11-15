@@ -162,14 +162,13 @@ RoomCarpet::RoomCarpet() {
     int width;
     cin >> width;
     
-    RoomDimension area(length, 0, width, 0);
-    
+    RoomDimension temp(length, 0, width, 0);
+    area = temp;
     cout << "Enter the cost of the carpet: ";
     cin >> cost;
 }
 
 float RoomCarpet::totalCost() {
     FeetInches temp = area.getArea();
-    cout << temp.getFeet() << endl;
     return cost * temp.getFeet();
 }

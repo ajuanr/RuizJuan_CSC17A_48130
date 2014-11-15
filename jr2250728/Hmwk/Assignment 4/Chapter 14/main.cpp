@@ -71,6 +71,7 @@ void prob13() {
     cout << "In problem 13\n";
     
     RoomCarpet room;
+    cout << "The total cost for carpeting is: $";
     cout << room.totalCost() << endl;
 
 }
