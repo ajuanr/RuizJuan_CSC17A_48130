@@ -48,19 +48,17 @@ void prob10() {
         int q4 = rand() % 20000;
         
         array[i].setSales(q1, q2, q3, q4);
-        cout << DivSales::yrlySales << endl;
-        
     }
-    string border = string(20, '-');
+    string border = string(24, '-');
     cout << border << endl;
     for (int i; i != nRegion; ++i) {
         cout << "Sales for Region " << i+1 << endl;
         for (int j = 0; j != 4; ++j) {
-            cout << setw(10) << right << array[i].getDivSales(j) << endl;
+            cout << "|" << array[i].getDivSales(j);
         }
-            cout << endl << border << endl;
+        cout << "|";
+        cout << endl << border << endl;
     }
-    cout << endl;
     cout << "Total yearly sales for all divisions: ";
     cout << DivSales::yrlySales << endl;
     

@@ -105,6 +105,5 @@ float DivSales::getDivSales(int index) {
 }
 
 void DivSales::addSales(float sales) {
-    for (int i = 0; i != 4; ++i)
         yrlySales += sales;
 }
