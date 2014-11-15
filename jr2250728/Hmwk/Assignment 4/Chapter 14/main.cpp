@@ -70,7 +70,7 @@ void prob10() {
 void prob13() {
     cout << "In problem 13\n";
     
-    RoomDimension room(1, 0, 2, 0);
-    FeetInches area = room.getArea();
-    cout << area.getFeet() << " " << area.getInches() << endl;
+    RoomCarpet room;
+    cout << room.totalCost() << endl;
+
 }

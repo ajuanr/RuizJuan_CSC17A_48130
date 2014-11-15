@@ -139,21 +139,37 @@ FeetInches FeetInches::operator*(const FeetInches &rhs) {
 }
 
 ////// Class RoomDimension
+RoomDimension::RoomDimension() {
+    length.setFeet(0);
+    length.setInches(0);
+    width.setFeet(0);
+    width.setInches(0);
+}
+
 RoomDimension::RoomDimension(int lF, int lI, int wF, int wI) {
     length.setFeet(lF);
     length.setInches(lI);
     width.setFeet(wF);
     width.setInches(wI);
 }
+
 ////// Class RoomCarpet
 RoomCarpet::RoomCarpet() {
     cout << "Enter the length of the room in feet ";
     int length;
     cin >> length;
-    cout << "Enter th width of the room in feet: ";
+    cout << "Enter the width of the room in feet: ";
     int width;
     cin >> width;
     
-    area(length, 0, width, 0);
+    RoomDimension area(length, 0, width, 0);
     
+    cout << "Enter the cost of the carpet: ";
+    cin >> cost;
+}
+
+float RoomCarpet::totalCost() {
+    FeetInches temp = area.getArea();
+    cout << temp.getFeet() << endl;
+    return cost * temp.getFeet();
 }

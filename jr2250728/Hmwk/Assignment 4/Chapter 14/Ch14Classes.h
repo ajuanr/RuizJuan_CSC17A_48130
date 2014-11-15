@@ -80,6 +80,7 @@ private:
 
 class RoomDimension {
 public:
+    RoomDimension();
     RoomDimension(int, int, int, int);
     FeetInches getArea() { return length*width; }
 private:
