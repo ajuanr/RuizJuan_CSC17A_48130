@@ -172,3 +172,40 @@ float RoomCarpet::totalCost() {
     FeetInches temp = area.getArea();
     return cost * temp.getFeet();
 }
+
+/**********************************************
+ ********* Chapter 14 - Problem 15 ************
+ *********************************************/
+FuelGauge::FuelGauge(int g) {
+    if ( g < 0 ) gallons = 0;
+    else if ( g > capacity ) gallons = capacity; // max capacity of fuel tank
+    else gallons = g;
+}
+
+void FuelGauge::fill(int g) {
+    if (g < 0 ) ; // do nothing
+    else{
+        if ( g - capacity > 0 ) gallons = 15;  // don't overfill gas tank
+        else gallons += g;
+    }
+}
+
+FuelGauge FuelGauge::operator++() {
+    this->gallons++;
+    return *this;
+}
+
+FuelGauge& FuelGauge::operator++(int) {
+    this->gallons++;
+    return *this;
+}
+
+FuelGauge FuelGauge::operator--() {
+    this->gallons--;
+    return *this;
+}
+
+FuelGauge& FuelGauge::operator--(int) {
+    this->gallons--;
+    return *this;
+}

@@ -18,6 +18,7 @@ void prob2();
 void prob4();
 void prob10();
 void prob13();
+void prob15();
 
 int main(int argc, const char * argv[]) {
     prob13();
@@ -73,5 +74,11 @@ void prob13() {
     RoomCarpet room;
     cout << "The total cost for carpeting is: $";
     cout << room.totalCost() << endl;
+}
 
+void prob15() {
+    cout << "In problem 15\n";
+    
+    FuelGauge fg(10);
+    
 }

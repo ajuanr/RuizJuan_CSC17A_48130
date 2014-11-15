@@ -97,4 +97,25 @@ private:
     float cost;
 };
 
+/**********************************************
+ ********* Chapter 14 - Problem 15 ************
+ *********************************************/
+class FuelGauge {
+public:
+    FuelGauge(): gallons(0){};
+    FuelGauge(int);
+    void fill(int); // add fuel to gas tank
+    int getGallons() const {return gallons;}
+    FuelGauge operator++();
+    FuelGauge& operator++(int);
+    FuelGauge operator--();
+    FuelGauge& operator--(int);
+    
+    static const int capacity = 15;
+
+private:
+    int gallons;
+};
+
+
 #endif /* defined(__Chapter14__Ch14Classes__) */
