@@ -21,7 +21,7 @@ void prob13();
 void prob15();
 
 int main(int argc, const char * argv[]) {
-    prob13();
+    prob15();
     return 0;
 }
 
@@ -80,5 +80,9 @@ void prob15() {
     cout << "In problem 15\n";
     
     FuelGauge fg(10);
-    
+    cout << fg.getGallons() << endl;
+    fg++;
+    cout << fg.getGallons() << endl;
+    ++fg;
+    cout << fg.getGallons() << endl;
 }
