@@ -22,7 +22,6 @@ private:
     int day;
 };
 
-
 /**********************************************
  ********* Chapter 14 - Problem 4 *************
  *********************************************/
@@ -41,5 +40,23 @@ private:
     int hours;
 };
 
+/**********************************************
+ ********* Chapter 14 - Problem 10 ************
+ *********************************************/
+class DivSales {
+public:
+    static float yrlySales;
+    static void addSales(float);
+    
+    DivSales();
+    
+    void setSales(float, float, float, float);
+    float getDivSales(int);
+    
+    
+    
+private:
+    float salesFig[4];    // four divisions in company
+};
 
 #endif /* defined(__Chapter14__Ch14Classes__) */

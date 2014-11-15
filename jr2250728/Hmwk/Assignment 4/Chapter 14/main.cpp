@@ -13,6 +13,7 @@
 using namespace std;
 void prob2();
 void prob4();
+void prob10();
 
 int main(int argc, const char * argv[]) {
     prob4();
@@ -30,4 +31,12 @@ void prob4() {
     NumDays n2(4);
     ++n2;
     cout << n1 + n2 << endl;
+}
+
+void prob10() {
+    // create an array of six DivSales objects
+    DivSales array[6];
+    for (int i = 0; i != 6; ++i) {
+        
+    }
 }

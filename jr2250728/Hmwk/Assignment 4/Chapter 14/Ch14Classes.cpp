@@ -76,3 +76,35 @@ NumDays& NumDays::operator--() {
     --(this->hours);
     return *this;
 }
+
+/**********************************************
+ ********* Chapter 14 - Problem 10 ************
+ *********************************************/
+float DivSales::yrlySales = 0;
+
+DivSales::DivSales() {
+    // set all elements of the array to zero
+    for (int i=0; i != 4; ++i)
+        salesFig[i] = 0;
+}
+
+// each argument represents the sales for the division
+void DivSales::setSales(float q1, float q2, float q3, float q4) {
+    salesFig[0] = q1;
+    salesFig[1] = q2;
+    salesFig[2] = q3;
+    salesFig[3] = q4;
+    
+    // add the sales  from each division to the total yearly sales
+    for (int i = 0; i != 4; ++i)
+        addSales(salesFig[i]);
+}
+
+float DivSales::getDivSales(int index) {
+    return (index>0 && index<4) ? salesFig[index] : salesFig[0];
+}
+
+void DivSales::addSales(float sales) {
+    for (int i = 0; i != 4; ++i)
+        yrlySales += sales;
+}
