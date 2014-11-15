@@ -17,9 +17,10 @@ using namespace std;
 void prob2();
 void prob4();
 void prob10();
+void prob13();
 
 int main(int argc, const char * argv[]) {
-    prob10();
+    prob13();
     return 0;
 }
 
@@ -64,5 +65,12 @@ void prob10() {
     }
     cout << "Total yearly sales for all divisions: ";
     cout << DivSales::yrlySales << endl;
+}
+
+void prob13() {
+    cout << "In problem 13\n";
     
+    RoomDimension room(1, 0, 2, 0);
+    FeetInches area = room.getArea();
+    cout << area.getFeet() << " " << area.getInches() << endl;
 }

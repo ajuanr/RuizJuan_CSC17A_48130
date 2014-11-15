@@ -77,13 +77,23 @@ private:
     int feet;
     int inches;
 };
+
 class RoomDimension {
 public:
-    RoomDimension();
-    RoomDimension(int, int);
+    RoomDimension(int, int, int, int);
+    FeetInches getArea() { return length*width; }
 private:
     FeetInches length;
     FeetInches width;
+};
+
+class RoomCarpet {
+public:
+    RoomCarpet();
+    float totalCost();
+private:
+    RoomDimension area;
+    float cost;
 };
 
 #endif /* defined(__Chapter14__Ch14Classes__) */

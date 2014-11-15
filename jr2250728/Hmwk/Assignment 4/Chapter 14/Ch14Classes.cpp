@@ -111,6 +111,7 @@ void DivSales::addSales(float sales) {
 /**********************************************
  ********* Chapter 14 - Problem 13 ************
  *********************************************/
+///// Class FeetInches
 FeetInches::FeetInches(int ft, int inch) {
     feet = ft;
     inches = inch;
@@ -130,9 +131,29 @@ void FeetInches::simplify() {
 
 FeetInches FeetInches::operator*(const FeetInches &rhs) {
     FeetInches temp;
-    temp.setFeet(this->inches * rhs.feet);
+    temp.setFeet(this->feet * rhs.feet);
     temp.setInches(this->inches * rhs.inches);
     temp.simplify();
     
     return temp;
+}
+
+////// Class RoomDimension
+RoomDimension::RoomDimension(int lF, int lI, int wF, int wI) {
+    length.setFeet(lF);
+    length.setInches(lI);
+    width.setFeet(wF);
+    width.setInches(wI);
+}
+////// Class RoomCarpet
+RoomCarpet::RoomCarpet() {
+    cout << "Enter the length of the room in feet ";
+    int length;
+    cin >> length;
+    cout << "Enter th width of the room in feet: ";
+    int width;
+    cin >> width;
+    
+    area(length, 0, width, 0);
+    
 }
