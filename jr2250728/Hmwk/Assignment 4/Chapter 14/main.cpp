@@ -89,12 +89,10 @@ void prob4() {
 
 void prob10() {
     cout << "In problem 10\n";
-    cin.ignore();
     // create an array of four DivSales objects
     // each representing a geographic region
-    const int nRegion = 4;
+    const int nRegion = 4;      // number of regions
     DivSales array[nRegion];
-    cout << endl;
     for (int i = 0; i != nRegion; ++i) {
         int q1 = rand() % 20000;
         int q2 = rand() % 20000;
@@ -104,17 +102,14 @@ void prob10() {
         array[i].setSales(q1, q2, q3, q4);
     }
     // print out the sales report
-    string border = string(24, '-');
+    string border = string(29, '-');
     cout << border << endl;
-    for (int i; i != nRegion; ++i) {
-        cout << "Sales for Region " << i+1 << endl;
-        for (int j = 0; j != nRegion; ++j) {
-            cout << "|" << array[i].getDivSales(j);
-        }
-        cout << "|";
-        cout << endl << border << endl;
+    for (int i=0; i != nRegion; ++i) {
+        array[i].print();
+        cout << border << endl;
     }
-    cout << "Total yearly sales for all divisions: ";
+
+    cout << "Total yearly sales for all divisions: $";
     cout << DivSales::yrlySales << endl;
 }
 

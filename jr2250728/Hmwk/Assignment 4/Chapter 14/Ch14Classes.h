@@ -52,6 +52,7 @@ public:
     
     void setSales(float, float, float, float);
     float getDivSales(int);
+    void print() const;
 
 private:
     float salesFig[4];    // four divisions in company

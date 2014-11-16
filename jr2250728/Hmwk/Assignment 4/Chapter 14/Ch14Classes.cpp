@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <iomanip>
 #include "Ch14Classes.h"
 
 using namespace std;
@@ -110,6 +111,13 @@ void DivSales::addSales(float sales) {
         yrlySales += sales;
 }
 
+void DivSales::print() const {
+    cout << setw(5) << salesFig[0];
+    for (int i = 1; i != 4; ++i) {
+        cout << " | " << setw(5) << salesFig[i];
+    }
+    cout << endl;
+}
 /**********************************************
  ********* Chapter 14 - Problem 13 ************
  *********************************************/
