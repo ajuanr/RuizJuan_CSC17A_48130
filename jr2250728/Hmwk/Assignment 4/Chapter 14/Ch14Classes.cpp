@@ -209,3 +209,13 @@ FuelGauge& FuelGauge::operator--(int) {
     this->gallons--;
     return *this;
 }
+
+////// Class odometer
+Odometer::Odometer(int mi) {
+    mileage = mi;
+}
+
+Odometer Odometer::operator++() {
+    ++(this->mileage);
+    return *this;
+}

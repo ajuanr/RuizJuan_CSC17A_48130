@@ -117,5 +117,15 @@ private:
     int gallons;
 };
 
+class Odometer {
+public:
+    Odometer(int);
+    int getMileage() const {return mileage;}
+    Odometer operator++();
+    Odometer operator--();
+private:
+    int mileage;
+};
+
 
 #endif /* defined(__Chapter14__Ch14Classes__) */

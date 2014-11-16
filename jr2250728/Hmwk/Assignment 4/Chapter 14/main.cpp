@@ -79,10 +79,21 @@ void prob13() {
 void prob15() {
     cout << "In problem 15\n";
     
-    FuelGauge fg(10);
-    cout << fg.getGallons() << endl;
-    fg++;
-    cout << fg.getGallons() << endl;
-    ++fg;
-    cout << fg.getGallons() << endl;
+    // create a car with 0 miles traveled and a full tank of gas
+    Odometer car(1000);
+    FuelGauge tank(15);
+    cout << "Initial mileage on car: " << car.getMileage() << endl;
+    cout << "Initial amount of gas in car: " << tank.getGallons() << endl;
+    cout << endl;
+    
+    // drive until gas tank is empty
+    for (int i = 0; tank.getGallons() != 0; ++i) {
+        ++car; // every iteration is one mile traveled
+        if (( i+1) % 24 == 0 ) {
+            cout << "Miles traveled: " << car.getMileage() - 1000 << endl;
+            --tank;
+            cout << "Gas left in tank: " << tank.getGallons() << "gallons\n\n";
+        }
+    }
+    cout << "Final mileage on car: " << car.getMileage() << " miles\n";
 }
