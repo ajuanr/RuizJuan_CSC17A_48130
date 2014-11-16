@@ -101,7 +101,9 @@ void DivSales::setSales(float q1, float q2, float q3, float q4) {
 }
 
 float DivSales::getDivSales(int index) {
-    return (index>0 && index<4) ? salesFig[index] : salesFig[0];
+    if (index < 4 && index >= 0 )
+        return salesFig[index];
+    return salesFig[0];
 }
 
 void DivSales::addSales(float sales) {

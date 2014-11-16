@@ -52,9 +52,7 @@ public:
     
     void setSales(float, float, float, float);
     float getDivSales(int);
-    
-    
-    
+
 private:
     float salesFig[4];    // four divisions in company
 };
@@ -126,6 +124,5 @@ public:
 private:
     int mileage;
 };
-
 
 #endif /* defined(__Chapter14__Ch14Classes__) */
