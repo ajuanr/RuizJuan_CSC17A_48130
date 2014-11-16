@@ -102,9 +102,14 @@ void prob10() {
         array[i].setSales(q1, q2, q3, q4);
     }
     // print out the sales report
-    string border = string(29, '-');
+    cout << "Sales for:";
+    cout << setw(7) << "Q1" << setw(8) << "Q2"
+         << setw(8)<< "Q3" << setw(7) << "Q4" << endl;
+    string border = string(41, '-');
     cout << border << endl;
+    
     for (int i=0; i != nRegion; ++i) {
+        cout << "Division " << i+1 << ": ";
         array[i].print();
         cout << border << endl;
     }
