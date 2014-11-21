@@ -33,10 +33,10 @@ void MineField::prompt(int &rows, MineField::Difficulty &d) {
 }
 
 /// Function returns true if input was valid
-bool MineField::isValidIn(int rows, int cols, MineField::Difficulty diff) const{
+bool MineField::isValidIn() const{
     /// make sure that the number of mines does not exceed
     /// the number of spots available
-    return (rows * cols) > nMines(diff);
+    return (rows * cols) > mines;
     
 }
 
@@ -45,7 +45,7 @@ bool MineField::isValidIn(int rows, int cols, MineField::Difficulty diff) const{
 void MineField::playGame(int nrows, int ncols, MineField::Difficulty diff, char *p) {
     srand(static_cast<unsigned int>(time(0)));
     MineField *mf = new MineField(nrows, ncols);
-    mf->mines=nMines(diff);
+    this->mines=nMines(diff);
     setMines(mf);
     prntObscr(mf);
     int row, col;
@@ -62,23 +62,23 @@ void MineField::playGame(int nrows, int ncols, MineField::Difficulty diff, char 
             /// check bounds
         } while (col < 0 || col >= mf->cols);
         cout << endl;
-    } while (cont(mf, row, col) && !hasWon(mf));
+    } while (cont(mf, row, col) && !hasWon());
     
     /// Prepare to print completed minefield
-    if (hasWon(mf)) {
+    if (hasWon()) {
         cout << p << "You win\n";
-        setFlags(mf);
+        setFlags();
     }
     else{
         cout << p << " you have lost\n";
-        setFlags(mf);
+        setFlags();
         mf->data[row][col]= MineField::LOSER;
     }
     /// Print the complete minefield
-    prntClr(mf);
+    prntClr();
     
     /// write result to binary file
-    writeBin(mf, "result");
+    //writeBin(mf, "result");
     /// deallocate the game area
     delete mf;
 }
@@ -157,8 +157,8 @@ void MineField::prntClr() const {
                 cout << "T  ";
             else if (*(*(data+row) + col) == MineField::MINE)
                 cout << "x  ";
-            else if (!isClear(this, row, col))
-                cout << nAdjacent(this, row, col) << "  ";
+            else if (!isClear(row, col))
+                cout << nAdjacent(row, col) << "  ";
             else
                 cout << "0  ";
         }
@@ -232,76 +232,76 @@ void MineField::setMines(MineField *mf) {
 }
 
 /// Function returns how  many 'flag' elements surround a given square
-int MineField::nAdjacent(MineField *mf, int row, int col, int FLAG) {
+int MineField::nAdjacent(int row, int col, int FLAG) const{
     int nAd=0;              /// the number of adjacent mines
     
     /// not on first or last row or first or last column
     /// most of the searches take place in this area
-    if ( row > 0 && col > 0 && row < mf->rows-1 && col < mf->cols-1) {
+    if ( row > 0 && col > 0 && row < rows-1 && col < cols-1) {
         /// search the 3x3 grid surrounding a cell
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                if (mf->data[i][j] == FLAG)
+                if (data[i][j] == FLAG)
                     ++nAd;
         }
     }
     /// on the first row, not on first or last column
-    else if ( row == 0 && col > 0 && col < mf->cols - 1) {
+    else if ( row == 0 && col > 0 && col < cols - 1) {
         for (int i = row; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                if (mf->data[i][j] == MineField::MINE)
+                if (data[i][j] == MineField::MINE)
                     ++nAd;
         }
     }
     /// on the last row, not on first or last column
-    else if ( row == mf->rows-1 && col > 0 && col < mf->cols - 1) {
+    else if ( row == rows-1 && col > 0 && col < cols - 1) {
         for (int i = row-1; i <= row; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                if (mf->data[i][j] == MineField::MINE)
+                if (data[i][j] == MineField::MINE)
                     ++nAd;
         }
     }
     /// on the first column, not on first or last row
     /// search to the right
-    else if ( col == 0 && row > 0 && row < mf->rows - 1) {
+    else if ( col == 0 && row > 0 && row < rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col; j <= col+1; ++j)
-                if (mf->data[i][j] == MineField::MINE)
+                if (data[i][j] == MineField::MINE)
                     ++nAd;
         }
     }
     /// on the last column, not on first or last row
     /// search to the left
-    else if ( col == mf->cols-1 && row > 0 && row < mf->rows - 1) {
+    else if ( col == cols-1 && row > 0 && row < rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col; ++j)
-                if (mf->data[i][j] == MineField::MINE)
+                if (data[i][j] == MineField::MINE)
                     ++nAd;
         }
     }
     /// top left corner
     else if (row == 0 && col == 0) {
-        if (mf->data[row][col+1] == MineField::MINE) ++nAd;
-        if (mf->data[row+1][col] == MineField::MINE) ++nAd;
-        if (mf->data[row+1][col+1] == MineField::MINE) ++nAd;
+        if (data[row][col+1] == MineField::MINE) ++nAd;
+        if (data[row+1][col] == MineField::MINE) ++nAd;
+        if (data[row+1][col+1] == MineField::MINE) ++nAd;
     }
     /// top right corner
-    else if (row == 0 && col == mf->cols-1) {
-        if (mf->data[row][col-1] == MineField::MINE) ++nAd;
-        if (mf->data[row+1][col] == MineField::MINE) ++nAd;
-        if (mf->data[row+1][col-1] == MineField::MINE) ++nAd;
+    else if (row == 0 && col == cols-1) {
+        if (data[row][col-1] == MineField::MINE) ++nAd;
+        if (data[row+1][col] == MineField::MINE) ++nAd;
+        if (data[row+1][col-1] == MineField::MINE) ++nAd;
     }
     /// bottom left corner
-    else if (row == mf->rows-1 && col == 0) {
-        if (mf->data[row-1][col] == MineField::MINE) ++nAd;
-        if (mf->data[row-1][col+1] == MineField::MINE) ++nAd;
-        if (mf->data[row][col+1] == MineField::MINE) ++nAd;
+    else if (row == rows-1 && col == 0) {
+        if (data[row-1][col] == MineField::MINE) ++nAd;
+        if (data[row-1][col+1] == MineField::MINE) ++nAd;
+        if (data[row][col+1] == MineField::MINE) ++nAd;
     }
     /// bottom right corner
-    else if (row == mf->rows-1 && col == mf->cols-1) {
-        if (mf->data[row-1][col-1] == MineField::MINE) ++nAd;
-        if (mf->data[row-1][col] == MineField::MINE) ++nAd;
-        if (mf->data[row][col-1] == MineField::MINE) ++nAd;
+    else if (row == rows-1 && col == cols-1) {
+        if (data[row-1][col-1] == MineField::MINE) ++nAd;
+        if (data[row-1][col] == MineField::MINE) ++nAd;
+        if (data[row][col-1] == MineField::MINE) ++nAd;
     }
     /// return number of mines from appropriate if statement
     return nAd;
@@ -310,7 +310,7 @@ int MineField::nAdjacent(MineField *mf, int row, int col, int FLAG) {
 /// Function is true if there 0 landmines adjacent to
 /// selected square
 bool MineField::isClear(int row, int col) const {
-    if (nAdjacent(this, row, col))
+    if (nAdjacent(row, col))
         return false;            /// there was at least one mine adjacent
     return true;                 /// area was clear
 }
@@ -321,7 +321,7 @@ void MineField::showZeros(MineField *mf, int row, int col) {
     /// check bounds
     if ( row >= mf->rows || row < 0 || col >= mf->cols || col < 0)
         return;
-    if (isClear(mf, row, col) && mf->data[row][col] != MineField::CLEAR){
+    if (isClear(row, col) && mf->data[row][col] != MineField::CLEAR){
         mf->data[row][col] = MineField::CLEAR;
         /// go up one row
         showZeros(mf, row+1, col);
@@ -339,13 +339,13 @@ void MineField::showZeros(MineField *mf, int row, int col) {
 
 /// Function shows how many mines are adjacent to selected square
 /// for the entire minefield
-void MineField::setFlags(MineField *mf) {
-    for (int i = 0; i != mf->rows; ++i)
-        for (int j = 0; j != mf->cols; ++j)
+void MineField::setFlags() {
+    for (int i = 0; i != rows; ++i)
+        for (int j = 0; j != cols; ++j)
             /// don't look for adjacent mines in areas where
             /// mine is already located
-            if (mf->data[i][j] != MineField::MINE)
-                mf->data[i][j] = nAdjacent(mf, i, j);
+            if (data[i][j] != MineField::MINE)
+                data[i][j] = nAdjacent(i, j);
 }
 
 /// Function reveals what is underneath the square that the user has selected
@@ -357,7 +357,7 @@ bool MineField::cont(MineField * mf, int row, int col) {
         return false;
     
     /// Square is a zero, clear the surrounding area if necessary
-    else if (isClear(mf, row, col) ){
+    else if (isClear(row, col) ){
         showZeros(mf, row, col); /// show cleared area
         setPerim();
         prntObscr(mf);
@@ -366,18 +366,18 @@ bool MineField::cont(MineField * mf, int row, int col) {
     /// Square had adjacent mine
     /// reveal the number to the user
     else {
-        mf->data[row][col] = nAdjacent(mf, row, col);
+        mf->data[row][col] = nAdjacent(row, col);
         prntObscr(mf);
         return true;
     }
 }
 
 /// Function checks whether the player has won
-bool MineField::hasWon(MineField *mf) {
-    for (int i = 0; i != mf->rows; ++i)
-        for (int j = 0; j != mf->cols; ++j)
+bool MineField::hasWon() const {
+    for (int i = 0; i != rows; ++i)
+        for (int j = 0; j != cols; ++j)
             /// if there are empty spaces player has not won
-            if (mf->data[i][j] == MineField::EMPTY)
+            if (data[i][j] == MineField::EMPTY)
                 return false;
     /// there were no empty spaces left. Player has won
     return true;
@@ -394,24 +394,24 @@ void MineField::setPerim() {
                 if (data[row][col] == MineField::CLEAR) {
                     /// check that the previous number has mines adjacent
                     if (data[row][col-1] != MineField::CLEAR)
-                        data[row][col-1] = nAdjacent(this, row, col-1);
+                        data[row][col-1] = nAdjacent(row, col-1);
                     /// check if the next number has mines adjacent
                     if (data[row][col+1] != MineField::CLEAR)
-                        data[row][col+1] = nAdjacent(this,row, col+1);
+                        data[row][col+1] = nAdjacent(row, col+1);
                     if (data[row-1][col] != MineField::CLEAR)
-                        data[row-1][col] = nAdjacent(this, row-1, col);
+                        data[row-1][col] = nAdjacent(row-1, col);
                     /// check if the next number has mines adjacent
                     if (data[row+1][col] != MineField::CLEAR)
-                        data[row+1][col] = nAdjacent(this,row+1, col);
+                        data[row+1][col] = nAdjacent(row+1, col);
                     /// check the adjacent corners
                     if (data[row+1][col-1] != MineField::CLEAR)
-                        data[row-1][col-1] = nAdjacent(this,row-1, col-1);
+                        data[row-1][col-1] = nAdjacent(row-1, col-1);
                     if (data[row-1][col+1] != MineField::CLEAR)
-                        data[row-1][col+1] = nAdjacent(this,row-1, col+1);
+                        data[row-1][col+1] = nAdjacent(row-1, col+1);
                     if (data[row+1][col-1] != MineField::CLEAR)
-                        data[row+1][col-1] = nAdjacent(this,row+1, col-1);
+                        data[row+1][col-1] = nAdjacent(row+1, col-1);
                     if (data[row+1][col+1] != MineField::CLEAR)
-                        data[row+1][col+1] = nAdjacent(this,row+1, col+1);
+                        data[row+1][col+1] = nAdjacent(row+1, col+1);
                 }
         }
     }
@@ -440,7 +440,7 @@ void MineField::readBin(string fileName) {
         MineField *result;
         fstream in(fileName.c_str(), ios::in | ios::binary);
         in.read(reinterpret_cast<char *>(&result), sizeof(*result));
-        prntClr(result);
+        prntClr();
         in.close();
     }
     

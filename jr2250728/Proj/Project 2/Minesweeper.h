@@ -44,19 +44,19 @@ private:
      *             Function Prototypes
      *
      **************************************************/
-    void *create(int, int);
+    void create(int, int);
     void destroy(MineField *);
     MineField::Difficulty intToDiff(int);
-    bool isValidIn(int, int, MineField::Difficulty) const;
+    bool isValidIn() const;
     int nMines(MineField::Difficulty) const;
     void setMines(MineField *);
-    void setFlags(MineField *);
-    int nAdjacent(MineField *, int, int, int = MineField::MINE) const;
+    void setFlags();
+    int nAdjacent(int, int, int = MineField::MINE) const;
     bool isClear(int, int) const;
     void clrArea(MineField *, int, int);
     void setPerim();
     void showZeros(MineField *, int, int);
-    bool hasWon(MineField *) const;
+    bool hasWon() const;
     void fields();
     bool cont(MineField *, int, int);
     
