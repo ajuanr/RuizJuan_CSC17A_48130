@@ -52,10 +52,17 @@ void problem1() {
 }
 
 void problem2() {
-    FileFilter *file = new Encryption(5);
-    char inName[20] = "test.txt";
-    ifstream inFile(inName, ios::in);
-    char outName[20] = "out.txt";
-    ofstream outFile(outName, ios::out);
-    file->doFilter(inFile, outFile);
+    cout << "In problem 2 - Chapter 15, Problem 9\n";
+    FileFilter *file = new Upper;
+    ifstream inFile("test.txt", ios::in);
+    // check if input file is open
+    if (!inFile.is_open()) {
+        cout << "File was not opened\n";
+    }
+    else {
+        char outName[20] = "out.txt";
+        cout << "Writing to file " << outName << endl;
+        ofstream outFile(outName, ios::out);
+        file->doFilter(inFile, outFile);
+    }
 }
