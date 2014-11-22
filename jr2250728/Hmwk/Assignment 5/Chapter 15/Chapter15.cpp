@@ -7,6 +7,7 @@
 //
 
 #include <string>
+#include <iostream>
 #include "Chapter15.h"
 
 using namespace std;
@@ -21,7 +22,7 @@ Employee::Employee(string name, string num, string hDate) {
     setHDate(hDate);
 }
 
-void Employee::setName(string n) {
+ void Employee::setName(string n) {
     empName = n;
 }
 
@@ -32,11 +33,35 @@ void Employee::setNum(string n) {
 void Employee::setHDate(string n) {
     hireDate = n;
 }
+
+void Employee::print() const {
+    cout << "Employee Name is: " << empName << endl
+         << "Employee number is: " << empName << endl
+         << "Employee hire date is: " << hireDate << endl;
+}
 ///////////// Class Production Worker
 ProductionWorker::ProductionWorker(string name, string num , string date,
                                    int shft, float rate)
 :Employee(name, num,date) {
-    shift = shft;
-    payRate = rate;
+    changeShift(shft);
+    setRate(rate);
 }
 
+void ProductionWorker::changeShift(int s) {
+    // only two shifts, 1 or 2
+    if ( s == 1 ) shift = 1;
+    else if ( s==2) shift = 2;
+    else shift = 1;
+}
+
+void ProductionWorker::setRate(float r) {
+    (r>0) ? payRate = r: payRate = 0;
+}
+
+void ProductionWorker::print() const {
+    cout << "Employee Name is: " << getName() << endl
+    << "Employee number is: " << getNum() << endl
+    << "Employee hire date is: " << getHDate() << endl
+    << "Employee works shift: " << shift << endl
+    << "Employee pay rate is : " << payRate << endl;
+}

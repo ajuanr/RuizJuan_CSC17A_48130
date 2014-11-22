@@ -23,6 +23,7 @@ public:
     void setName(string);
     void setNum(string);
     void setHDate(string);
+    virtual void print() const;
 private:
     string empName;
     string empNum;
@@ -33,9 +34,11 @@ class ProductionWorker:public Employee {
 public:
     ProductionWorker(string,string,string, int, float);
     void changeShift(int);
+    void setRate(float);
     int getShift() const {return shift;}
     float pay() const {return payRate;}
-    private:
+    void print() const;
+private:
     int shift;
     float payRate;
 };
