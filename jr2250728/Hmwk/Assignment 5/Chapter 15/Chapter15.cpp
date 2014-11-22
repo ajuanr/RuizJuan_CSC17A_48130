@@ -82,5 +82,5 @@ void Encryption::doFilter(ifstream& in, ofstream& out) {
 }
 
 char Encryption::transform(char c) {
-    return c;
+    return c+key;
 }
