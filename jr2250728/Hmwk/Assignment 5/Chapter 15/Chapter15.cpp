@@ -75,13 +75,12 @@ Encryption::Encryption(int k) {
 }
 void Encryption::doFilter(ifstream& in, ofstream& out) {
     char next;
-    while (next != in.eof()) {
-        cin.get(next); // get the character
+    while (in.get(next)) {          //get the character
         next = transform(next);    // encrypt it
         out << next;    // write it to the output file
     }
 }
 
 char Encryption::transform(char c) {
-    return c + key;
+    return c;
 }
