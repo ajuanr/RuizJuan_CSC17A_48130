@@ -9,6 +9,34 @@
 #ifndef __Chapter_15__Chapter15__
 #define __Chapter_15__Chapter15__
 
+#include <string>
+using std::string;
+/**********************************************
+ ********** Chapter 15 Problem 1 **************
+ *********************************************/
+class Employee {
+public:
+    Employee(string,string, string);
+    string getName() const {return empName;}
+    string getNum() const {return empNum;}
+    string getHDate() const {return hireDate;}
+    void setName(string);
+    void setNum(string);
+    void setHDate(string);
+private:
+    string empName;
+    string empNum;
+    string hireDate;
+};
 
-
+class ProductionWorker:public Employee {
+public:
+    ProductionWorker(string,string,string, int, float);
+    void changeShift(int);
+    int getShift() const {return shift;}
+    float pay() const {return payRate;}
+    private:
+    int shift;
+    float payRate;
+};
 #endif /* defined(__Chapter_15__Chapter15__) */
