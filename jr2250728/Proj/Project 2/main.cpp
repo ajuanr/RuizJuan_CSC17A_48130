@@ -50,56 +50,8 @@ using namespace std;
  *
  **************************************************/
 int main(int argc, const char * argv[]) {
-    /// Get the user name
-    char *player = userName();
-    /// ask user if they want to play
-    cout << "Hello " << player
-         << ", Would you like to play a game of minesweeper?\n"
-            "Hit 'y' if yes\n";
-    char ans;
-    cin >> ans;
-    
-    if (ans == 'y') {
-        /// create minefield variables
-        short nrows;
-        MineField::Difficulty d;
-        /// Get game information from user
-        prompt(nrows, d);
-        /// Check that data is valid before creating the array
-        /// that holds the results of previous games
-        if (isValidIn(nrows, nrows, d)) {
-            while (ans == 'y' && isValidIn(nrows, nrows, d)) {
-                playGame(nrows, nrows, d, player);
-                cout << endl;
-                cout << "Would you like to play again " << player << "? ";
-                cin >> ans;
-                cout << endl;
-                /// Get new data only if user wants to continue
-                if (ans =='y')
-                    prompt(nrows, d);
-            }
-        }
-        /// User information was invalid
-        else
-            cout << "Minefield too small. Goodbye: ";
-    }
-    cout << "Game is Over.\n";
-    
-    /// Cleanup
-    delete player;
-    
-    readBin("result");
-    
-    cout << "Would you like to see some empty minefields "
-            "stored in a structure?\n"
-            "Hit 'y' for yes: ";
-    cin >> ans;
-    if (ans == 'y')
-        fields();
-    
-    cout << endl;
-    cout << "Goodbye\n";
-
+    MineField m(10,10);
+    m.setUp();
     return 0;
 }
 

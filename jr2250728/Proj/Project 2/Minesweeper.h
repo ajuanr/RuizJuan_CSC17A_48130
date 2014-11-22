@@ -27,7 +27,8 @@ public:
     
     /* Functions */
     void prntClr() const;
-    void prntObscr(MineField *);
+    void prntObscr() const;
+    void setUp();
     void playGame(int, int, MineField::Difficulty, char*);
 private:
     /// This is the minefield
@@ -47,9 +48,9 @@ private:
     void create(int, int);
     void destroy(MineField *);
     MineField::Difficulty intToDiff(int);
-    bool isValidIn() const;
+    bool isValidIn(int, int, MineField::Difficulty) const;
     int nMines(MineField::Difficulty) const;
-    void setMines(MineField *);
+    void setMines();
     void setFlags();
     int nAdjacent(int, int, int = MineField::MINE) const;
     bool isClear(int, int) const;
