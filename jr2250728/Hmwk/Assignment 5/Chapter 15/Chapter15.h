@@ -69,4 +69,11 @@ public:
 private:
     char transform(char);
 };
+
+class FileCpy:public FileFilter {
+public:
+    void doFilter(std::ifstream&, std::ofstream&);
+private:
+    char transform(char);
+};
 #endif /* defined(__Chapter_15__Chapter15__) */

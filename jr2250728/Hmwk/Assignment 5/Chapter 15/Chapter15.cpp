@@ -84,3 +84,29 @@ void Encryption::doFilter(ifstream& in, ofstream& out) {
 char Encryption::transform(char c) {
     return c+key;
 }
+
+////////////// Class Upper
+void Upper::doFilter(ifstream& in, ofstream& out) {
+    char next;
+    while (in.get(next)) {          //get the character
+        next = transform(next);    // encrypt it
+        out << next;    // write it to the output file
+    }
+}
+
+char Upper::transform(char c) {
+    return toupper(c);
+}
+
+///////////// Class FileCpy
+void FileCpy::doFilter(ifstream& in, ofstream& out) {
+    char next;
+    while (in.get(next)) {          //get the character
+        next = transform(next);    // encrypt it
+        out << next;    // write it to the output file
+    }
+}
+
+char FileCpy::transform(char c) {
+    return c;
+}
