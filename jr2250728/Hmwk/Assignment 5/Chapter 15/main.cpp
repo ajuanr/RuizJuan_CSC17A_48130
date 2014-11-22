@@ -13,9 +13,10 @@
 using namespace std;
 
 void problem1();
+void problem2();
 
 int main(int argc, const char * argv[]) {
-    problem1();
+    problem2();
     return 0;
 }
 
@@ -48,4 +49,13 @@ void problem1() {
     delete emp;
     }
     cout << endl;
+}
+
+void problem2() {
+    FileFilter *file = new Encryption(5);
+    char inName[20] = "test.txt";
+    ifstream inFile(inName, ios::in);
+    char outName[20] = "out.txt";
+    ofstream outFile(outName, ios::out);
+    file->doFilter(inFile, outFile);
 }

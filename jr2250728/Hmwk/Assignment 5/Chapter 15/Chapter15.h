@@ -10,6 +10,7 @@
 #define __Chapter_15__Chapter15__
 
 #include <string>
+#include <fstream>
 using std::string;
 /**********************************************
  ********** Chapter 15 Problem 1 **************
@@ -41,5 +42,31 @@ public:
 private:
     int shift;
     float payRate;
+};
+
+/**********************************************
+ ********** Chapter 15 Problem 9 **************
+ *********************************************/
+class FileFilter {
+public:
+    virtual void doFilter(std::ifstream&, std::ofstream&)=0;
+private:
+    virtual char transform(char)=0;
+};
+// class encrypts a file
+class Encryption:public FileFilter {
+public:
+    Encryption(int);
+    void doFilter(std::ifstream&, std::ofstream&);
+private:
+    char transform(char);
+    int key;
+};
+// class changes characters in file to uppercase
+class Upper:public FileFilter {
+public:
+    void doFilter(std::ifstream&, std::ofstream&);
+private:
+    char transform(char);
 };
 #endif /* defined(__Chapter_15__Chapter15__) */

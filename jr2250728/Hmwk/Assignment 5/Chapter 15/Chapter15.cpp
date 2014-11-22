@@ -7,6 +7,7 @@
 //
 
 #include <string>
+#include <fstream>
 #include <iostream>
 #include "Chapter15.h"
 
@@ -64,4 +65,23 @@ void ProductionWorker::print() const {
     << "Employee hire date is: " << getHDate() << endl
     << "Employee works shift: " << shift << endl
     << "Employee pay rate is : " << payRate << endl;
+}
+
+/**********************************************
+ ********** Chapter 15 Problem 9 **************
+ *********************************************/
+Encryption::Encryption(int k) {
+    key = k;
+}
+void Encryption::doFilter(ifstream& in, ofstream& out) {
+    char next;
+    while (next != in.eof()) {
+        cin.get(next); // get the character
+        next = transform(next);    // encrypt it
+        out << next;    // write it to the output file
+    }
+}
+
+char Encryption::transform(char c) {
+    return c + key;
 }
