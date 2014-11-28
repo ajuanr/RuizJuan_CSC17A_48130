@@ -356,20 +356,20 @@ bool MineField::isClear(int row, int col) const {
 
 /// Clear an area whose values are clear
 /// i.e 0 adjacent  mines
-void MineField::showZeros(MineField *mf, int row, int col) {
+void MineField::showZeros(int row, int col) {
     /// check bounds
-    if ( row >= mf->rows || row < 0 || col >= mf->cols || col < 0)
+    if ( row >= rows || row < 0 || col >= cols || col < 0)
         return;
-    if (isClear(row, col) && mf->data[row][col] != MineField::CLEAR){
-        mf->data[row][col] = MineField::CLEAR;
+    if (isClear(row, col) && data[row][col] != MineField::CLEAR){
+        data[row][col] = MineField::CLEAR;
         /// go up one row
-        showZeros(mf, row+1, col);
+        showZeros(row+1, col);
         /// go down one row
-        showZeros(mf, row-1, col);
+        showZeros(row-1, col);
         /// go right one col
-        showZeros(mf, row, col+1);
+        showZeros(row, col+1);
         /// go left one col
-        showZeros(mf, row, col-1);
+        showZeros(row, col-1);
     }
     /// space was not clear or already shown
     else
@@ -397,7 +397,7 @@ bool MineField::cont(MineField * mf, int row, int col) {
     
     /// Square is a zero, clear the surrounding area if necessary
     else if (isClear(row, col) ){
-        showZeros(mf, row, col); /// show cleared area
+        showZeros(row, col); /// show cleared area
         setPerim();
         prntObscr();
         return true;
