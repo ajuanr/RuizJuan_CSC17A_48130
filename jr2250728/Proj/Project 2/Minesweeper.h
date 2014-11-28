@@ -10,27 +10,15 @@
 #define __Project_2__Minesweeper__
 
 #include <string>
-using std::string;
 
 /// This is the class that holds the minefield
 /// as well as the associated flags that occur when
 /// a user selects a square
 class MineField {
-public:
-    MineField(int row, int col) {create( row, col);}
-    ~MineField() {destroy();}
-    /// Determines how many mines to set
-    enum Difficulty {EASY, NORMAL, HARD};
-    /// Flags representing various square possibilities
-    enum Flags {EMPTY=10, MINE, CLEAR, LOSER};
-    
-    
-    /* Functions */
-    void prntClr() const;
-    void prntObscr() const;
-    void setUp();
-    void playGame(int, int, MineField::Difficulty, char*);
 private:
+    /***************************************************
+     *             Member Variables
+     **************************************************/
     /// This is the minefield
     int **data;
     /// The total number of rows
@@ -41,9 +29,7 @@ private:
     int mines;
     
     /***************************************************
-     *
-     *             Function Prototypes
-     *
+     *             Utility Function Prototypes
      **************************************************/
     void create(int, int);
     void destroy();
@@ -63,7 +49,30 @@ private:
     
     void prompt(int&, MineField::Difficulty&);
     char *userName();
-    void readBin(string);
+    void readBin(std::string);
+    
+public:
+    /***************************************************
+     *             Constructors / Destructor
+     **************************************************/
+    MineField(int row, int col) {create( row, col);}
+    ~MineField() {destroy();}
+    
+    /***************************************************
+     *             Enumerations
+     **************************************************/
+    /// Determines how many mines to set
+    enum Difficulty {EASY, NORMAL, HARD};
+    /// Flags representing various square possibilities
+    enum Flags {EMPTY=10, MINE, CLEAR, LOSER};
+    
+    /***************************************************
+     *             Function Prototypes
+     **************************************************/
+    void prntClr() const;
+    void prntObscr() const;
+    void setUp();
+    void playGame(int, int, MineField::Difficulty, char*);
 };
 
 
