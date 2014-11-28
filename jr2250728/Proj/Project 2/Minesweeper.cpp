@@ -20,9 +20,9 @@ using namespace std;
  *
  **************************************************************/
 
-void MineField::prompt(int &row, MineField::Difficulty &d) {
+void Minesweeper::prompt(int &row, Minesweeper::Difficulty &d) {
     cout << "Enter the number of rows\n"
-    "Minefield will be NxN in size: ";
+    "Minesweeper will be NxN in size: ";
     cin >> row;
     rows = row;
     cols = row;
@@ -35,14 +35,14 @@ void MineField::prompt(int &row, MineField::Difficulty &d) {
 }
 
 /// Function returns true if input was valid
-bool MineField::isValidIn(int rows, int cols, MineField::Difficulty diff) const{
+bool Minesweeper::isValidIn(int rows, int cols, Minesweeper::Difficulty diff) const{
     /// make sure that the number of mines does not exceed
     /// the number of spots available
     return (rows * cols) > nMines(diff);
     
 }
 
-void MineField::setUp() {
+void Minesweeper::setUp() {
     /// Get the user name
     char *player = userName();
     /// ask user if they want to play
@@ -52,14 +52,14 @@ void MineField::setUp() {
     char ans;
     cin >> ans;
     
+    /// play if answer is yes
     if (ans == 'y') {
-        /// create minefield variables
+        /// create Minesweeper variables
         int nrows;
-        MineField::Difficulty d;
+        Minesweeper::Difficulty d;
         /// Get game information from user
         prompt(nrows, d);
-        /// Check that data is valid before creating the array
-        /// that holds the results of previous games
+
         if (isValidIn(rows, nrows, d)) {
             while (ans == 'y' && isValidIn(nrows, nrows, d)) {
                 playGame(nrows, nrows, d, player);
@@ -72,9 +72,9 @@ void MineField::setUp() {
                     prompt(nrows, d);
             }
         }
-        /// User information was invalid
+        /// Information was invalid
         else
-            cout << "Minefield too small. Goodbye: ";
+            throw "Minesweeper too small. Goodbye: ";
     }
     cout << "Game is Over.\n";
     
@@ -86,7 +86,7 @@ void MineField::setUp() {
 }
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
-void MineField::playGame(int nrows, int ncols, MineField::Difficulty diff, char *p) {
+void Minesweeper::playGame(int nrows, int ncols, Minesweeper::Difficulty diff, char *p) {
     srand(static_cast<unsigned int>(time(0)));
     this->mines=nMines(diff);
     setMines();
@@ -107,7 +107,7 @@ void MineField::playGame(int nrows, int ncols, MineField::Difficulty diff, char 
         cout << endl;
     } while (cont(this, row, col) && !hasWon());
     
-    /// Prepare to print completed minefield
+    /// Prepare to print completed Minesweeper
     if (hasWon()) {
         cout << p << "You win\n";
         setFlags();
@@ -115,15 +115,15 @@ void MineField::playGame(int nrows, int ncols, MineField::Difficulty diff, char 
     else{
         cout << p << " you have, lost\n";
         setFlags();
-        data[row][col]= MineField::LOSER;
+        data[row][col]= Minesweeper::LOSER;
     }
-    /// Print the complete minefield
+    /// Print the complete Minesweeper
     prntClr();
 }
 
 /// Function gets the user name as a string converts it to a char array
 /// for the 1d dynamic array requirement
-char* MineField::userName() {
+char* Minesweeper::userName() {
     cout << "Enter your name: ";
     string in;
     cin >> in;
@@ -141,44 +141,26 @@ char* MineField::userName() {
 }
 
 /// Function that creates the grid on which game will be played
-void MineField::create(int rows, int cols) {
-    /// dinamically create a minefield
-    this->rows=rows;
-    this->cols = cols;
-    
-    /// Create the 2D game minefield
-    this->data = new int *[rows];
-    
-    /// Create each row
-    for (int row = 0; row != rows; ++row)
-        this->data[row] = new int [cols];
-    
+void Minesweeper::create(int rows, int cols) {
+//    /// dinamically create a Minesweeper
+//    this->rows=rows;
+//    this->cols = cols;
+//    
+//    /// Create the 2D game Minesweeper
+//    this->data = new int *[rows];
+//    
+//    /// Create each row
+//    for (int row = 0; row != rows; ++row)
+//        this->data[row] = new int [cols];
+//    
     /// Make sure each square is empty
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != rows; ++j)
-            this->data[i][j] = MineField::EMPTY;
-}
-
-/// Function return the MineField::Difficulty type from
-/// the int variable
-MineField::Difficulty MineField::intToDiff(int choice) {
-    switch (choice) {
-        case (0):
-            return MineField::Difficulty::EASY;
-            break;
-        case (1):
-            return MineField::Difficulty::NORMAL;
-            break;
-        case (2):
-            return MineField::Difficulty::HARD;
-        default:
-            return MineField::Difficulty::EASY;
-            break;
-    }
+            data[i][j] = Minesweeper::EMPTY;
 }
 
 /// Function deallocates memory
-void MineField::destroy() {
+void Minesweeper::destroy() {
     /// delete each dynamically allocated row
     for (int i = 0; i != rows; ++i)
         delete[] data[i];
@@ -186,15 +168,33 @@ void MineField::destroy() {
     delete data;
 }
 
-/// Functions prints the minefield with all the squares revealed.
+/// Function return the Minesweeper::Difficulty type from
+/// the int variable
+Minesweeper::Difficulty Minesweeper::intToDiff(int choice) {
+    switch (choice) {
+        case (0):
+            return Minesweeper::Difficulty::EASY;
+            break;
+        case (1):
+            return Minesweeper::Difficulty::NORMAL;
+            break;
+        case (2):
+            return Minesweeper::Difficulty::HARD;
+        default:
+            return Minesweeper::Difficulty::EASY;
+            break;
+    }
+}
+
+/// Functions prints the Minesweeper with all the squares revealed.
 /// used mostly after player loses
-void MineField::prntClr() const {
+void Minesweeper::prntClr() const {
     for (int row = 0; row != rows; ++row){
         for (int col = 0; col != cols; ++col) {
             ///
-            if ( *(*(data+row) + col) == MineField::LOSER)
+            if ( *(*(data+row) + col) == Minesweeper::LOSER)
                 cout << "T  ";
-            else if (*(*(data+row) + col) == MineField::MINE)
+            else if (*(*(data+row) + col) == Minesweeper::MINE)
                 cout << "x  ";
             else if (!isClear(row, col))
                 cout << nAdjacent(row, col) << "  ";
@@ -206,8 +206,8 @@ void MineField::prntClr() const {
     cout << endl;
 }
 
-/// Function prints the minefield with spaces hidden
-void MineField::prntObscr() const{
+/// Function prints the Minesweeper with spaces hidden
+void Minesweeper::prntObscr() const{
     /// Print the column index
     for (int i = 0; i != cols; ++i){
         /// Pad initial output of column indicator
@@ -221,11 +221,11 @@ void MineField::prntObscr() const{
             if(col == 0 && row < 10) cout << row << "  ";
             if (col == 0 && row >= 10) cout << row << " ";
             /// KEEP EMPTY spaces and MINEs hidden
-            if (data[row][col] == MineField::EMPTY ||
-                data[row][col] == MineField::MINE)
+            if (data[row][col] == Minesweeper::EMPTY ||
+                data[row][col] == Minesweeper::MINE)
                 cout << setw(3) << right  << "* ";
             /// print out the CLEARed area
-            else if (data[row][col] == MineField::CLEAR)
+            else if (data[row][col] == Minesweeper::CLEAR)
                 cout << setw(2)<< 0 << " ";
             /// Print out the actual value of the square
             else
@@ -237,21 +237,21 @@ void MineField::prntObscr() const{
 }
 
 /// Function returns the number of mines to set based on Difficulty
-int MineField::nMines(MineField::Difficulty d) const {
-    if (d==MineField::EASY)
+int Minesweeper::nMines(Minesweeper::Difficulty d) const {
+    if (d==Minesweeper::EASY)
         return 15;
-    else if (d==MineField::NORMAL)
+    else if (d==Minesweeper::NORMAL)
         return 30;
     else
         return 45;
 }
 
 /// Function places mines in grid
-void MineField::setMines() {
+void Minesweeper::setMines() {
     cout << "In set mines\n";
     int minecpy = mines;
     cout << "mines: " << mines << endl;
-    /// keep looping through minefield until all mines are set
+    /// keep looping through Minesweeper until all mines are set
     while (minecpy) {
         for (int i = 0; i != rows; ++i) {
             for (int j = 0; j != cols; ++j) {
@@ -259,9 +259,9 @@ void MineField::setMines() {
                 if ((rand() % 100) % 10 == 0){
                     ///only place mines if mines are still available
                     /// and current is empty
-                    if (minecpy && data[i][j] == MineField::EMPTY) {
+                    if (minecpy && data[i][j] == Minesweeper::EMPTY) {
                         /// set the mine
-                        data[i][j] = MineField::MINE;
+                        data[i][j] = Minesweeper::MINE;
                         --minecpy;
                     }
                 }
@@ -271,7 +271,7 @@ void MineField::setMines() {
 }
 
 /// Function returns how  many 'flag' elements surround a given square
-int MineField::nAdjacent(int row, int col, int FLAG) const{
+int Minesweeper::nAdjacent(int row, int col, int FLAG) const{
     int nAd=0;              /// the number of adjacent mines
     
     /// not on first or last row or first or last column
@@ -288,7 +288,7 @@ int MineField::nAdjacent(int row, int col, int FLAG) const{
     else if ( row == 0 && col > 0 && col < cols - 1) {
         for (int i = row; i <= row+1; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                if (data[i][j] == MineField::MINE)
+                if (data[i][j] == Minesweeper::MINE)
                     ++nAd;
         }
     }
@@ -296,7 +296,7 @@ int MineField::nAdjacent(int row, int col, int FLAG) const{
     else if ( row == rows-1 && col > 0 && col < cols - 1) {
         for (int i = row-1; i <= row; ++i) {
             for (int j = col-1; j <= col+1; ++j)
-                if (data[i][j] == MineField::MINE)
+                if (data[i][j] == Minesweeper::MINE)
                     ++nAd;
         }
     }
@@ -305,7 +305,7 @@ int MineField::nAdjacent(int row, int col, int FLAG) const{
     else if ( col == 0 && row > 0 && row < rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col; j <= col+1; ++j)
-                if (data[i][j] == MineField::MINE)
+                if (data[i][j] == Minesweeper::MINE)
                     ++nAd;
         }
     }
@@ -314,33 +314,33 @@ int MineField::nAdjacent(int row, int col, int FLAG) const{
     else if ( col == cols-1 && row > 0 && row < rows - 1) {
         for (int i = row-1; i <= row+1; ++i) {
             for (int j = col-1; j <= col; ++j)
-                if (data[i][j] == MineField::MINE)
+                if (data[i][j] == Minesweeper::MINE)
                     ++nAd;
         }
     }
     /// top left corner
     else if (row == 0 && col == 0) {
-        if (data[row][col+1] == MineField::MINE) ++nAd;
-        if (data[row+1][col] == MineField::MINE) ++nAd;
-        if (data[row+1][col+1] == MineField::MINE) ++nAd;
+        if (data[row][col+1] == Minesweeper::MINE) ++nAd;
+        if (data[row+1][col] == Minesweeper::MINE) ++nAd;
+        if (data[row+1][col+1] == Minesweeper::MINE) ++nAd;
     }
     /// top right corner
     else if (row == 0 && col == cols-1) {
-        if (data[row][col-1] == MineField::MINE) ++nAd;
-        if (data[row+1][col] == MineField::MINE) ++nAd;
-        if (data[row+1][col-1] == MineField::MINE) ++nAd;
+        if (data[row][col-1] == Minesweeper::MINE) ++nAd;
+        if (data[row+1][col] == Minesweeper::MINE) ++nAd;
+        if (data[row+1][col-1] == Minesweeper::MINE) ++nAd;
     }
     /// bottom left corner
     else if (row == rows-1 && col == 0) {
-        if (data[row-1][col] == MineField::MINE) ++nAd;
-        if (data[row-1][col+1] == MineField::MINE) ++nAd;
-        if (data[row][col+1] == MineField::MINE) ++nAd;
+        if (data[row-1][col] == Minesweeper::MINE) ++nAd;
+        if (data[row-1][col+1] == Minesweeper::MINE) ++nAd;
+        if (data[row][col+1] == Minesweeper::MINE) ++nAd;
     }
     /// bottom right corner
     else if (row == rows-1 && col == cols-1) {
-        if (data[row-1][col-1] == MineField::MINE) ++nAd;
-        if (data[row-1][col] == MineField::MINE) ++nAd;
-        if (data[row][col-1] == MineField::MINE) ++nAd;
+        if (data[row-1][col-1] == Minesweeper::MINE) ++nAd;
+        if (data[row-1][col] == Minesweeper::MINE) ++nAd;
+        if (data[row][col-1] == Minesweeper::MINE) ++nAd;
     }
     /// return number of mines from appropriate if statement
     return nAd;
@@ -348,7 +348,7 @@ int MineField::nAdjacent(int row, int col, int FLAG) const{
 
 /// Function is true if there 0 landmines adjacent to
 /// selected square
-bool MineField::isClear(int row, int col) const {
+bool Minesweeper::isClear(int row, int col) const {
     if (nAdjacent(row, col))
         return false;            /// there was at least one mine adjacent
     return true;                 /// area was clear
@@ -356,12 +356,12 @@ bool MineField::isClear(int row, int col) const {
 
 /// Clear an area whose values are clear
 /// i.e 0 adjacent  mines
-void MineField::showZeros(int row, int col) {
+void Minesweeper::showZeros(int row, int col) {
     /// check bounds
     if ( row >= rows || row < 0 || col >= cols || col < 0)
         return;
-    if (isClear(row, col) && data[row][col] != MineField::CLEAR){
-        data[row][col] = MineField::CLEAR;
+    if (isClear(row, col) && data[row][col] != Minesweeper::CLEAR){
+        data[row][col] = Minesweeper::CLEAR;
         /// go up one row
         showZeros(row+1, col);
         /// go down one row
@@ -377,22 +377,22 @@ void MineField::showZeros(int row, int col) {
 }
 
 /// Function shows how many mines are adjacent to selected square
-/// for the entire minefield
-void MineField::setFlags() {
+/// for the entire Minesweeper
+void Minesweeper::setFlags() {
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != cols; ++j)
             /// don't look for adjacent mines in areas where
             /// mine is already located
-            if (data[i][j] != MineField::MINE)
+            if (data[i][j] != Minesweeper::MINE)
                 data[i][j] = nAdjacent(i, j);
 }
 
 /// Function reveals what is underneath the square that the user has selected
 /// and whether to continue based on what is revealed
 /// i.e selecting a mine means you lost, game over
-bool MineField::cont(MineField * mf, int row, int col) {
+bool Minesweeper::cont(Minesweeper * mf, int row, int col) {
     /// check if user selected a losing square
-    if (mf->data[row][col] == MineField::MINE)
+    if (mf->data[row][col] == Minesweeper::MINE)
         return false;
     
     /// Square is a zero, clear the surrounding area if necessary
@@ -412,53 +412,53 @@ bool MineField::cont(MineField * mf, int row, int col) {
 }
 
 /// Function checks whether the player has won
-bool MineField::hasWon() const {
+bool Minesweeper::hasWon() const {
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != cols; ++j)
             /// if there are empty spaces player has not won
-            if (data[i][j] == MineField::EMPTY)
+            if (data[i][j] == Minesweeper::EMPTY)
                 return false;
     /// there were no empty spaces left. Player has won
     return true;
 }
 
 /// Function find the perimeter of the cleared areas
-void MineField::setPerim() {
+void Minesweeper::setPerim() {
     for (int row = 0; row != rows; ++row ) {
         /// avoid search at left and right edge of array
         for (int col = 0; col != cols; ++col) {
             /// when you're not on the bounds of the array
             if (row > 0 && row < rows-1
                 && col > 0 &&  col < cols-1)
-                if (data[row][col] == MineField::CLEAR) {
+                if (data[row][col] == Minesweeper::CLEAR) {
                     /// check that the previous number has mines adjacent
-                    if (data[row][col-1] != MineField::CLEAR)
+                    if (data[row][col-1] != Minesweeper::CLEAR)
                         data[row][col-1] = nAdjacent(row, col-1);
                     /// check if the next number has mines adjacent
-                    if (data[row][col+1] != MineField::CLEAR)
+                    if (data[row][col+1] != Minesweeper::CLEAR)
                         data[row][col+1] = nAdjacent(row, col+1);
-                    if (data[row-1][col] != MineField::CLEAR)
+                    if (data[row-1][col] != Minesweeper::CLEAR)
                         data[row-1][col] = nAdjacent(row-1, col);
                     /// check if the next number has mines adjacent
-                    if (data[row+1][col] != MineField::CLEAR)
+                    if (data[row+1][col] != Minesweeper::CLEAR)
                         data[row+1][col] = nAdjacent(row+1, col);
                     /// check the adjacent corners
-                    if (data[row+1][col-1] != MineField::CLEAR)
+                    if (data[row+1][col-1] != Minesweeper::CLEAR)
                         data[row-1][col-1] = nAdjacent(row-1, col-1);
-                    if (data[row-1][col+1] != MineField::CLEAR)
+                    if (data[row-1][col+1] != Minesweeper::CLEAR)
                         data[row-1][col+1] = nAdjacent(row-1, col+1);
-                    if (data[row+1][col-1] != MineField::CLEAR)
+                    if (data[row+1][col-1] != Minesweeper::CLEAR)
                         data[row+1][col-1] = nAdjacent(row+1, col-1);
-                    if (data[row+1][col+1] != MineField::CLEAR)
+                    if (data[row+1][col+1] != Minesweeper::CLEAR)
                         data[row+1][col+1] = nAdjacent(row+1, col+1);
                 }
         }
     }
 }
 
-/// Function prints the data variable from the Minefield structure
+/// Function prints the data variable from the Minesweeper structure
 /// writen to a binary file
-void MineField::readBin(string fileName) {
+void Minesweeper::readBin(string fileName) {
     /// Ask user if they want to see the result of the last game
     char response;
     cout << "Would you like to see the result of the last game as "
@@ -468,7 +468,7 @@ void MineField::readBin(string fileName) {
     if (response == 'y') {
         cout << "\nResult of your last game:\n";
         /// Create space to hold the file read
-        MineField *result;
+        Minesweeper *result;
         fstream in(fileName.c_str(), ios::in | ios::binary);
         in.read(reinterpret_cast<char *>(&result), sizeof(*result));
         prntClr();

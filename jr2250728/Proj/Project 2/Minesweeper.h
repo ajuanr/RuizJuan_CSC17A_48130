@@ -10,11 +10,12 @@
 #define __Project_2__Minesweeper__
 
 #include <string>
+#include "gameBoard.h"
 
-/// This is the class that holds the minefield
+/// This is the class that holds the Minesweeper
 /// as well as the associated flags that occur when
 /// a user selects a square
-class MineField {
+class Minesweeper: public gameBoard {
 private:
     /***************************************************
      *                Enumerations
@@ -27,7 +28,7 @@ private:
     /***************************************************
      *              Member Variables
      **************************************************/
-    /// This is the minefield
+    /// This is the Minesweeper
     int **data;
     /// The total number of rows
     int rows;
@@ -41,18 +42,18 @@ private:
      **************************************************/
     void create(int, int);
     void destroy();
-    MineField::Difficulty intToDiff(int);
-    bool isValidIn(int, int, MineField::Difficulty) const;
-    int nMines(MineField::Difficulty) const;
+    Minesweeper::Difficulty intToDiff(int);
+    bool isValidIn(int, int, Minesweeper::Difficulty) const;
+    int nMines(Minesweeper::Difficulty) const;
     void setMines();
     void setFlags();
-    int nAdjacent(int, int, int = MineField::MINE) const;
+    int nAdjacent(int, int, int = Minesweeper::MINE) const;
     bool isClear(int, int) const;
     void setPerim();
     void showZeros(int, int);
     bool hasWon() const;
-    bool cont(MineField *, int, int);
-    void prompt(int&, MineField::Difficulty&);
+    bool cont(Minesweeper *, int, int);
+    void prompt(int&, Minesweeper::Difficulty&);
     char *userName();
     void readBin(std::string);
     
@@ -60,8 +61,8 @@ public:
     /***************************************************
      *             Constructors / Destructor
      **************************************************/
-    MineField(int row, int col) {create( row, col);}
-    ~MineField() {destroy();}
+    Minesweeper(int row, int col):gameBoard(row, col) {create( row, col);}
+    ~Minesweeper() {destroy();}
 
     /***************************************************
      *             Function Prototypes
@@ -69,7 +70,7 @@ public:
     void prntClr() const;
     void prntObscr() const;
     void setUp();
-    void playGame(int, int, MineField::Difficulty, char*);
+    void playGame(int, int, Minesweeper::Difficulty, char*);
 };
 
 #endif /* defined(__Project_2__Minesweeper__) */

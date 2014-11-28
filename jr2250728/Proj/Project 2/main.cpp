@@ -50,8 +50,8 @@ using namespace std;
  *
  **************************************************/
 int main(int argc, const char * argv[]) {
-    MineField m(10,10);
-    m.setUp();
+    gameBoard *mSweeper = new  Minesweeper(10,10);
+    mSweeper->setUp();
     return 0;
 }
 
