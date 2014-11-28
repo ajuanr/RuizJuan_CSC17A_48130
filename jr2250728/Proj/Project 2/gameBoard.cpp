@@ -10,15 +10,15 @@
 #include "gameBoard.h"
 
 /// Function that creates the grid on which game will be played
-void GameBoard::create(int rows, int cols) {
+void GameBoard::create(int row, int col) {
     /// dinamically create a Minesweeper
-    this->rows=rows;
-    this->cols = cols;
+    rows=row;
+    cols = col;
     
-    /// Create the 2D game Minesweeper
+    /// Set up the rows
     data = new int *[rows];
     
-    /// Create each row
+    /// Create each column
     for (int row = 0; row != rows; ++row)
         data[row] = new int [cols];
 }

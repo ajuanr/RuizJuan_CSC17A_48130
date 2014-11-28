@@ -67,8 +67,10 @@ void Minesweeper::setUp() {
                 cin >> ans;
                 cout << endl;
                 /// Get new data only if user wants to continue
-                if (ans =='y')
+                if (ans =='y') {
                     prompt();
+                    clearBoard();
+                }
             }
         }
         /// Information was invalid
@@ -235,12 +237,9 @@ int Minesweeper::nMines(Minesweeper::Difficulty d) const {
 
 /// Function places mines in grid
 void Minesweeper::setMines() {
-    cout << "In set mines\n";
     int minecpy = mines;
-    cout << "mines: " << mines << endl;
     /// keep looping through Minesweeper until all mines are set
     while (minecpy) {
-        cout << minecpy << endl;
         for (int i = 0; i != rows; ++i) {
             for (int j = 0; j != cols; ++j) {
                 /// place mines if result of rand()%15 == 0

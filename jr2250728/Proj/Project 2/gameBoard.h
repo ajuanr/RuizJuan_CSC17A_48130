@@ -17,11 +17,12 @@ private:
     int **data;
     int rows;
     int cols;
+    void create(int, int);
 protected:
-    virtual void create(int, int);
+
 public:
     GameBoard(int rows, int cols) {create(rows,cols);}
-    //virtual void clearBoard();
+    virtual void clearBoard();
     virtual void setUp()=0;
     
 };
