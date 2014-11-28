@@ -113,7 +113,7 @@ void MineField::playGame(int nrows, int ncols, MineField::Difficulty diff, char 
         setFlags();
     }
     else{
-        cout << p << " you have lost\n";
+        cout << p << " you have, lost\n";
         setFlags();
         data[row][col]= MineField::LOSER;
     }
@@ -123,15 +123,16 @@ void MineField::playGame(int nrows, int ncols, MineField::Difficulty diff, char 
 
 /// Function gets the user name as a string converts it to a char array
 /// for the 1d dynamic array requirement
-char *MineField::userName() {
+char* MineField::userName() {
     cout << "Enter your name: ";
     string in;
     cin >> in;
     
-    int size = in.size();
+    typedef string::size_type sType;
+    sType size = in.size();
     /// make room for '\0'
     char *name = new char[size+1];
-    for (int i = 0; i != size; ++i) {
+    for (sType i = 0; i != size; ++i) {
         *(name+i) = in[i];
     }
     *(name+size+1) = '\0';
@@ -177,12 +178,12 @@ MineField::Difficulty MineField::intToDiff(int choice) {
 }
 
 /// Function deallocates memory
-void MineField::destroy(MineField *mf) {
+void MineField::destroy() {
     /// delete each dynamically allocated row
-    for (int i = 0; i != mf->rows; ++i)
-        delete[] mf->data[i];
+    for (int i = 0; i != rows; ++i)
+        delete[] data[i];
     /// delete the dynamically allocated structure
-    delete mf;
+    delete data;
 }
 
 /// Functions prints the minefield with all the squares revealed.
@@ -249,6 +250,7 @@ int MineField::nMines(MineField::Difficulty d) const {
 void MineField::setMines() {
     cout << "In set mines\n";
     int minecpy = mines;
+    cout << "mines: " << mines << endl;
     /// keep looping through minefield until all mines are set
     while (minecpy) {
         for (int i = 0; i != rows; ++i) {
@@ -454,14 +456,6 @@ void MineField::setPerim() {
     }
 }
 
-/// Function writes the minefield structure to a binary file
-void MineField::writeBin(MineField *mf, string fileName) {
-    /// Write the result to a binary file
-    fstream out(fileName.c_str(), ios::out | ios::binary);    /// open the file
-    out.write(reinterpret_cast<char *>(&mf),sizeof(*mf)); /// write to the file
-    out.close();
-}
-
 /// Function prints the data variable from the Minefield structure
 /// writen to a binary file
 void MineField::readBin(string fileName) {
@@ -482,37 +476,3 @@ void MineField::readBin(string fileName) {
     }
     
 }
-
-/// This function creates an array of the Minefield structure
-/// as part of the requirments to be able to write to and read
-/// from an array of structures
-//void MineField::fields() {
-//    cout << "How many mine fields do you want to see: ";
-//    int n;
-//    cin >> n;
-//    
-//    MineField **mf = new MineField*[n];
-//    const int row = 10;
-//    const int col = 10;
-//    /// create the fields
-//    for (int i = 0; i != n; ++i) {
-//        /// Create each field
-//        mf[i] = create(row, col);
-//        /// get number of mines
-//        mf[i]->mines = nMines(MineField::EASY);
-//        /// set the mines
-//        setMines(*(mf+i));
-//        /// set the flags
-//        setFlags(*(mf+i));
-//        /// print the field
-//        prntClr(*(mf+i));
-//        cout << endl;
-//    }
-//    cout << endl;
-//    
-//    /// deallocate memory
-//    for (int i = 0; i != n; ++i) {
-//        destroy(*(mf+i));
-//    }
-//    delete []mf;
-//}

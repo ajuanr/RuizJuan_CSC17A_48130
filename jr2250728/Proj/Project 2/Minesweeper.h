@@ -18,7 +18,7 @@ using std::string;
 class MineField {
 public:
     MineField(int row, int col) {create( row, col);}
-    ~MineField() { destroy(this); }
+    ~MineField() {destroy();}
     /// Determines how many mines to set
     enum Difficulty {EASY, NORMAL, HARD};
     /// Flags representing various square possibilities
@@ -46,7 +46,7 @@ private:
      *
      **************************************************/
     void create(int, int);
-    void destroy(MineField *);
+    void destroy();
     MineField::Difficulty intToDiff(int);
     bool isValidIn(int, int, MineField::Difficulty) const;
     int nMines(MineField::Difficulty) const;
@@ -63,7 +63,6 @@ private:
     
     void prompt(int&, MineField::Difficulty&);
     char *userName();
-    void writeBin(MineField *, string);
     void readBin(string);
 };
 
