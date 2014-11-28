@@ -23,8 +23,18 @@ void GameBoard::create(int row, int col) {
         data[row] = new int [cols];
 }
 
+/// Function resets the GameBoard to initial in order to use it again
 void GameBoard::clearBoard() {
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != cols; ++j)
             data[i][j] = 0;
+}
+
+/// Function deallocates memory
+void GameBoard::destroy() {
+    /// delete each dynamically allocated row
+    for (int i = 0; i != rows; ++i)
+        delete[] data[i];
+    /// delete the dynamically allocated structure
+    delete data;
 }

@@ -35,7 +35,7 @@ private:
      *             Utility Function Prototypes
      **************************************************/
     void create(int, int);
-    void destroy();
+    //void destroy();
     Minesweeper::Difficulty intToDiff(int);
     bool isValidIn(int, int) const;
     int nMines(Minesweeper::Difficulty) const;
@@ -57,7 +57,7 @@ public:
      **************************************************/
     Minesweeper(int row, int col):GameBoard(row, col)
                                 {clearBoard();}
-    ~Minesweeper() {destroy();}
+    //~Minesweeper() {destroy();}
 
     /***************************************************
      *             Function Prototypes

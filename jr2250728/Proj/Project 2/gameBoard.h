@@ -13,18 +13,19 @@
 /// such as Minesweeper, Tic-Tac-Toe, Battleship
 class GameBoard {
 private:
-    protected:
+    
+protected:
     int **data;
     int rows;
     int cols;
     void create(int, int);
-protected:
 
 public:
-    GameBoard(int rows, int cols) {create(rows,cols);}
+    GameBoard(int rows, int cols) {create(rows,cols);clearBoard();}
+    ~GameBoard(){destroy();}
+    void destroy();
     virtual void clearBoard();
     virtual void setUp()=0;
-    
 };
 
 #endif

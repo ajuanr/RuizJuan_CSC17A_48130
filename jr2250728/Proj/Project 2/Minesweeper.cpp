@@ -148,14 +148,14 @@ void Minesweeper::clearBoard() {
             data[i][j] = Minesweeper::EMPTY;
 }
 
-/// Function deallocates memory
-void Minesweeper::destroy() {
-    /// delete each dynamically allocated row
-    for (int i = 0; i != rows; ++i)
-        delete[] data[i];
-    /// delete the dynamically allocated structure
-    delete data;
-}
+///// Function deallocates memory
+//void Minesweeper::destroy() {
+//    /// delete each dynamically allocated row
+//    for (int i = 0; i != rows; ++i)
+//        delete[] data[i];
+//    /// delete the dynamically allocated structure
+//    delete data;
+//}
 
 /// Function return the Minesweeper::Difficulty type from
 /// the int variable
