@@ -28,12 +28,6 @@ private:
     /***************************************************
      *              Member Variables
      **************************************************/
-    /// This is the Minesweeper
-    int **data;
-    /// The total number of rows
-    int rows;
-    /// The total number of columns
-    int cols;
     /// number of mines
     int mines;
     
@@ -43,7 +37,7 @@ private:
     void create(int, int);
     void destroy();
     Minesweeper::Difficulty intToDiff(int);
-    bool isValidIn(int, int, Minesweeper::Difficulty) const;
+    bool isValidIn(int, int) const;
     int nMines(Minesweeper::Difficulty) const;
     void setMines();
     void setFlags();
@@ -53,7 +47,7 @@ private:
     void showZeros(int, int);
     bool hasWon() const;
     bool cont(Minesweeper *, int, int);
-    void prompt(int&, Minesweeper::Difficulty&);
+    void prompt();
     char *userName();
     void readBin(std::string);
     
@@ -61,7 +55,8 @@ public:
     /***************************************************
      *             Constructors / Destructor
      **************************************************/
-    Minesweeper(int row, int col):gameBoard(row, col) {create( row, col);}
+    Minesweeper(int row, int col):gameBoard(row, col)
+                                {Minesweeper::clearBoard();}
     ~Minesweeper() {destroy();}
 
     /***************************************************
@@ -70,7 +65,8 @@ public:
     void prntClr() const;
     void prntObscr() const;
     void setUp();
-    void playGame(int, int, Minesweeper::Difficulty, char*);
+    void playGame(int, int, char*);
+    void clearBoard();
 };
 
 #endif /* defined(__Project_2__Minesweeper__) */

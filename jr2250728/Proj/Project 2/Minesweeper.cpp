@@ -20,9 +20,10 @@ using namespace std;
  *
  **************************************************************/
 
-void Minesweeper::prompt(int &row, Minesweeper::Difficulty &d) {
+void Minesweeper::prompt() {
     cout << "Enter the number of rows\n"
     "Minesweeper will be NxN in size: ";
+    int row;
     cin >> row;
     rows = row;
     cols = row;
@@ -31,14 +32,14 @@ void Minesweeper::prompt(int &row, Minesweeper::Difficulty &d) {
     cout << "Enter the difficulty\n"
     "0=Easy\t 1=Normal\t 2=Hard\n";
     cin >> diff;
-    mines = intToDiff(diff);
+    mines = nMines(intToDiff(diff));
 }
 
 /// Function returns true if input was valid
-bool Minesweeper::isValidIn(int rows, int cols, Minesweeper::Difficulty diff) const{
+bool Minesweeper::isValidIn(int rows, int cols) const{
     /// make sure that the number of mines does not exceed
     /// the number of spots available
-    return (rows * cols) > nMines(diff);
+    return (rows * cols) > mines;
     
 }
 
@@ -54,22 +55,20 @@ void Minesweeper::setUp() {
     
     /// play if answer is yes
     if (ans == 'y') {
-        /// create Minesweeper variables
-        int nrows;
-        Minesweeper::Difficulty d;
         /// Get game information from user
-        prompt(nrows, d);
+        prompt();
 
-        if (isValidIn(rows, nrows, d)) {
-            while (ans == 'y' && isValidIn(nrows, nrows, d)) {
-                playGame(nrows, nrows, d, player);
+        if (isValidIn(rows, cols)) {
+            while (ans == 'y' && isValidIn(rows, cols)) {
+                playGame(rows, cols, player);
                 cout << endl;
+                cin.ignore();
                 cout << "Would you like to play again " << player << "? ";
                 cin >> ans;
                 cout << endl;
                 /// Get new data only if user wants to continue
                 if (ans =='y')
-                    prompt(nrows, d);
+                    prompt();
             }
         }
         /// Information was invalid
@@ -86,9 +85,8 @@ void Minesweeper::setUp() {
 }
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
-void Minesweeper::playGame(int nrows, int ncols, Minesweeper::Difficulty diff, char *p) {
+void Minesweeper::playGame(int nrows, int ncols, char *p) {
     srand(static_cast<unsigned int>(time(0)));
-    this->mines=nMines(diff);
     setMines();
     prntObscr();
     int row, col;
@@ -141,18 +139,7 @@ char* Minesweeper::userName() {
 }
 
 /// Function that creates the grid on which game will be played
-void Minesweeper::create(int rows, int cols) {
-//    /// dinamically create a Minesweeper
-//    this->rows=rows;
-//    this->cols = cols;
-//    
-//    /// Create the 2D game Minesweeper
-//    this->data = new int *[rows];
-//    
-//    /// Create each row
-//    for (int row = 0; row != rows; ++row)
-//        this->data[row] = new int [cols];
-//    
+void Minesweeper::clearBoard() {
     /// Make sure each square is empty
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != rows; ++j)
@@ -253,15 +240,17 @@ void Minesweeper::setMines() {
     cout << "mines: " << mines << endl;
     /// keep looping through Minesweeper until all mines are set
     while (minecpy) {
+        cout << minecpy << endl;
         for (int i = 0; i != rows; ++i) {
             for (int j = 0; j != cols; ++j) {
                 /// place mines if result of rand()%15 == 0
                 if ((rand() % 100) % 10 == 0){
                     ///only place mines if mines are still available
-                    /// and current is empty
+                    /// and current space is empty
                     if (minecpy && data[i][j] == Minesweeper::EMPTY) {
                         /// set the mine
                         data[i][j] = Minesweeper::MINE;
+                        /// decrement number of mines available
                         --minecpy;
                     }
                 }

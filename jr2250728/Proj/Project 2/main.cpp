@@ -51,7 +51,12 @@ using namespace std;
  **************************************************/
 int main(int argc, const char * argv[]) {
     gameBoard *mSweeper = new  Minesweeper(10,10);
+    try {
     mSweeper->setUp();
+    }
+    catch (const char* error) {
+        cout << error << endl;
+    }
     return 0;
 }
 

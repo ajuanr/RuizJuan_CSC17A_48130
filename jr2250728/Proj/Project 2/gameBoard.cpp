@@ -22,3 +22,9 @@ void gameBoard::create(int rows, int cols) {
     for (int row = 0; row != rows; ++row)
         data[row] = new int [cols];
 }
+
+//void gameBoard::clearBoard() {
+//    for (int i = 0; i != rows; ++i)
+//        for (int j = 0; j != cols; ++j)
+//            data[i][j] = 0;
+//}
