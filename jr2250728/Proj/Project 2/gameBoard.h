@@ -11,7 +11,7 @@
 
 /// Abstract class for games that require an n*m array
 /// such as Minesweeper, Tic-Tac-Toe, Battleship
-class gameBoard {
+class GameBoard {
 private:
     protected:
     int **data;
@@ -20,7 +20,7 @@ private:
 protected:
     virtual void create(int, int);
 public:
-    gameBoard(int rows, int cols) {create(rows,cols);}
+    GameBoard(int rows, int cols) {create(rows,cols);}
     //virtual void clearBoard();
     virtual void setUp()=0;
     

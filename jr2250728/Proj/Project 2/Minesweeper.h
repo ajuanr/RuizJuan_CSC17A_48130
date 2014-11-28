@@ -15,7 +15,7 @@
 /// This is the class that holds the Minesweeper
 /// as well as the associated flags that occur when
 /// a user selects a square
-class Minesweeper: public gameBoard {
+class Minesweeper: public GameBoard {
 private:
     /***************************************************
      *                Enumerations
@@ -55,8 +55,8 @@ public:
     /***************************************************
      *             Constructors / Destructor
      **************************************************/
-    Minesweeper(int row, int col):gameBoard(row, col)
-                                {Minesweeper::clearBoard();}
+    Minesweeper(int row, int col):GameBoard(row, col)
+                                {clearBoard();}
     ~Minesweeper() {destroy();}
 
     /***************************************************

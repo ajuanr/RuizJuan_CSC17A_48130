@@ -10,7 +10,7 @@
 #include "gameBoard.h"
 
 /// Function that creates the grid on which game will be played
-void gameBoard::create(int rows, int cols) {
+void GameBoard::create(int rows, int cols) {
     /// dinamically create a Minesweeper
     this->rows=rows;
     this->cols = cols;
@@ -23,8 +23,8 @@ void gameBoard::create(int rows, int cols) {
         data[row] = new int [cols];
 }
 
-//void gameBoard::clearBoard() {
-//    for (int i = 0; i != rows; ++i)
-//        for (int j = 0; j != cols; ++j)
-//            data[i][j] = 0;
-//}
+void GameBoard::clearBoard() {
+    for (int i = 0; i != rows; ++i)
+        for (int j = 0; j != cols; ++j)
+            data[i][j] = 0;
+}
