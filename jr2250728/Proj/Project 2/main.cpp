@@ -33,13 +33,6 @@
 #include <iomanip>
 #include "Minesweeper.h"
 
-/***************************************************
- *
- *                  Structure
- *
- **************************************************/
-
-
 using namespace std;
 
 
@@ -57,6 +50,10 @@ int main(int argc, const char * argv[]) {
     catch (const char* error) {
         cout << error << endl;
     }
+    
+    cout << "error\n";
+    delete mSweeper;
+    
     return 0;
 }
 

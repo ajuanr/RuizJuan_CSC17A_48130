@@ -22,7 +22,7 @@ protected:
 
 public:
     GameBoard(int rows, int cols) {create(rows,cols);clearBoard();}
-    ~GameBoard(){destroy();}
+    virtual ~GameBoard(){destroy();}
     void destroy();
     virtual void clearBoard();
     virtual void setUp()=0;

@@ -40,7 +40,6 @@ bool Minesweeper::isValidIn(int rows, int cols) const{
     /// make sure that the number of mines does not exceed
     /// the number of spots available
     return (rows * cols) > mines;
-    
 }
 
 void Minesweeper::setUp() {
@@ -60,7 +59,7 @@ void Minesweeper::setUp() {
 
         if (isValidIn(rows, cols)) {
             while (ans == 'y' && isValidIn(rows, cols)) {
-                playGame(rows, cols, player);
+                playGame(player);
                 cout << endl;
                 cin.ignore();
                 cout << "Would you like to play again " << player << "? ";
@@ -75,7 +74,7 @@ void Minesweeper::setUp() {
         }
         /// Information was invalid
         else
-            throw "Minesweeper too small. Goodbye: ";
+            throw "Minesweeper area too small. Goodbye: ";
     }
     cout << "Game is Over.\n";
     
@@ -87,7 +86,7 @@ void Minesweeper::setUp() {
 }
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
-void Minesweeper::playGame(int nrows, int ncols, char *p) {
+void Minesweeper::playGame(char *p) {
     srand(static_cast<unsigned int>(time(0)));
     setMines();
     prntObscr();
@@ -95,12 +94,12 @@ void Minesweeper::playGame(int nrows, int ncols, char *p) {
     do {
         /// Select the row
         do {
-            cout << "Enter the row: ";
+            cout << "Enter the row " << 0 << "-" << rows-1 << ": ";
             cin >> row;
             /// check bounds
         } while (row < 0 || row >= rows);
         do {
-            cout << "Enter the column: ";
+            cout << "Enter the column " << 0 << "-" << cols-1 << ": ";
             cin >> col;
             /// check bounds
         } while (col < 0 || col >= cols);
@@ -228,11 +227,11 @@ void Minesweeper::prntObscr() const{
 /// Function returns the number of mines to set based on Difficulty
 int Minesweeper::nMines(Minesweeper::Difficulty d) const {
     if (d==Minesweeper::EASY)
-        return 15;
+        return (rows*cols)/10;
     else if (d==Minesweeper::NORMAL)
-        return 30;
+        return (rows*cols)/5;
     else
-        return 45;
+        return (rows*cols)/3;
 }
 
 /// Function places mines in grid
@@ -334,16 +333,16 @@ int Minesweeper::nAdjacent(int row, int col, int FLAG) const{
     return nAd;
 }
 
-/// Function is true if there 0 landmines adjacent to
-/// selected square
+/// Function returns true if
+/// there are 0 landmines adjacent to selected square
 bool Minesweeper::isClear(int row, int col) const {
     if (nAdjacent(row, col))
-        return false;            /// there was at least one mine adjacent
-    return true;                 /// area was clear
+        return false;            /// nAdjacent returned 1 or more
+    return true;                 /// nAdjacent returned 0
 }
 
-/// Clear an area whose values are clear
-/// i.e 0 adjacent  mines
+/// Clear an area whose values are CLEAR
+/// i.e 0 adjacent mines
 void Minesweeper::showZeros(int row, int col) {
     /// check bounds
     if ( row >= rows || row < 0 || col >= cols || col < 0)
@@ -462,5 +461,4 @@ void Minesweeper::readBin(string fileName) {
         prntClr();
         in.close();
     }
-    
 }

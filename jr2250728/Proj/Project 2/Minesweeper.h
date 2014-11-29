@@ -65,7 +65,7 @@ public:
     void prntClr() const;
     void prntObscr() const;
     void setUp();
-    void playGame(int, int, char*);
+    void playGame(char*);
     void clearBoard();
 };
 
