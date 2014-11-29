@@ -87,7 +87,7 @@ void Minesweeper::setUp() {
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
 void Minesweeper::playGame(char *p) {
-    srand(static_cast<unsigned int>(time(0)));
+
     setMines();
     prntObscr();
     int row, col;

@@ -43,6 +43,7 @@ using namespace std;
  *
  **************************************************/
 int main(int argc, const char * argv[]) {
+        srand(static_cast<unsigned int>(time(0)));
     GameBoard *mSweeper = new  Minesweeper(10,10);
     try {
     mSweeper->setUp();
