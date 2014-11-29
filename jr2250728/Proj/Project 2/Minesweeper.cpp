@@ -84,6 +84,7 @@ void Minesweeper::setUp() {
     cout << endl;
     cout << "Goodbye\n";
 }
+
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
 void Minesweeper::playGame(char *p) {
