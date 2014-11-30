@@ -21,6 +21,19 @@ using namespace std;
  *
  **************************************************************/
 
+void Minesweeper::create(int row, int col) {
+    /// dinamically create a Minesweeper
+    rows=row;
+    cols = col;
+    
+    /// Set up the rows
+    data = new int *[rows];
+    
+    /// Create each column
+    for (int row = 0; row != rows; ++row)
+        data[row] = new int [cols];
+}
+
 void Minesweeper::prompt() {
     cout << "Enter the number of rows(1-10)\n"
             "Area will be rowsxrows in size: ";
@@ -41,8 +54,8 @@ void Minesweeper::prompt() {
 /// Function returns true if input was valid
 bool Minesweeper::isValidIn() const{
     /// make sure that the number of mines does not exceed
-    /// the number of spots available
-    return (rows * cols) > mines;
+    /// the number of spots available and that mines exist
+    return (((rows * cols) > mines) && (mines>0));
 }
 
 void Minesweeper::setUp() {
@@ -57,9 +70,17 @@ void Minesweeper::setUp() {
     
     /// play if answer is yes
     if (ans == 'y') {
-        /// Get game information from user
-        prompt();
-
+        cout << "would you like to load a previous game: ";
+        char ans2;
+        cin >> ans2;
+        if ( ans2 == 'y') {
+            loadGame();
+            cout << getRows() << " " << getCols() << " " << getMines() << endl;
+        }
+        else
+            /// Get game information from user
+            prompt();
+cout << getRows() << " " << getCols() << " " << getMines() << endl;
         if (isValidIn()) {
             while (ans == 'y' && isValidIn()) {
                 playGame();
@@ -98,8 +119,15 @@ void Minesweeper::playGame() {
     do {
         /// Select the row
         do {
+            cout << "Enter -1 to save the settings and exit\n";
             cout << "Enter the row " << 0 << "-" << rows-1 << ": ";
             cin >> row;
+            /// User wants to save the game
+            /// save the game and exit
+            if ( row == -1) {
+                saveGame();
+                return;
+            }
             /// check bounds
         } while (row < 0 || row >= rows);
         /// Select the column
@@ -122,7 +150,7 @@ void Minesweeper::playGame() {
         data[row][col]= Minesweeper::LOSER;
     }
 
-    saveGame();
+    //saveGame();
     
     /// Print the complete Minesweeper
     print();
@@ -399,6 +427,7 @@ bool Minesweeper::cont(int row, int col) {
 }
 
 /// Function checks whether the player has won
+/// if there are no EMPTY spaces left the game is won
 bool Minesweeper::hasWon() const {
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != cols; ++j)
@@ -458,9 +487,17 @@ void Minesweeper::loadGame() {
         throw "Error file failed to open\n";
     /// Create space to hold the file read
     //Minesweeper *result = new Minesweeper(10,10);
-    saveFile.read(reinterpret_cast<char *>(this), sizeof(this));
-    //print();
+    saveFile.read(reinterpret_cast<char*>(this), sizeof(*this));
     saveFile.close();
     
-    //return result;
+}
+
+Minesweeper& Minesweeper::operator=(const Minesweeper &rhs) {
+    create(rhs.getRows(), rhs.getCols());
+    
+    for (int i = 0; i != rhs.getRows(); ++i) {
+        for (int j = 0; j != rhs.getCols(); ++j)
+            data[i][j] = rhs[i][j];
+    }
+    return *this;
 }

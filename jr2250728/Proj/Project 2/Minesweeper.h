@@ -34,7 +34,8 @@ private:
     /***************************************************
      *             Utility Function Prototypes
      **************************************************/
-    //void create(int, int);
+    void create(int, int);
+
     //void destroy();
     Minesweeper::Difficulty intToDiff(int);
     bool isValidIn() const;
@@ -49,7 +50,6 @@ private:
     bool cont(int, int);
     void prompt();
     char *userName();
-
     
 public:
     /// Throw this if user enter an invalid size/index
@@ -70,6 +70,9 @@ public:
     void clearBoard();
     void saveGame();
     void loadGame();
+    int getMines() const { return mines;}
+    
+    Minesweeper& operator=(const Minesweeper&);
 };
 
 #endif /* defined(__Project_2__Minesweeper__) */

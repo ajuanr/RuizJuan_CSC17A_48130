@@ -26,11 +26,15 @@ public:
     GameBoard(int rows, int cols) {create(rows,cols);clearBoard();}
     virtual ~GameBoard(){destroy();}
     void destroy();
+    int getRows() const {return rows;}
+    int getCols() const {return cols;}
     virtual void clearBoard();
     virtual void setUp()=0;
     virtual void loadGame()=0;
     virtual void playGame()=0;
     virtual void print() const;
+    int* operator[](int index) { return data[index];}
+    int* operator[](int index) const { return data[index];}
 };
 
 #endif
