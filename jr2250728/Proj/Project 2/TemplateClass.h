@@ -15,10 +15,12 @@ private:
     T* p;
 public:
     Game():p(0){}
-    Game(const T&);
-    T& operator=(const T&);
-    T* operator->();
-    T operator*();
+    Game(T* t):p(t){}
+    ~Game() {delete p;}
+    Game<T>& operator=(const T&);
+    operator bool(){return p;}
+    T* operator->() const;
+    T& operator*() const;
 };
 
 #endif /* defined(__Project_2__TemplateClass__) */

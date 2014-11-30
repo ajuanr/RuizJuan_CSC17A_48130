@@ -8,26 +8,26 @@
 
 #include "TemplateClass.h"
 
-template<class T>
-Game<T>::Game(const T& rhs) {
-    p = &rhs;
-}
+//template<class T>
+//Game<T>::Game(T* rhs) {
+//    p = rhs;
+//}
 
 template<class T>
-T* Game<T>::operator->() {
+T* Game<T>::operator->() const {
     /// only return p if it points to something
     if (p)
         return p;
 }
 
 template<class T>
-T Game<T>::operator*() {
+T& Game<T>::operator*() const{
     if (p)
         return *p;
 }
 
 template<class T>
-T& Game<T>::operator=(const T& rhs) {
+Game<T>& Game<T>::operator=(const T& rhs) {
     p = &rhs;
     return *this;
 }
