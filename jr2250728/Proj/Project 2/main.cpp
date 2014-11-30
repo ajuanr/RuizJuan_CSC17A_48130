@@ -43,6 +43,7 @@ using namespace std;
  **************************************************/
 int main(int argc, const char * argv[]) {
     srand(static_cast<unsigned int>(time(0)));
+
     /// create GameBoard with max size
     /// the entire board may not be utilized
     GameBoard *mSweep = new  Minesweeper(10,10);

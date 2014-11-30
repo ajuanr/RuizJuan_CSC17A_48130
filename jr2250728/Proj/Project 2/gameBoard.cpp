@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Juan Ruiz. All rights reserved.
 //
 
-#include <stdio.h>
 #include "gameBoard.h"
 
 /// Function that creates the grid on which game will be played
