@@ -21,13 +21,15 @@ using namespace std;
  **************************************************************/
 
 void Minesweeper::prompt() {
-    cout << "Enter the number of rows\n"
-    "Minesweeper will be NxN in size: ";
+    cout << "Enter the number of rows(1-10)\n"
+            "Area will be rowsxrows in size: ";
     int row;
     cin >> row;
+    /// invalid sizes
+    if (row > 10 || row < 1)
+        throw badSize();
     rows = row;
     cols = row;
-    
     int diff;
     cout << "Enter the difficulty\n"
     "0=Easy\t 1=Normal\t 2=Hard\n";
@@ -47,8 +49,8 @@ void Minesweeper::setUp() {
     char *player = userName();
     /// ask user if they want to play
     cout << "Hello " << player
-    << ", Would you like to play a game of minesweeper?\n"
-    "Hit 'y' if yes\n";
+         << ", Would you like to play a game of minesweeper?\n"
+            "Hit 'y' if yes\n";
     char ans;
     cin >> ans;
     
@@ -74,7 +76,7 @@ void Minesweeper::setUp() {
         }
         /// Information was invalid
         else
-            throw "Minesweeper area too small. Goodbye: ";
+            throw badSize();
     }
     cout << "Game is Over.\n";
     
@@ -105,7 +107,7 @@ void Minesweeper::playGame(char *p) {
             /// check bounds
         } while (col < 0 || col >= cols);
         cout << endl;
-    } while (cont(this, row, col) && !hasWon());
+    } while (cont(row, col) && !hasWon());
     
     /// Prepare to print completed Minesweeper
     if (hasWon()) {
@@ -140,22 +142,13 @@ char* Minesweeper::userName() {
     return name;
 }
 
-/// Function that creates the grid on which game will be played
+/// Function that clears the grid on which game will be played
 void Minesweeper::clearBoard() {
     /// Make sure each square is empty
     for (int i = 0; i != rows; ++i)
         for (int j = 0; j != rows; ++j)
             data[i][j] = Minesweeper::EMPTY;
 }
-
-///// Function deallocates memory
-//void Minesweeper::destroy() {
-//    /// delete each dynamically allocated row
-//    for (int i = 0; i != rows; ++i)
-//        delete[] data[i];
-//    /// delete the dynamically allocated structure
-//    delete data;
-//}
 
 /// Function return the Minesweeper::Difficulty type from
 /// the int variable
@@ -378,9 +371,9 @@ void Minesweeper::setFlags() {
 /// Function reveals what is underneath the square that the user has selected
 /// and whether to continue based on what is revealed
 /// i.e selecting a mine means you lost, game over
-bool Minesweeper::cont(Minesweeper * mf, int row, int col) {
+bool Minesweeper::cont(int row, int col) {
     /// check if user selected a losing square
-    if (mf->data[row][col] == Minesweeper::MINE)
+    if (data[row][col] == Minesweeper::MINE)
         return false;
     
     /// Square is a zero, clear the surrounding area if necessary
@@ -393,7 +386,7 @@ bool Minesweeper::cont(Minesweeper * mf, int row, int col) {
     /// Square had adjacent mine
     /// reveal the number to the user
     else {
-        mf->data[row][col] = nAdjacent(row, col);
+        data[row][col] = nAdjacent(row, col);
         prntObscr();
         return true;
     }
@@ -410,14 +403,14 @@ bool Minesweeper::hasWon() const {
     return true;
 }
 
-/// Function find the perimeter of the cleared areas
+/// Function finds the perimeter of the cleared areas
 void Minesweeper::setPerim() {
     for (int row = 0; row != rows; ++row ) {
-        /// avoid search at left and right edge of array
+        /// avoid searching at left and right edge of array
         for (int col = 0; col != cols; ++col) {
             /// when you're not on the bounds of the array
             if (row > 0 && row < rows-1
-                && col > 0 &&  col < cols-1)
+                && col > 0 &&  col < cols-1){
                 if (data[row][col] == Minesweeper::CLEAR) {
                     /// check that the previous number has mines adjacent
                     if (data[row][col-1] != Minesweeper::CLEAR)
@@ -431,7 +424,7 @@ void Minesweeper::setPerim() {
                     if (data[row+1][col] != Minesweeper::CLEAR)
                         data[row+1][col] = nAdjacent(row+1, col);
                     /// check the adjacent corners
-                    if (data[row+1][col-1] != Minesweeper::CLEAR)
+                    if (data[row-1][col-1] != Minesweeper::CLEAR)
                         data[row-1][col-1] = nAdjacent(row-1, col-1);
                     if (data[row-1][col+1] != Minesweeper::CLEAR)
                         data[row-1][col+1] = nAdjacent(row-1, col+1);
@@ -440,6 +433,7 @@ void Minesweeper::setPerim() {
                     if (data[row+1][col+1] != Minesweeper::CLEAR)
                         data[row+1][col+1] = nAdjacent(row+1, col+1);
                 }
+            }
         }
     }
 }

@@ -28,9 +28,8 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <fstream>
-#include <string>
-#include <iomanip>
+#include <ctime>
+
 #include "Minesweeper.h"
 
 using namespace std;
@@ -44,16 +43,18 @@ using namespace std;
  **************************************************/
 int main(int argc, const char * argv[]) {
     srand(static_cast<unsigned int>(time(0)));
-    GameBoard *mSweeper = new  Minesweeper(10,10);
+    /// create GameBoard with max size
+    /// the entire board may not be utilized
+    GameBoard *mSweep = new  Minesweeper(10,10);
     try {
-    mSweeper->setUp();
-    }
-    catch (const char* error) {
-        cout << error << endl;
+    mSweep->setUp();
     }
     
-    cout << "error\n";
-    delete mSweeper;
+    catch (Minesweeper::badSize) {
+        cout << "Size was invalid\n";
+    }
+    
+    delete mSweep;
     
     return 0;
 }

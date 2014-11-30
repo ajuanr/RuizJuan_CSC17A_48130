@@ -34,7 +34,7 @@ private:
     /***************************************************
      *             Utility Function Prototypes
      **************************************************/
-    void create(int, int);
+    //void create(int, int);
     //void destroy();
     Minesweeper::Difficulty intToDiff(int);
     bool isValidIn(int, int) const;
@@ -46,18 +46,19 @@ private:
     void setPerim();
     void showZeros(int, int);
     bool hasWon() const;
-    bool cont(Minesweeper *, int, int);
+    bool cont(int, int);
     void prompt();
     char *userName();
     void readBin(std::string);
     
 public:
+    /// Throw this if user enter an invalid size/index
+    class badSize{};
     /***************************************************
      *             Constructors / Destructor
      **************************************************/
     Minesweeper(int row, int col):GameBoard(row, col)
                                 {clearBoard();}
-    //~Minesweeper() {destroy();}
 
     /***************************************************
      *             Function Prototypes
