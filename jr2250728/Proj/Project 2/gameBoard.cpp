@@ -39,9 +39,19 @@ void GameBoard::destroy() {
     delete data;
 }
 
+void GameBoard::setRows(int row) {
+    if ( row <= 0 )
+        throw badSize();
+    rows = row;
+}
+
+void GameBoard::setCols(int col) {
+    if (col <= 0 )
+        throw badSize();
+    cols = col;
+}
+
 void GameBoard::print() const {
-    std::cout << "\nin gameboard print\n";
-    
     for (int i = 0; i != rows; ++i){
         for (int j = 0; j != cols; ++j) {
             std::cout << data[i][j] << " ";

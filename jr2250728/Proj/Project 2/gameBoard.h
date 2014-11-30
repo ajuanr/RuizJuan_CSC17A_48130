@@ -20,14 +20,19 @@ protected:
     int **data;
     int rows;
     int cols;
-    void create(int, int);
+    virtual void create(int, int);
 
 public:
+    /// Throw this if user tries to set negative row or column
+    class badSize{};
+    
     GameBoard(int rows, int cols) {create(rows,cols);clearBoard();}
     virtual ~GameBoard(){destroy();}
-    void destroy();
-    int getRows() const {return rows;}
-    int getCols() const {return cols;}
+    virtual void destroy();
+    virtual void setRows(int);
+    virtual void setCols(int);
+    virtual int getRows() const {return rows;}
+    virtual int getCols() const {return cols;}
     virtual void clearBoard();
     virtual void setUp()=0;
     virtual void loadGame()=0;

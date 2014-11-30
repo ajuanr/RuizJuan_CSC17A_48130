@@ -53,7 +53,6 @@ private:
     
 public:
     /// Throw this if user enter an invalid size/index
-    class badSize{};
     /***************************************************
      *             Constructors / Destructor
      **************************************************/
@@ -63,6 +62,10 @@ public:
     /***************************************************
      *             Function Prototypes
      **************************************************/
+    void setRows(int);
+    void setCols(int);
+    int getRows() const {return rows;}
+    int getCols() const {return cols;}
     void print() const;
     void prntObscr() const;
     void setUp();

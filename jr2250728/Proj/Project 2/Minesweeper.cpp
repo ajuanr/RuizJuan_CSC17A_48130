@@ -34,6 +34,18 @@ void Minesweeper::create(int row, int col) {
         data[row] = new int [cols];
 }
 
+void Minesweeper::setRows(int row) {
+    if ( row <= 0 )
+        throw badSize();
+    rows = row;
+}
+
+void Minesweeper::setCols(int col) {
+    if (col <= 0 )
+        throw badSize();
+    cols = col;
+}
+
 void Minesweeper::prompt() {
     cout << "Enter the number of rows(1-10)\n"
             "Area will be rowsxrows in size: ";
@@ -75,12 +87,10 @@ void Minesweeper::setUp() {
         cin >> ans2;
         if ( ans2 == 'y') {
             loadGame();
-            cout << getRows() << " " << getCols() << " " << getMines() << endl;
         }
         else
             /// Get game information from user
             prompt();
-cout << getRows() << " " << getCols() << " " << getMines() << endl;
         if (isValidIn()) {
             while (ans == 'y' && isValidIn()) {
                 playGame();
@@ -488,8 +498,10 @@ void Minesweeper::loadGame() {
     /// Create space to hold the file read
     //Minesweeper *result = new Minesweeper(10,10);
     saveFile.read(reinterpret_cast<char*>(this), sizeof(*this));
+    //print();
     saveFile.close();
     
+    //return result;
 }
 
 Minesweeper& Minesweeper::operator=(const Minesweeper &rhs) {
