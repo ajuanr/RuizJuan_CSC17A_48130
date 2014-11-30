@@ -31,6 +31,7 @@
 #include <ctime>
 
 #include "Minesweeper.h"
+#include "TemplateClass.h"
 
 using namespace std;
 
@@ -43,10 +44,13 @@ using namespace std;
  **************************************************/
 int main(int argc, const char * argv[]) {
     srand(static_cast<unsigned int>(time(0)));
-
+    Game<GameBoard> m;
+    
+    m->setUp();
     /// create GameBoard with max size
     /// the entire board may not be utilized
     GameBoard *mSweep = new  Minesweeper(10,10);
+    //m = *mSweep;
     try {
     mSweep->setUp();
     }

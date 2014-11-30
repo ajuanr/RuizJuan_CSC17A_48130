@@ -9,6 +9,8 @@
 #ifndef Project_2_gameBoard_h
 #define Project_2_gameBoard_h
 
+
+
 /// Abstract class for games that require an n*m array
 /// such as Minesweeper, Tic-Tac-Toe, Battleship
 class GameBoard {
