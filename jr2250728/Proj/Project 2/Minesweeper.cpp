@@ -39,7 +39,7 @@ void Minesweeper::prompt() {
 }
 
 /// Function returns true if input was valid
-bool Minesweeper::isValidIn(int rows, int cols) const{
+bool Minesweeper::isValidIn() const{
     /// make sure that the number of mines does not exceed
     /// the number of spots available
     return (rows * cols) > mines;
@@ -60,8 +60,8 @@ void Minesweeper::setUp() {
         /// Get game information from user
         prompt();
 
-        if (isValidIn(rows, cols)) {
-            while (ans == 'y' && isValidIn(rows, cols)) {
+        if (isValidIn()) {
+            while (ans == 'y' && isValidIn()) {
                 playGame(player);
                 cout << endl;
                 cin.ignore();
@@ -124,7 +124,7 @@ void Minesweeper::playGame(char *p) {
     saveGame();
     
     /// Print the complete Minesweeper
-    prntClr();
+    print();
 }
 
 /// Function gets the user name as a string converts it to a char array
@@ -174,12 +174,13 @@ Minesweeper::Difficulty Minesweeper::intToDiff(int choice) {
 
 /// Functions prints the Minesweeper with all the squares revealed.
 /// used mostly after player loses
-void Minesweeper::prntClr() const {
+void Minesweeper::print() const {
+    cout << "\nIn Minesweeper print\n";
     for (int row = 0; row != rows; ++row){
         for (int col = 0; col != cols; ++col) {
             ///
             if ( *(*(data+row) + col) == Minesweeper::LOSER)
-                cout << "T  ";
+                cout << "t  ";
             else if (*(*(data+row) + col) == Minesweeper::MINE)
                 cout << "x  ";
             else if (!isClear(row, col))
@@ -445,24 +446,20 @@ void Minesweeper::setPerim() {
 void Minesweeper::saveGame() {
     fstream saveFile("gameSave", ios::out | ios::binary);
     saveFile.write(reinterpret_cast<char*>(this), sizeof(*this));
+    saveFile.close();
 }
 
 /// Function prints the data variable from the Minesweeper structure
 /// writen to a binary file
-void Minesweeper::readBin(string fileName) {
-    /// Ask user if they want to see the result of the last game
-    char response;
-    cout << "Would you like to see the result of the last game as "
-    "read from a binary file?\n"
-    "Hit 'y' if yes: ";
-    cin >> response;
-    if (response == 'y') {
-        cout << "\nResult of your last game:\n";
-        /// Create space to hold the file read
-        Minesweeper *result;
-        fstream in(fileName.c_str(), ios::in | ios::binary);
-        in.read(reinterpret_cast<char *>(&result), sizeof(*result));
-        prntClr();
-        in.close();
-    }
+void Minesweeper::loadGame() {
+    fstream saveFile("gameSave", ios::in | ios::binary);
+    if (!saveFile.is_open())
+        throw "Error file failed to open\n";
+    /// Create space to hold the file read
+    //Minesweeper *result = new Minesweeper(10,10);
+    saveFile.read(reinterpret_cast<char *>(this), sizeof(this));
+    //print();
+    saveFile.close();
+    
+    //return result;
 }

@@ -59,7 +59,10 @@ int main(int argc, const char * argv[]) {
         cout << "Size was invalid\n";
     }
     
-    delete mSweep;
+    mSweep->loadGame();
+    mSweep->print();
+    
+    //delete mSweep;
     
     return 0;
 }

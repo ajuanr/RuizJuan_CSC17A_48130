@@ -28,6 +28,8 @@ public:
     void destroy();
     virtual void clearBoard();
     virtual void setUp()=0;
+    virtual void loadGame()=0;
+    virtual void print() const;
 };
 
 #endif

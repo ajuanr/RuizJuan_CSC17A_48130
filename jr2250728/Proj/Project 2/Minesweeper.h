@@ -37,7 +37,7 @@ private:
     //void create(int, int);
     //void destroy();
     Minesweeper::Difficulty intToDiff(int);
-    bool isValidIn(int, int) const;
+    bool isValidIn() const;
     int nMines(Minesweeper::Difficulty) const;
     void setMines();
     void setFlags();
@@ -49,7 +49,7 @@ private:
     bool cont(int, int);
     void prompt();
     char *userName();
-    void readBin(std::string);
+
     
 public:
     /// Throw this if user enter an invalid size/index
@@ -63,12 +63,13 @@ public:
     /***************************************************
      *             Function Prototypes
      **************************************************/
-    void prntClr() const;
+    void print() const;
     void prntObscr() const;
     void setUp();
     void playGame(char*);
     void clearBoard();
     void saveGame();
+    void loadGame();
 };
 
 #endif /* defined(__Project_2__Minesweeper__) */

@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Juan Ruiz. All rights reserved.
 //
 
+#include <iostream>
 #include "gameBoard.h"
 
 /// Function that creates the grid on which game will be played
@@ -36,4 +37,15 @@ void GameBoard::destroy() {
         delete[] data[i];
     /// delete the dynamically allocated structure
     delete data;
+}
+
+void GameBoard::print() const {
+    std::cout << "\nin gameboard print\n";
+    
+    for (int i = 0; i != rows; ++i){
+        for (int j = 0; j != cols; ++j) {
+            std::cout << data[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 }
