@@ -5,6 +5,7 @@
 //  Created by Juan Ruiz on 11/21/14.
 //  Copyright (c) 2014 Juan Ruiz. All rights reserved.
 //
+#include <fstream>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
@@ -119,6 +120,9 @@ void Minesweeper::playGame(char *p) {
         setFlags();
         data[row][col]= Minesweeper::LOSER;
     }
+
+    saveGame();
+    
     /// Print the complete Minesweeper
     prntClr();
 }
@@ -155,15 +159,15 @@ void Minesweeper::clearBoard() {
 Minesweeper::Difficulty Minesweeper::intToDiff(int choice) {
     switch (choice) {
         case (0):
-            return Minesweeper::Difficulty::EASY;
+            return Minesweeper::EASY;
             break;
         case (1):
-            return Minesweeper::Difficulty::NORMAL;
+            return Minesweeper::NORMAL;
             break;
         case (2):
-            return Minesweeper::Difficulty::HARD;
+            return Minesweeper::HARD;
         default:
-            return Minesweeper::Difficulty::EASY;
+            return Minesweeper::EASY;
             break;
     }
 }
@@ -436,6 +440,11 @@ void Minesweeper::setPerim() {
             }
         }
     }
+}
+
+void Minesweeper::saveGame() {
+    fstream saveFile("gameSave", ios::out | ios::binary);
+    saveFile.write(reinterpret_cast<char*>(this), sizeof(*this));
 }
 
 /// Function prints the data variable from the Minesweeper structure

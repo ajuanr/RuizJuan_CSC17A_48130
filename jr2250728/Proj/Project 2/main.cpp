@@ -46,7 +46,7 @@ int main(int argc, const char * argv[]) {
     srand(static_cast<unsigned int>(time(0)));
     Game<GameBoard> m(new Minesweeper(10,10));
     
-    m->setUp();
+    //m->setUp();
     /// create GameBoard with max size
     /// the entire board may not be utilized
     GameBoard *mSweep = new  Minesweeper(10,10);

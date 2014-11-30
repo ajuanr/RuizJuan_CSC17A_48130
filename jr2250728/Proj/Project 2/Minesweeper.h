@@ -68,6 +68,7 @@ public:
     void setUp();
     void playGame(char*);
     void clearBoard();
+    void saveGame();
 };
 
 #endif /* defined(__Project_2__Minesweeper__) */
