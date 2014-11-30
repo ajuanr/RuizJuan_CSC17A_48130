@@ -62,7 +62,7 @@ void Minesweeper::setUp() {
 
         if (isValidIn()) {
             while (ans == 'y' && isValidIn()) {
-                playGame(player);
+                playGame();
                 cout << endl;
                 cin.ignore();
                 cout << "Would you like to play again " << player << "? ";
@@ -90,7 +90,7 @@ void Minesweeper::setUp() {
 
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
-void Minesweeper::playGame(char *p) {
+void Minesweeper::playGame() {
 
     setMines();
     prntObscr();
@@ -102,6 +102,7 @@ void Minesweeper::playGame(char *p) {
             cin >> row;
             /// check bounds
         } while (row < 0 || row >= rows);
+        /// Select the column
         do {
             cout << "Enter the column " << 0 << "-" << cols-1 << ": ";
             cin >> col;
@@ -112,11 +113,11 @@ void Minesweeper::playGame(char *p) {
     
     /// Prepare to print completed Minesweeper
     if (hasWon()) {
-        cout << p << "You win\n";
+        cout << "You win\n";
         setFlags();
     }
     else{
-        cout << p << " you have, lost\n";
+        cout << "You have, lost\n";
         setFlags();
         data[row][col]= Minesweeper::LOSER;
     }

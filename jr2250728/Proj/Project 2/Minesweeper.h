@@ -66,7 +66,7 @@ public:
     void print() const;
     void prntObscr() const;
     void setUp();
-    void playGame(char*);
+    void playGame();
     void clearBoard();
     void saveGame();
     void loadGame();

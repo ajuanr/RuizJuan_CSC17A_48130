@@ -29,6 +29,7 @@ public:
     virtual void clearBoard();
     virtual void setUp()=0;
     virtual void loadGame()=0;
+    virtual void playGame()=0;
     virtual void print() const;
 };
 
