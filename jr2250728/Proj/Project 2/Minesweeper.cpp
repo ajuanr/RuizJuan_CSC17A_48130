@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 #include <fstream>
 #include <string>
 #include <iomanip>
@@ -126,7 +127,11 @@ void Minesweeper::playGame() {
     setMines();
     prntObscr();
     int row, col;
+    int turn = 0;
+    int initialTime = static_cast<unsigned int>(time(0));
     do {
+        int begTime = static_cast<unsigned int>(time(0));
+        cout << "Turn: " << turn++ << endl;
         /// Select the row
         do {
             cout << "Enter -1 to save the settings and exit\n";
@@ -146,6 +151,10 @@ void Minesweeper::playGame() {
             cin >> col;
             /// check bounds
         } while (col < 0 || col >= cols);
+        
+        /// endTime
+        int endTime = static_cast<unsigned int>(time(0));
+        cout << "Turn took: " << endTime - begTime << " seconds.\n";
         cout << endl;
     } while (cont(row, col) && !hasWon());
     
@@ -160,7 +169,8 @@ void Minesweeper::playGame() {
         data[row][col]= Minesweeper::LOSER;
     }
 
-    //saveGame();
+    int finalTime = static_cast<unsigned int>(time(0));
+    cout << "Game was completed in " << finalTime - initialTime << " seconds.\n";
     
     /// Print the complete Minesweeper
     print();
@@ -214,7 +224,7 @@ Minesweeper::Difficulty Minesweeper::intToDiff(int choice) {
 /// Functions prints the Minesweeper with all the squares revealed.
 /// used mostly after player loses
 void Minesweeper::print() const {
-    cout << "\nIn Minesweeper print\n";
+    cout << "Here's what the board looked like\n";
     for (int row = 0; row != rows; ++row){
         for (int col = 0; col != cols; ++col) {
             ///
