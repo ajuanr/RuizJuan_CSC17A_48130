@@ -28,6 +28,7 @@ T* AnyGame<T>::operator->() const {
     /// only return p if it points to something
     if (p)
         return p;
+    return 0;
 }
 
 template<class T>

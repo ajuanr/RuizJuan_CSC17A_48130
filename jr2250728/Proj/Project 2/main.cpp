@@ -44,15 +44,16 @@ using namespace std;
  **************************************************/
 int main(int argc, const char * argv[]) {
     srand(static_cast<unsigned int>(time(0)));
-    //AnyGame<AbsGame> m(new Minesweeper(10,10));
+    AnyGame<GameBoard> m(new Minesweeper(10,10));
     
     //m->setUp();
     /// create GameBoard with max size
     /// the entire board may not be utilized
     GameBoard *mSweep = new  Minesweeper(10,10);
-    //m = *mSweep;
+
     try {
-    mSweep->setUp();
+        m->setUp();
+    //mSweep->setUp();
     }
     
     catch (Minesweeper::badSize) {
