@@ -9,6 +9,8 @@
 #include <iostream>
 #include "gameBoard.h"
 
+using namespace std;
+
 /// Function that creates the grid on which game will be played
 void GameBoard::create(int row, int col) {
     /// dinamically create a Minesweeper
@@ -58,4 +60,14 @@ void GameBoard::print() const {
         }
         std::cout << std::endl;
     }
+}
+
+void GameBoard::loadGame() {
+    cout << "Calling the the base class loadGame. "
+            " should be calling the derived class version.\n";
+}
+
+void GameBoard::setUp() {
+    cout <<"Calling the wrong function. Use polymorphism to call the derived"
+    "class setUp function\n";
 }

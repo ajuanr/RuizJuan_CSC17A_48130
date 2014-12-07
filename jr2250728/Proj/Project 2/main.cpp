@@ -44,7 +44,7 @@ using namespace std;
  **************************************************/
 int main(int argc, const char * argv[]) {
     srand(static_cast<unsigned int>(time(0)));
-    Game<GameBoard> m(new Minesweeper(10,10));
+    //AnyGame<AbsGame> m(new Minesweeper(10,10));
     
     //m->setUp();
     /// create GameBoard with max size
@@ -59,7 +59,8 @@ int main(int argc, const char * argv[]) {
         cout << "Size was invalid\n";
     }
     
-    mSweep->loadGame();
+    //mSweep->loadGame();
+    
     mSweep->print();
     
     //delete mSweep;
