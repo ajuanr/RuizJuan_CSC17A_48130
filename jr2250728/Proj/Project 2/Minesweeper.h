@@ -12,7 +12,7 @@
 #include <string>
 #include "gameBoard.h"
 
-/// This is the class that holds the Minesweeper board
+/// This is the class that holds the Minesweeper
 /// as well as the associated flags that occur when
 /// a user selects a square
 class Minesweeper: public GameBoard {
