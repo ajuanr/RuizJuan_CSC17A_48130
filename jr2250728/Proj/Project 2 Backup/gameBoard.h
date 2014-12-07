@@ -9,11 +9,11 @@
 #ifndef Project_2_gameBoard_h
 #define Project_2_gameBoard_h
 
-
+#include "AbsGame.h"
 
 /// Abstract class for games that require an n*m array
 /// such as Minesweeper, Tic-Tac-Toe, Battleship
-class GameBoard {
+class GameBoard: public AbsGame{
 private:
     
 protected:
@@ -34,9 +34,8 @@ public:
     virtual int getRows() const {return rows;}
     virtual int getCols() const {return cols;}
     virtual void clearBoard();
-    virtual void setUp()=0;
-    virtual void loadGame()=0;
-    virtual void playGame()=0;
+    virtual void setUp();
+    virtual void loadGame();
     virtual void print() const;
     int* operator[](int index) { return data[index];}
     int* operator[](int index) const { return data[index];}

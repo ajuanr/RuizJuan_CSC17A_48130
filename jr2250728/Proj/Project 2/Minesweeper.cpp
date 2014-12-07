@@ -121,7 +121,7 @@ void Minesweeper::setUp() {
 }
 
 /// Play a game of minesweeper
-/// User inputs how many rows and columns and the dicculty
+/// User inputs how many rows and columns and the difficulty
 void Minesweeper::playGame() {
     setMines();
     prntObscr();
@@ -504,8 +504,7 @@ void Minesweeper::loadGame() {
     fstream saveFile("gameSave", ios::in | ios::binary);
     if (!saveFile.is_open())
         throw "Error file failed to open\n";
-    /// Create space to hold the file read
-    //Minesweeper *result = new Minesweeper(10,10);
+
     saveFile.read(reinterpret_cast<char*>(this), sizeof(*this));
     //print();
     saveFile.close();
