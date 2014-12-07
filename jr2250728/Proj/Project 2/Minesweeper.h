@@ -52,7 +52,6 @@ private:
     char *userName();
     
 public:
-    /// Throw this if user enter an invalid size/index
     /***************************************************
      *             Constructors / Destructor
      **************************************************/

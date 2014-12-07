@@ -123,7 +123,6 @@ void Minesweeper::setUp() {
 /// Play a game of minesweeper
 /// User inputs how many rows and columns and the dicculty
 void Minesweeper::playGame() {
-
     setMines();
     prntObscr();
     int row, col;
