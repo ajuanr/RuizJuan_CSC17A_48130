@@ -29,7 +29,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-
+#include <vector>
 #include "Minesweeper.h"
 #include "TemplateClass.h"
 
@@ -44,25 +44,19 @@ using namespace std;
  **************************************************/
 int main(int argc, const char * argv[]) {
     srand(static_cast<unsigned int>(time(0)));
-    Game<GameBoard> m(new Minesweeper(10,10));
+
+    AnyGame<GameBoard> m(new Minesweeper(10,10));
     
-    //m->setUp();
-    /// create GameBoard with max size
-    /// the entire board may not be utilized
-    GameBoard *mSweep = new  Minesweeper(10,10);
-    //m = *mSweep;
     try {
-    mSweep->setUp();
+        m->setUp();
     }
     
     catch (Minesweeper::badSize) {
         cout << "Size was invalid\n";
     }
-    
-    mSweep->loadGame();
-    mSweep->print();
-    
-    //delete mSweep;
+    catch (const char* s) {
+        cout << s << endl;
+    }
     
     return 0;
 }

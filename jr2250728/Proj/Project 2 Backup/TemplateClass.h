@@ -10,17 +10,36 @@
 #define __Project_2__TemplateClass__
 
 template<class T>
-class Game {
+class AnyGame {
 private:
     T* p;
 public:
-    Game():p(0){}
-    Game(T* t):p(t){}
-    ~Game() {delete p;}
-    Game<T>& operator=(const T&);
+    AnyGame():p(0){}
+    AnyGame(T* t):p(t){}
+    ~AnyGame() {delete p;}
+    AnyGame<T>& operator=(const T&);
     operator bool(){return p;}
     T* operator->() const;
     T& operator*() const;
 };
+
+template<class T>
+T* AnyGame<T>::operator->() const {
+    /// only return p if it points to something
+    if (p)
+        return p;
+    return 0;
+}
+
+template<class T>
+T& AnyGame<T>::operator*() const{
+    if (p)
+        return *p;
+}
+
+template<class T>
+AnyGame<T>& AnyGame<T>::operator=(const T& rhs) {
+    p = &rhs;
+}
 
 #endif /* defined(__Project_2__TemplateClass__) */

@@ -83,7 +83,7 @@ void Minesweeper::setUp() {
     
     /// play if answer is yes
     if (ans == 'y') {
-        cout << "would you like to load a previous game: ";
+        cout << "would you like load previous settings: ";
         char ans2;
         cin >> ans2;
         if ( ans2 == 'y') {
@@ -121,7 +121,7 @@ void Minesweeper::setUp() {
 }
 
 /// Play a game of minesweeper
-/// User inputs how many rows and columns and the dicculty
+/// User inputs how many rows and columns and the difficulty
 void Minesweeper::playGame() {
     setMines();
     prntObscr();
@@ -178,7 +178,7 @@ void Minesweeper::playGame() {
 /// Function gets the user name as a string converts it to a char array
 /// for the 1d dynamic array requirement
 char* Minesweeper::userName() {
-    cout << "Enter your name: ";
+    cout << "Enter your first name: ";
     string in;
     cin >> in;
     
@@ -503,9 +503,8 @@ void Minesweeper::saveGame() {
 void Minesweeper::loadGame() {
     fstream saveFile("gameSave", ios::in | ios::binary);
     if (!saveFile.is_open())
-        throw "Error file failed to open\n";
-    /// Create space to hold the file read
-    //Minesweeper *result = new Minesweeper(10,10);
+        throw "No previous settings found\n";
+
     saveFile.read(reinterpret_cast<char*>(this), sizeof(*this));
     //print();
     saveFile.close();
