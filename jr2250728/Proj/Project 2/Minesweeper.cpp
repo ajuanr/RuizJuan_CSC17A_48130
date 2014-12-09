@@ -83,7 +83,7 @@ void Minesweeper::setUp() {
     
     /// play if answer is yes
     if (ans == 'y') {
-        cout << "would you like to load a previous game: ";
+        cout << "would you like load previous settings: ";
         char ans2;
         cin >> ans2;
         if ( ans2 == 'y') {
@@ -503,7 +503,7 @@ void Minesweeper::saveGame() {
 void Minesweeper::loadGame() {
     fstream saveFile("gameSave", ios::in | ios::binary);
     if (!saveFile.is_open())
-        throw "Error file failed to open\n";
+        throw "No previous settings found\n";
 
     saveFile.read(reinterpret_cast<char*>(this), sizeof(*this));
     //print();
