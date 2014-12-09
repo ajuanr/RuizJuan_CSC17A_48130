@@ -178,7 +178,7 @@ void Minesweeper::playGame() {
 /// Function gets the user name as a string converts it to a char array
 /// for the 1d dynamic array requirement
 char* Minesweeper::userName() {
-    cout << "Enter your name: ";
+    cout << "Enter your first name: ";
     string in;
     cin >> in;
     
