@@ -11,7 +11,7 @@
 
 #include "AbsGame.h"
 
-/// Abstract class for games that require an n*m array
+/// Base class for games that require an n*m array
 /// such as Minesweeper, Tic-Tac-Toe, Battleship
 class GameBoard: public AbsGame{
 private:
